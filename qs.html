@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFF no QS Ranking | Dashboard Completo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header */
+    .dashboard-header {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards com cores únicas */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card */
+    .card-1 {
+      border-top-color: #3B82F6;
+    }
+
+    .card-1 .indicator-value {
+      color: #3B82F6;
+    }
+
+    .card-1 .card-icon {
+      color: #3B82F6;
+    }
+
+    .card-2 {
+      border-top-color: #10B981;
+    }
+
+    .card-2 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-2 .card-icon {
+      color: #10B981;
+    }
+
+    .card-3 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-3 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-3 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-4 {
+      border-top-color: #EF4444;
+    }
+
+    .card-4 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-4 .card-icon {
+      color: #EF4444;
+    }
+
+    .card-5 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-5 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-5 .card-icon {
+      color: #8B5CF6;
+    }
+
+    .card-6 {
+      border-top-color: #EC4899;
+    }
+
+    .card-6 .indicator-value {
+      color: #EC4899;
+    }
+
+    .card-6 .card-icon {
+      color: #EC4899;
+    }
+
+    .card-7 {
+      border-top-color: #06D6A0;
+    }
+
+    .card-7 .indicator-value {
+      color: #06D6A0;
+    }
+
+    .card-7 .card-icon {
+      color: #06D6A0;
+    }
+
+    .card-8 {
+      border-top-color: #118AB2;
+    }
+
+    .card-8 .indicator-value {
+      color: #118AB2;
+    }
+
+    .card-8 .card-icon {
+      color: #118AB2;
+    }
+
+    /* Section Headers */
+    .section-header {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+
+    .world-section {
+      border-left-color: #1e40af;
+    }
+
+    .latam-section {
+      border-left-color: #059669;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-icon {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .world-icon {
+      color: #1e40af;
+    }
+
+    .latam-icon {
+      color: #059669;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .chart-notes {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    /* Tabs */
+    .chart-tabs {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #6b7280;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: #1e40af;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .latam-tab.active {
+      color: #059669;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>Desempenho da UFF no QS Ranking</h1>
+          <!-- <p>Análise completa de todos os indicadores do QS World University e QS Latin America Rankings (2013-2026)</p> -->
+        </div>
+        <!-- <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+          <span class="header-badge">
+            <i class="fas fa-calendar-alt me-2"></i>2013-2026
+          </span>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Cards QS World -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header world-section">
+          <h2 class="section-title">
+            <i class="fas fa-globe-americas section-icon world-icon"></i>QS World University Ranking
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: Posição no Brasil (QS World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">15º</div>
+            <p class="card-subtitle">2026 | QS World</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Entre as Federais (QS World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h5 class="card-title">Entre as Federais</h5>
+            <div class="indicator-value">9º</div>
+            <p class="card-subtitle">2026 | QS World</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Posição Mundial (QS World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial</h5>
+            <div class="indicator-value">1201-1400</div>
+            <p class="card-subtitle">2026 | QS World</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Posição na América Latina (QS World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h5 class="card-title">Posição América Latina</h5>
+            <div class="indicator-value">109º</div>
+            <p class="card-subtitle">2026 | QS World</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos QS World -->
+    <div class="row mb-5">
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF no Brasil - QS World (2013-2026)</h4>
+          <div id="world-brazil-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Quanto menor a posição, melhor o desempenho
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição entre as Federais - QS World (2022-2026)</h4>
+          <div id="world-federais-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Dados disponíveis a partir de 2022
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico Posição na América Latina (QS World) -->
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição na América Latina - QS World (2022-2026)</h4>
+          <div id="world-latam-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Dados disponíveis a partir de 2022
+          </div>
+        </div>
+      </div>
+
+      <!-- Indicadores QS World -->
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Indicadores QS World (2021-2026)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn active" onclick="changeWorldIndicatorsTab('main')">Principais</button>
+            <button class="tab-btn" onclick="changeWorldIndicatorsTab('academic')">Acadêmicos</button>
+            <button class="tab-btn" onclick="changeWorldIndicatorsTab('international')">Internacional</button>
+          </div>
+          <div id="world-indicators-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Principais indicadores do QS World University Ranking
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards QS Latin America -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header latam-section">
+          <h2 class="section-title">
+            <i class="fas fa-flag section-icon latam-icon"></i>QS Latin America & The Caribbean
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 5: Posição América Latina (QS Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h5 class="card-title">Posição América Latina</h5>
+            <div class="indicator-value">64º</div>
+            <p class="card-subtitle">2026 | QS Latin America</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Posição no Brasil (QS Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-landmark"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">14º</div>
+            <p class="card-subtitle">2026 | QS Latin America</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7: Posição América do Sul (QS Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-7">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe-americas"></i>
+            </div>
+            <h5 class="card-title">Posição América do Sul</h5>
+            <div class="indicator-value">51º</div>
+            <p class="card-subtitle">2026 | QS Latin America</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8: Pontuação Geral (QS Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-8">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Pontuação Geral</h5>
+            <div class="indicator-value">57.0</div>
+            <p class="card-subtitle">2026 | QS Latin America</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos QS Latin America -->
+    <div class="row mb-4">
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição na América Latina (2013-2026)</h4>
+          <div id="latam-position-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            QS Latin America Ranking - Posição regional
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição no Brasil (2018-2026)</h4>
+          <div id="latam-brazil-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            QS Latin America - Comparação com outras universidades brasileiras
+          </div>
+        </div>
+      </div>
+
+      <!-- Indicadores QS Latin America -->
+      <div class="col-12 pt-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Indicadores QS Latin America (2021-2026)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn latam-tab active" onclick="changeLatamIndicatorsTab('main')">Principais</button>
+            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('academic')">Acadêmicos</button>
+            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('research')">Pesquisa</button>
+          </div>
+          <div id="latam-indicators-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Principais indicadores do QS Latin America Ranking
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        <i class="fas fa-database me-1"></i>
+        Dados extraídos dos rankings QS World University e QS Latin America (2013-2026)
+        <!-- <i class="fas fa-sync-alt ms-2 me-1"></i>
+        Atualizado em junho de 2024 -->
+      </p>
+      <p class="mb-0">
+        <i class="fa-solid fa-arrow-trend-up me-1"></i>
+        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido pela PGI/PLAN - UFF</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dados completos e corrigidos
+    const data = {
+      // Anos
+      yearsWorld: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      yearsWorldShort: [2022, 2023, 2024, 2025, 2026],
+      yearsLatam: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      yearsLatamBrazil: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+
+      // QS World University Ranking - DADOS CORRIGIDOS
+      worldBrazilPosition: [16, 17, 17, 17, 17, 16, 16, 17, 16, 22, 16, 12, 15], // Item a
+      worldFederaisPosition: [10, 12, 10, 7, 9], // Item b (2022-2026)
+      worldLatamPosition: [113, 171, 147, 93, 109], // Item c (2022-2026)
+
+      // QS World Indicators (2021-2026)
+      worldIndicatorsYears: [2021, 2022, 2023, 2024, 2025, 2026],
+      worldAcademicRep: [8.4, 8.4, 8.9, 10.0, 9.6, 12.5],
+      worldEmployerRep: [3.4, 3.4, 3.2, 2.3, 2.5, 3.1],
+      worldFacultyStudentRatio: [14.3, 14.3, 10.9, 11.7, 12.8, 17.4],
+      worldCitationsPerFaculty: [3.7, 3.7, 3.6, 3.7, 3.6, 6.4],
+      worldIntFacultyRatio: [2.0, 2.0, 6.0, 5.3, 6.3, 8.8],
+      worldIntStudentsRatio: [1.7, 1.7, 1.6, 1.1, 1.2, 1.3],
+      worldEmploymentOutcomes: [null, null, 7.5, 7.6, 10.9, 17.6],
+      worldResearchNetwork: [null, null, 54.5, 10.1, 52.2, 57.0],
+      worldSustainability: [null, null, null, 4.1, 13.1, 55.7],
+      worldStudentDiversity: [null, null, null, null, null, 5.8],
+
+      // QS Latin America - DADOS CORRIGIDOS
+      latamPosition: [47, 49, 50, 47, 53, 50, 54, 60, 61, 61, 55, 54, 64], // Item d
+      latamBrazilPosition: [17, 16, 16, 17, 16, 15, 14, 14, 14], // Item e
+
+      // QS Latin America Indicators (2021-2026)
+      latamIndicatorsYears: [2021, 2022, 2023, 2024, 2025, 2026],
+      latamOverall: [50.6, 49.9, 50.4, 51.8, 58.6, 57.0],
+      latamAcademicRep: [35.3, 36.5, 38.4, 39.9, 49.5, 14.1],
+      latamEmployerRep: [11.8, 11.2, 12.1, 13.9, 18.5, 48.9],
+      latamFacultyStudentRatio: [36.5, 25.8, 19.3, 26.4, 32.3, 32.9],
+      latamPapersPerFaculty: [58.6, 54.9, 54.2, 57.9, 71.6, 71.6],
+      latamCitationsPerPaper: [30.3, 38.3, 43.4, 42.6, 59.8, 51.6],
+      latamFacultyWithPhD: [100, 100, 98.3, 98.4, 99.1, 98.3],
+      latamResearchNetwork: [97, 97.1, 96.4, 95.7, 94.7, 97.4],
+      latamWebImpact: [94.1, 92.2, 89.4, 86.1, 93.5, 95.1]
+    };
+
+    // Cores vibrantes para gráficos
+    const colors = {
+      blue: '#3B82F6',
+      green: '#10B981',
+      orange: '#F59E0B',
+      red: '#EF4444',
+      purple: '#8B5CF6',
+      pink: '#EC4899',
+      cyan: '#06D6A0',
+      teal: '#118AB2',
+      indigo: '#6366F1',
+      yellow: '#EAB308'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: true,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+      toImageButtonOptions: {
+        format: 'png',
+        filename: 'uff-qs-ranking',
+        height: 500,
+        width: 1000,
+        scale: 1
+      }
+    };
+
+    // Layout comum
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 30, r: 30, b: 60, l: 60 },
+      hovermode: 'closest',
+      showlegend: true,
+      legend: {
+        orientation: 'h',
+        y: -0.25,
+        x: 0.5,
+        xanchor: 'center',
+        bgcolor: 'rgba(255, 255, 255, 0.9)',
+        bordercolor: 'rgba(0,0,0,0.1)',
+        borderwidth: 1
+      },
+      xaxis: {
+        gridcolor: 'rgba(0,0,0,0.05)'
+      },
+      yaxis: {
+        gridcolor: 'rgba(0,0,0,0.05)'
+      }
+    };
+
+    // Layout para gráficos de posição
+    const positionLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        autorange: 'reversed',
+        title: 'Posição (menor = melhor)'
+      }
+    };
+
+    // Layout para gráficos de linha
+    const lineLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        title: 'Pontuação'
+      }
+    };
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico QS World - Posição no Brasil
+      const worldBrazilTrace = {
+        x: data.yearsWorld,
+        y: data.worldBrazilPosition,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Posição no Brasil',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('world-brazil-chart', [worldBrazilTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 2. Gráfico QS World - Posição entre as Federais
+      const federaisTrace = {
+        x: data.yearsWorldShort,
+        y: data.worldFederaisPosition,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Entre as Federais',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição entre Federais:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('world-federais-chart', [federaisTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 3. Gráfico QS World - Posição na América Latina
+      const worldLatamTrace = {
+        x: data.yearsWorldShort,
+        y: data.worldLatamPosition,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'América Latina (QS World)',
+        line: {
+          color: colors.red,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.red,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição América Latina:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('world-latam-chart', [worldLatamTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 4. Gráfico QS World - Indicadores
+      createWorldIndicatorsChart('main');
+
+      // 5. Gráfico QS Latin America - Posição na América Latina
+      const latamTrace = {
+        x: data.yearsLatam,
+        y: data.latamPosition,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'América Latina (QS Latin America)',
+        line: {
+          color: colors.purple,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.purple,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('latam-position-chart', [latamTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 6. Gráfico QS Latin America - Posição no Brasil
+      const latamBrazilTrace = {
+        x: data.yearsLatamBrazil,
+        y: data.latamBrazilPosition,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Brasil (QS Latin America)',
+        line: {
+          color: colors.pink,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.pink,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('latam-brazil-chart', [latamBrazilTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 7. Gráfico QS Latin America - Indicadores
+      createLatamIndicatorsChart('main');
+    }
+
+    // Função para criar gráfico de indicadores QS World
+    function createWorldIndicatorsChart(tab) {
+      const years = data.worldIndicatorsYears;
+      let traces = [];
+
+      if (tab === 'main') {
+        // Principais indicadores - COM SUSTENTABILIDADE
+        traces = [
+          createTrace(years, data.worldAcademicRep, 'Reputação Acadêmica', colors.blue, 4),
+          createTrace(years, data.worldEmployerRep, 'Reputação Empregadores', colors.orange, 4),
+          createTrace(years, data.worldFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 4),
+          createTrace(years, data.worldSustainability, 'Sustentabilidade', colors.cyan, 4)
+        ];
+      } else if (tab === 'academic') {
+        // Indicadores acadêmicos
+        traces = [
+          createTrace(years, data.worldAcademicRep, 'Reputação Acadêmica', colors.blue, 3),
+          createTrace(years, data.worldFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 3),
+          createTrace(years, data.worldCitationsPerFaculty, 'Citações por Professor', colors.purple, 3),
+          createTrace(years, data.worldEmploymentOutcomes, 'Resultados de Emprego', colors.red, 3)
+        ];
+      } else if (tab === 'international') {
+        // Internacionalização
+        traces = [
+          createTrace(years, data.worldIntFacultyRatio, 'Professores Internacionais', colors.pink, 3),
+          createTrace(years, data.worldIntStudentsRatio, 'Estudantes Internacionais', colors.yellow, 3),
+          createTrace(years, data.worldResearchNetwork, 'Rede de Pesquisa', colors.indigo, 3),
+          createTrace(years, data.worldStudentDiversity, 'Diversidade Estudantil', colors.teal, 3)
+        ];
+      }
+
+      Plotly.newPlot('world-indicators-chart', traces, {
+        ...lineLayout,
+        title: ''
+      }, chartConfig);
+    }
+
+    // Função para criar gráfico de indicadores QS Latin America
+    function createLatamIndicatorsChart(tab) {
+      const years = data.latamIndicatorsYears;
+      let traces = [];
+
+      if (tab === 'main') {
+        // Principais indicadores
+        traces = [
+          createTrace(years, data.latamOverall, 'Pontuação Geral', colors.purple, 4),
+          createTrace(years, data.latamAcademicRep, 'Reputação Acadêmica', colors.blue, 4),
+          createTrace(years, data.latamEmployerRep, 'Reputação Empregadores', colors.orange, 4),
+          createTrace(years, data.latamFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 4)
+        ];
+      } else if (tab === 'academic') {
+        // Indicadores acadêmicos
+        traces = [
+          createTrace(years, data.latamAcademicRep, 'Reputação Acadêmica', colors.blue, 3),
+          createTrace(years, data.latamFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 3),
+          createTrace(years, data.latamFacultyWithPhD, 'Professores com Doutorado', colors.purple, 3),
+          createTrace(years, data.latamWebImpact, 'Impacto Web', colors.yellow, 3)
+        ];
+      } else if (tab === 'research') {
+        // Indicadores de pesquisa
+        traces = [
+          createTrace(years, data.latamPapersPerFaculty, 'Artigos por Professor', colors.pink, 3),
+          createTrace(years, data.latamCitationsPerPaper, 'Citações por Artigo', colors.red, 3),
+          createTrace(years, data.latamResearchNetwork, 'Rede de Pesquisa', colors.indigo, 3),
+          createTrace(years, data.latamWebImpact, 'Impacto Web', colors.yellow, 3)
+        ];
+      }
+
+      Plotly.newPlot('latam-indicators-chart', traces, {
+        ...lineLayout,
+        title: ''
+      }, chartConfig);
+    }
+
+    // Função auxiliar para criar traços com cores vivas
+    function createTrace(x, y, name, color, width) {
+      return {
+        x: x,
+        y: y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: name,
+        line: {
+          color: color,
+          width: width,
+          shape: 'spline'
+        },
+        marker: {
+          color: color,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        hovertemplate: `<b>${name}:</b> %{y}<br><b>Ano:</b> %{x}<extra></extra>`
+      };
+    }
+
+    // Funções para trocar abas
+    function changeWorldIndicatorsTab(tab) {
+      updateTabButtons('world-indicators-chart', tab);
+      createWorldIndicatorsChart(tab);
+    }
+
+    function changeLatamIndicatorsTab(tab) {
+      updateTabButtons('latam-indicators-chart', tab);
+      createLatamIndicatorsChart(tab);
+    }
+
+    function updateTabButtons(chartId, activeTab) {
+      const chartContainer = document.getElementById(chartId).closest('.chart-container');
+      const tabBtns = chartContainer.querySelectorAll('.tab-btn');
+      tabBtns.forEach(btn => btn.classList.remove('active'));
+
+      // Encontrar o botão correspondente à aba ativa
+      tabBtns.forEach(btn => {
+        if (btn.textContent.toLowerCase().includes(activeTab)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
