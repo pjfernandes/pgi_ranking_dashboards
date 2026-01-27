@@ -623,7 +623,8 @@
       </p>
       <p class="mb-0">
         <i class="fa-solid fa-arrow-trend-up me-1"></i>
-        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido pela PGI/PLAN - UFF</a>
+        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido
+          pela PGI/PLAN - UFF</a>
       </p>
     </div>
   </div>
@@ -702,7 +703,13 @@
       }
     };
 
-    // Layout comum
+    // Função para formatar valores
+    function formatValue(val) {
+      if (val === null || val === undefined) return '';
+      return Number.isInteger(val) ? val.toString() : val.toFixed(1);
+    }
+
+    // Layout comum - eixos menos destacados
     const commonLayout = {
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
@@ -723,20 +730,54 @@
         borderwidth: 1
       },
       xaxis: {
-        gridcolor: 'rgba(0,0,0,0.05)'
+        gridcolor: 'rgba(0,0,0,0.03)', // Grid muito sutil
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)', // Linha do eixo sutil
+        linewidth: 1,
+        tickmode: 'linear',
+        tickformat: 'd', // Força anos inteiros
+        dtick: 1, // Intervalo de 1 ano
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
       },
       yaxis: {
-        gridcolor: 'rgba(0,0,0,0.05)'
+        gridcolor: 'rgba(0,0,0,0.03)', // Grid muito sutil
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)', // Linha do eixo sutil
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
       }
     };
 
-    // Layout para gráficos de posição
+    // Layout para gráficos de posição - Simplificado
     const positionLayout = {
       ...commonLayout,
       yaxis: {
         ...commonLayout.yaxis,
         autorange: 'reversed',
-        title: 'Posição (menor = melhor)'
+        title: 'Posição (menor = melhor)',
+        tickformat: 'd', // Força valores inteiros
+        nticks: 5, // Apenas 5 ticks para não poluir
+        separatethousands: true
       }
     };
 
@@ -745,7 +786,9 @@
       ...commonLayout,
       yaxis: {
         ...commonLayout.yaxis,
-        title: 'Pontuação'
+        title: 'Pontuação',
+        tickformat: '.1f', // Uma casa decimal para indicadores
+        nticks: 5 // Apenas 5 ticks para não poluir
       }
     };
 
@@ -756,7 +799,7 @@
         x: data.yearsWorld,
         y: data.worldBrazilPosition,
         type: 'scatter',
-        mode: 'lines+markers',
+        mode: 'lines+markers+text',
         name: 'Posição no Brasil',
         line: {
           color: colors.blue,
@@ -771,6 +814,13 @@
             width: 2
           }
         },
+        text: data.worldBrazilPosition.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
         hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>'
       };
 
@@ -784,7 +834,7 @@
         x: data.yearsWorldShort,
         y: data.worldFederaisPosition,
         type: 'scatter',
-        mode: 'lines+markers',
+        mode: 'lines+markers+text',
         name: 'Entre as Federais',
         line: {
           color: colors.green,
@@ -799,6 +849,13 @@
             width: 2
           }
         },
+        text: data.worldFederaisPosition.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
         hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição entre Federais:</b> %{y}º<extra></extra>'
       };
 
@@ -812,7 +869,7 @@
         x: data.yearsWorldShort,
         y: data.worldLatamPosition,
         type: 'scatter',
-        mode: 'lines+markers',
+        mode: 'lines+markers+text',
         name: 'América Latina (QS World)',
         line: {
           color: colors.red,
@@ -827,6 +884,13 @@
             width: 2
           }
         },
+        text: data.worldLatamPosition.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.red,
+          family: 'Inter, sans-serif'
+        },
         hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição América Latina:</b> %{y}º<extra></extra>'
       };
 
@@ -835,15 +899,12 @@
         title: ''
       }, chartConfig);
 
-      // 4. Gráfico QS World - Indicadores
-      createWorldIndicatorsChart('main');
-
-      // 5. Gráfico QS Latin America - Posição na América Latina
+      // 4. Gráfico QS Latin America - Posição na América Latina
       const latamTrace = {
         x: data.yearsLatam,
         y: data.latamPosition,
         type: 'scatter',
-        mode: 'lines+markers',
+        mode: 'lines+markers+text',
         name: 'América Latina (QS Latin America)',
         line: {
           color: colors.purple,
@@ -858,6 +919,13 @@
             width: 2
           }
         },
+        text: data.latamPosition.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.purple,
+          family: 'Inter, sans-serif'
+        },
         hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>'
       };
 
@@ -866,12 +934,12 @@
         title: ''
       }, chartConfig);
 
-      // 6. Gráfico QS Latin America - Posição no Brasil
+      // 5. Gráfico QS Latin America - Posição no Brasil
       const latamBrazilTrace = {
         x: data.yearsLatamBrazil,
         y: data.latamBrazilPosition,
         type: 'scatter',
-        mode: 'lines+markers',
+        mode: 'lines+markers+text',
         name: 'Brasil (QS Latin America)',
         line: {
           color: colors.pink,
@@ -886,6 +954,13 @@
             width: 2
           }
         },
+        text: data.latamBrazilPosition.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.pink,
+          family: 'Inter, sans-serif'
+        },
         hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>'
       };
 
@@ -894,7 +969,8 @@
         title: ''
       }, chartConfig);
 
-      // 7. Gráfico QS Latin America - Indicadores
+      // 6. Gráficos de indicadores
+      createWorldIndicatorsChart('main');
       createLatamIndicatorsChart('main');
     }
 
@@ -978,7 +1054,7 @@
         x: x,
         y: y,
         type: 'scatter',
-        mode: 'lines+markers',
+        mode: 'lines+markers+text',
         name: name,
         line: {
           color: color,
@@ -992,6 +1068,13 @@
             color: 'white',
             width: 1
           }
+        },
+        text: y.map(v => formatValue(v)),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: color,
+          family: 'Inter, sans-serif'
         },
         hovertemplate: `<b>${name}:</b> %{y}<br><b>Ano:</b> %{x}<extra></extra>`
       };
