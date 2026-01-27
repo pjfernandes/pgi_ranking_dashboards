@@ -373,13 +373,7 @@
       <div class="row align-items-center">
         <div class="col-lg-8">
           <h1>Desempenho da UFF no QS Ranking</h1>
-          <!-- <p>Análise completa de todos os indicadores do QS World University e QS Latin America Rankings (2013-2026)</p> -->
         </div>
-        <!-- <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-          <span class="header-badge">
-            <i class="fas fa-calendar-alt me-2"></i>2013-2026
-          </span>
-        </div> -->
       </div>
     </div>
 
@@ -573,24 +567,26 @@
 
     <!-- Gráficos QS Latin America -->
     <div class="row mb-4">
+      <!-- Gráfico Posição na América Latina com Participantes -->
       <div class="col-lg-6">
         <div class="chart-container">
-          <h4 class="chart-title">Posição na América Latina (2013-2026)</h4>
+          <h4 class="chart-title">Posição na América Latina (2013-2026) e Nº de Participantes</h4>
           <div id="latam-position-chart"></div>
           <div class="chart-notes">
             <i class="fas fa-info-circle me-1"></i>
-            QS Latin America Ranking - Posição regional
+            Linha: Posição da UFF (eixo esquerdo) | Barras: Nº de universidades no ranking (eixo direito)
           </div>
         </div>
       </div>
 
+      <!-- Gráfico Posição no Brasil com Participantes Brasileiros -->
       <div class="col-lg-6">
         <div class="chart-container">
-          <h4 class="chart-title">Posição no Brasil (2018-2026)</h4>
+          <h4 class="chart-title">Posição no Brasil (2018-2026) e Nº de Participantes Brasileiros</h4>
           <div id="latam-brazil-chart"></div>
           <div class="chart-notes">
             <i class="fas fa-info-circle me-1"></i>
-            QS Latin America - Comparação com outras universidades brasileiras
+            Linha: Posição da UFF (eixo esquerdo) | Barras: Universidades brasileiras no ranking (eixo direito)
           </div>
         </div>
       </div>
@@ -618,8 +614,6 @@
       <p class="mb-2">
         <i class="fas fa-database me-1"></i>
         Dados extraídos dos rankings QS World University e QS Latin America (2013-2026)
-        <!-- <i class="fas fa-sync-alt ms-2 me-1"></i>
-        Atualizado em junho de 2024 -->
       </p>
       <p class="mb-0">
         <i class="fa-solid fa-arrow-trend-up me-1"></i>
@@ -671,7 +665,12 @@
       latamCitationsPerPaper: [30.3, 38.3, 43.4, 42.6, 59.8, 51.6],
       latamFacultyWithPhD: [100, 100, 98.3, 98.4, 99.1, 98.3],
       latamResearchNetwork: [97, 97.1, 96.4, 95.7, 94.7, 97.4],
-      latamWebImpact: [94.1, 92.2, 89.4, 86.1, 93.5, 95.1]
+      latamWebImpact: [94.1, 92.2, 89.4, 86.1, 93.5, 95.1],
+
+      // Dados de participantes do QS Latin America
+      participantsYears: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      totalParticipants: [385, 391, 400, 411, 418, 428, 430, 437, 492],
+      brazilParticipants: [83, 90, 94, 94, 95, 98, 97, 96, 130]
     };
 
     // Cores vibrantes para gráficos
@@ -685,7 +684,10 @@
       cyan: '#06D6A0',
       teal: '#118AB2',
       indigo: '#6366F1',
-      yellow: '#EAB308'
+      yellow: '#EAB308',
+      gray: '#9CA3AF',
+      lightBlue: '#93C5FD',
+      lightGreen: '#86EFAC'
     };
 
     // Configurações do gráfico
@@ -899,13 +901,14 @@
         title: ''
       }, chartConfig);
 
-      // 4. Gráfico QS Latin America - Posição na América Latina
-      const latamTrace = {
+      // 4. Gráfico QS Latin America - Posição na América Latina COM PARTICIPANTES
+      // Traço da linha (posição)
+      const latamPositionTrace = {
         x: data.yearsLatam,
         y: data.latamPosition,
         type: 'scatter',
         mode: 'lines+markers+text',
-        name: 'América Latina (QS Latin America)',
+        name: 'Posição da UFF',
         line: {
           color: colors.purple,
           width: 4,
@@ -926,21 +929,90 @@
           color: colors.purple,
           family: 'Inter, sans-serif'
         },
-        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>'
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>',
+        yaxis: 'y1'
       };
 
-      Plotly.newPlot('latam-position-chart', [latamTrace], {
-        ...positionLayout,
-        title: ''
-      }, chartConfig);
+      // Traço das barras (participantes totais) - apenas para os anos disponíveis
+      const totalParticipantsTrace = {
+        x: data.participantsYears,
+        y: data.totalParticipants,
+        text: data.totalParticipants.map(v => v.toString()),
+        textposition: 'bottom center',
+          textfont: {
+          size: 10,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+        type: 'bar',
+        name: 'Nº de Universidades  ',
+        marker: {
+          color: colors.lightBlue,
+          opacity: 0.6,
+          line: {
+            color: colors.blue,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Nº de Universidades:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
 
-      // 5. Gráfico QS Latin America - Posição no Brasil
+      // Layout para gráfico combinado (linha + barra)
+      const latamPositionLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição da UFF (menor = melhor)',
+          tickformat: 'd',
+          nticks: 6,
+          separatethousands: true,
+          side: 'left',
+          showgrid: false // Remove grid do eixo esquerdo para não poluir
+        },
+        yaxis2: {
+          title: 'Nº de participantes (total)',
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          nticks: 5,
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            size: 10,
+            color: colors.blue
+          },
+          title: {
+            font: {
+              size: 11,
+              color: colors.blue
+            }
+          }
+        },
+        xaxis: {
+          ...commonLayout.xaxis,
+          range: [2012.5, 2026.5] // Ajusta para mostrar todas as barras
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3 // Ajusta para dar espaço ao eixo secundário
+        }
+      };
+
+      Plotly.newPlot('latam-position-chart', [latamPositionTrace, totalParticipantsTrace], latamPositionLayout, chartConfig);
+
+      // 5. Gráfico QS Latin America - Posição no Brasil COM PARTICIPANTES BRASILEIROS
+      // Traço da linha (posição no Brasil)
       const latamBrazilTrace = {
         x: data.yearsLatamBrazil,
         y: data.latamBrazilPosition,
         type: 'scatter',
         mode: 'lines+markers+text',
-        name: 'Brasil (QS Latin America)',
+        name: 'Posição da UFF no Brasil',
         line: {
           color: colors.pink,
           width: 4,
@@ -955,19 +1027,87 @@
           }
         },
         text: data.latamBrazilPosition.map(v => v.toString()),
-        textposition: 'top center',
+        textposition: 'bottom center',
         textfont: {
           size: 10,
           color: colors.pink,
           family: 'Inter, sans-serif'
         },
-        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>'
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>',
+        yaxis: 'y1'
       };
 
-      Plotly.newPlot('latam-brazil-chart', [latamBrazilTrace], {
-        ...positionLayout,
-        title: ''
-      }, chartConfig);
+      // Traço das barras (participantes brasileiros)
+      const brazilParticipantsTrace = {
+        x: data.participantsYears,
+        y: data.brazilParticipants,
+        text: data.brazilParticipants.map(v => v.toString()),
+        textposition: 'middle center',
+        textfont: {
+          size: 10,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
+        type: 'bar',
+        name: 'Universidades Brasileiras  ',
+        marker: {
+          color: colors.lightGreen,
+          opacity: 0.6,
+          line: {
+            color: colors.green,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Universidades Brasileiras:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      // Layout para gráfico combinado (linha + barra)
+      const latamBrazilLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição da UFF no Brasil (menor = melhor)',
+          tickformat: 'd',
+          nticks: 5,
+          separatethousands: true,
+          side: 'left',
+          showgrid: false // Remove grid do eixo esquerdo para não poluir
+        },
+        yaxis2: {
+          title: 'Nº de participantes (Brasil)',
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          nticks: 5,
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            size: 10,
+            color: colors.green
+          },
+          title: {
+            font: {
+              size: 11,
+              color: colors.green
+            }
+          }
+        },
+        xaxis: {
+          ...commonLayout.xaxis,
+          range: [2017.5, 2026.5] // Ajusta para mostrar todas as barras
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3 // Ajusta para dar espaço ao eixo secundário
+        }
+      };
+
+      Plotly.newPlot('latam-brazil-chart', [latamBrazilTrace, brazilParticipantsTrace], latamBrazilLayout, chartConfig);
 
       // 6. Gráficos de indicadores
       createWorldIndicatorsChart('main');
