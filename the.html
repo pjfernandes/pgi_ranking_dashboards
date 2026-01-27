@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFF no THE Ranking | Dashboard Completo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header - Tons vermelhos/bordô */
+    .dashboard-header {
+      background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 0;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards com cores únicas */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card */
+    .card-1 {
+      border-top-color: #3B82F6;
+    }
+
+    .card-1 .indicator-value {
+      color: #3B82F6;
+    }
+
+    .card-1 .card-icon {
+      color: #3B82F6;
+    }
+
+    .card-2 {
+      border-top-color: #10B981;
+    }
+
+    .card-2 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-2 .card-icon {
+      color: #10B981;
+    }
+
+    .card-3 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-3 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-3 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-4 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-4 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-4 .card-icon {
+      color: #8B5CF6;
+    }
+
+    .card-5 {
+      border-top-color: #EC4899;
+    }
+
+    .card-5 .indicator-value {
+      color: #EC4899;
+    }
+
+    .card-5 .card-icon {
+      color: #EC4899;
+    }
+
+    .card-6 {
+      border-top-color: #06D6A0;
+    }
+
+    .card-6 .indicator-value {
+      color: #06D6A0;
+    }
+
+    .card-6 .card-icon {
+      color: #06D6A0;
+    }
+
+    .card-7 {
+      border-top-color: #118AB2;
+    }
+
+    .card-7 .indicator-value {
+      color: #118AB2;
+    }
+
+    .card-7 .card-icon {
+      color: #118AB2;
+    }
+
+    .card-8 {
+      border-top-color: #EF4444;
+    }
+
+    .card-8 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-8 .card-icon {
+      color: #EF4444;
+    }
+
+    .card-9 {
+      border-top-color: #8B4513;
+    }
+
+    .card-9 .indicator-value {
+      color: #8B4513;
+    }
+
+    .card-9 .card-icon {
+      color: #8B4513;
+    }
+
+    /* Section Headers */
+    .section-header {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+
+    .world-section {
+      border-left-color: #1a237e;
+    }
+
+    .latam-section {
+      border-left-color: #059669;
+    }
+
+    .subject-section {
+      border-left-color: #7C3AED;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-icon {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .world-icon {
+      color: #1a237e;
+    }
+
+    .latam-icon {
+      color: #059669;
+    }
+
+    .subject-icon {
+      color: #7C3AED;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .chart-notes {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    /* Tabs */
+    .chart-tabs {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #6b7280;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: #1a237e;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .latam-tab.active {
+      color: #059669;
+    }
+
+    .subject-tab.active {
+      color: #7C3AED;
+    }
+
+    /* Subject Table */
+    .subject-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .subject-table th {
+      background-color: #f9fafb;
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #374151;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .subject-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .subject-table tr:hover {
+      background-color: #f9fafb;
+    }
+
+    .rank-cell {
+      font-weight: 600;
+      text-align: center;
+      border-radius: 4px;
+      padding: 4px 8px;
+    }
+
+    .rank-1 {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .rank-2 {
+      background-color: #f0f9ff;
+      color: #0ea5e9;
+    }
+
+    .rank-3 {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    .rank-4 {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    .rank-5 {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    .rank-6 {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    /* Espaço adicional entre card e tabela */
+    .subject-card-space {
+      margin-bottom: 30px;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>Desempenho da UFF no Times Higher Education</h1>
+        </div>
+        <!-- <div class="col-lg-4 text-lg-end">
+          <span class="header-badge"><i class="fas fa-calendar-alt me-1"></i> Dados 2016-2026</span>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Cards THE World University Rankings -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header world-section">
+          <h2 class="section-title">
+            <i class="fas fa-globe-americas section-icon world-icon"></i>THE World University Rankings
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: Posição no Brasil (THE World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">31º</div>
+            <p class="card-subtitle">2026 | THE World</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Entre as Federais (THE World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h5 class="card-title">Entre as Federais</h5>
+            <div class="indicator-value">23º</div>
+            <p class="card-subtitle">2026 | THE World</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Posição Mundial (THE World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial</h5>
+            <div class="indicator-value">1501+</div>
+            <p class="card-subtitle">2026 | THE World</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Pontuação Geral (THE World) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Pontuação Geral</h5>
+            <div class="indicator-value">10.3</div>
+            <p class="card-subtitle">2026 | THE World</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos THE World -->
+    <div class="row mb-5">
+      <!-- Gráfico Posição no Brasil com participantes -->
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF no Brasil - THE World (2017-2026)</h4>
+          <div id="world-brazil-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Linha: Posição da UFF (eixo esquerdo) | Barras: Universidades brasileiras no ranking (eixo direito)
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição entre as Federais - THE World (2017-2026)</h4>
+          <div id="world-federais-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Evolução da posição da UFF entre as universidades federais brasileiras.
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico Posição Mundial (THE World) -->
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Mundial - THE World (2017-2026)</h4>
+          <div id="world-global-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Posição mundial da UFF no THE World University Rankings.
+          </div>
+        </div>
+      </div>
+
+      <!-- Indicadores THE World -->
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Indicadores THE World (2017-2026)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn active" onclick="changeWorldIndicatorsTab('teaching')">Ensino</button>
+            <button class="tab-btn" onclick="changeWorldIndicatorsTab('research')">Pesquisa</button>
+            <button class="tab-btn" onclick="changeWorldIndicatorsTab('citations')">Citações</button>
+            <button class="tab-btn" onclick="changeWorldIndicatorsTab('industry')">Indústria</button>
+            <button class="tab-btn" onclick="changeWorldIndicatorsTab('international')">Internacional</button>
+          </div>
+          <div id="world-indicators-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Principais indicadores do THE World University Ranking
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards THE Latin America University Rankings -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header latam-section">
+          <h2 class="section-title">
+            <i class="fas fa-flag section-icon latam-icon"></i>THE Latin America University Rankings
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 5: Posição América Latina (THE Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h5 class="card-title">Posição América Latina</h5>
+            <div class="indicator-value">48º</div>
+            <p class="card-subtitle">2026 | THE Latin America</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Melhor Posição (THE Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h5 class="card-title">Melhor Posição</h5>
+            <div class="indicator-value">26º</div>
+            <p class="card-subtitle">2024 | THE Latin America</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7: Pontuação Geral (THE Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-7">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Pontuação Geral 2024</h5>
+            <div class="indicator-value">59.6</div>
+            <p class="card-subtitle">2024 | THE Latin America</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8: Ensino (THE Latin America) -->
+      <div class="col-md-6 col-lg-3">
+        <div class="indicator-card card-8">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <h5 class="card-title">Ensino 2024</h5>
+            <div class="indicator-value">60.3</div>
+            <p class="card-subtitle">2024 | THE Latin America</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos THE Latin America -->
+    <div class="row mb-4">
+      <!-- Gráfico Posição na América Latina -->
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição na América Latina (2016-2026)</h4>
+          <div id="latam-position-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Evolução da posição da UFF no ranking da América Latina. Melhor posição: 26º em 2024.
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico Pontuações THE Latin America -->
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Pontuações THE Latin America (2016-2026)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn latam-tab active" onclick="changeLatamIndicatorsTab('teaching')">Ensino</button>
+            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('research')">Pesquisa</button>
+            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('citations')">Citações</button>
+            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('industry')">Indústria</button>
+          </div>
+          <div id="latam-indicators-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Pontuações nos principais indicadores do THE Latin America Ranking
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE World University Rankings by Subject -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header subject-section">
+          <h2 class="section-title">
+            <i class="fas fa-book-open section-icon subject-icon"></i>THE World University Rankings by Subject
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 9: Melhor Área (THE Subject) -->
+      <div class="col-md-6 col-lg-3 subject-card-space">
+        <div class="indicator-card card-9">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-medal"></i>
+            </div>
+            <h5 class="card-title">Melhor Classificação</h5>
+            <div class="indicator-value">301+</div>
+            <p class="card-subtitle">Law | 2026</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Espaço vazio para completar a linha -->
+      <div class="col-md-6 col-lg-3"></div>
+      <div class="col-md-6 col-lg-3"></div>
+      <div class="col-md-6 col-lg-3"></div>
+
+      <!-- Tabela de Áreas -->
+      <div class="col-12 mt-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Classificação por Área - THE World (2019-2026)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn subject-tab active" onclick="changeSubjectTab('2026')">2026</button>
+            <button class="tab-btn subject-tab" onclick="changeSubjectTab('2025')">2025</button>
+            <button class="tab-btn subject-tab" onclick="changeSubjectTab('2024')">2024</button>
+            <button class="tab-btn subject-tab" onclick="changeSubjectTab('2023')">2023</button>
+            <button class="tab-btn subject-tab" onclick="changeSubjectTab('2022')">2022</button>
+            <button class="tab-btn subject-tab" onclick="changeSubjectTab('2021')">2021</button>
+          </div>
+          <div id="subject-table-container">
+            <!-- A tabela será gerada dinamicamente pelo JavaScript -->
+          </div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Classificação da UFF nas diferentes áreas do conhecimento no THE World University Rankings by Subject
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        <i class="fas fa-database me-1"></i>
+        Dados extraídos dos rankings THE World University, THE Latin America e THE by Subject (2016-2026)
+      </p>
+      <p class="mb-0">
+        <i class="fa-solid fa-arrow-trend-up me-1"></i>
+        <a href="https://www.uff.br/" target="_blank" style="text-decoration: none;">Universidade Federal Fluminense</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dados completos do THE - CORRIGIDOS
+    const data = {
+      // Anos THE World
+      yearsWorld: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+
+      // Posição no Brasil (THE World)
+      worldBrazilPosition: [22, 30, 31, 38, 44, 49, 54, 46, 34, 31],
+
+      // Posição entre as Federais (THE World)
+      worldFederaisPosition: [17, 20, 22, 27, 33, 36, 37, 31, 25, 23],
+
+      // Número de brasileiras participantes (THE World)
+      worldBrazilParticipants: [27, 32, 36, 46, 52, 70, 73, 67, 70, 81],
+
+      // Posição Mundial (THE World)
+      worldGlobalPosition: [801, 1001, 1001, 1001, 1001, 1201, 1501, 1501, 1501, 1501],
+      worldGlobalPositionLabels: ["801+", "1001+", "1001+", "1001+", "1001+", "1201+", "1501+", "1501+", "1501+", "1501+"],
+
+      // Pontuações THE World - CORRIGIDAS
+      // Overall score
+      worldOverall: [8.3, 9.2, 9.8, 10.7, 10.3, 10.6, 10.4, 9.7, 10.5, 10.3],
+
+      // Citations (até 2023, depois null)
+      worldCitations: [8.5, 12.2, 11.0, 14.8, 14.2, 14.3, 16.7, null, null, null],
+
+      // Industry income
+      worldIndustry: [32.3, 32.0, 34.3, 35.2, 33.9, 35.4, 39.1, 22.5, 26.9, 27.2],
+
+      // International outlook
+      worldInternational: [22.7, 24.1, 24.6, 23.5, 25.7, 26.4, 25.0, 30.8, 31.5, 31.5],
+
+      // Teaching
+      worldTeaching: [18.4, 17.8, 16.7, 20.0, 21.1, 21.8, 18.8, 21.0, 21.6, 23.6],
+
+      // Research (até 2023)
+      worldResearch: [7.9, 8.6, 9.6, 11.3, 10.8, 11.0, 12.1, null, null, null],
+
+      // Research Environment (a partir de 2024)
+      worldResearchEnv: [null, null, null, null, null, null, null, 27.8, 28.6, 27.9],
+
+      // Research Quality (a partir de 2024)
+      worldResearchQuality: [null, null, null, null, null, null, null, 21.0, 21.6, 23.6],
+
+      // Anos THE Latin America
+      yearsLatam: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2026],
+
+      // Posição América Latina (THE Latin America)
+      latamPosition: [28, 43, 45, 33, 30, 31, 40, 36, 26, 48],
+
+      // Pontuações THE Latin America - CORRIGIDAS
+      // Overall score (a partir de 2018)
+      latamOverall: [null, null, 55.8, 63.4, 63.5, 62.1, 61.1, 61.9, 59.6, 26.3],
+
+      // Citations
+      latamCitations: [26.9, 32.5, 42.3, 34.3, 34.8, 34.9, 44.4, 41.7, null, null],
+
+      // Industry income
+      latamIndustry: [33.1, 35.3, 36.6, 39.2, 37.2, 38.8, 47.0, 43.5, 26.9, 27.2],
+
+      // International outlook
+      latamInternational: [40.6, 37.3, 37.7, 31.0, 37.1, 40.4, 33.7, 37.7, 29.1, 31.5],
+
+      // Teaching
+      latamTeaching: [48.0, 42.2, 54.5, 74.3, 77.3, 75.3, 66.5, 66.9, 60.3, 27.9],
+
+      // Research (até 2023)
+      latamResearch: [43.5, 56.8, 70.6, 78.0, 73.6, 70.5, 72.4, 75.3, null, null],
+
+      // Research Environment (2024 e 2026)
+      latamResearchEnv: [null, null, null, null, null, null, null, null, 51.6, 39.9],
+
+      // Research Quality (2024 e 2026)
+      latamResearchQuality: [null, null, null, null, null, null, null, null, 60.3, 27.9],
+
+      // THE by Subject
+      subjectYears: [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      subjectAreas: [
+        "Arts and Humanities",
+        "Medical and Health",
+        "Engineering",
+        "Life Sciences",
+        "Physical Sciences",
+        "Social Sciences",
+        "Business and Economics",
+        "Computer Science",
+        "Education Studies",
+        "Law",
+        "Psychology"
+      ],
+      subjectRankings: {
+        2019: ["401+", "601+", "801+", "601+", "801+", "601+", "501+", "601+", "401+", "301+", "601+"],
+        2020: ["401+", "601+", "801+", "601+", "801+", "601+", "501+", "601+", "401+", "301+", "601+"],
+        2021: ["401-500", "601+", "1001+", "601-800", "1001+", "601+", "601+", "601-800", "401-500", "301+", "601+"],
+        2022: ["401-500", "601+", "1001+", "601-801", "1001+", "601+", "601+", "801+", "501+", "301+", "601+"],
+        2023: ["401-500", "801+", "1001+", "801-1000", "1001+", "801+", "601-800", "801+", "601+", "301+", "601+"],
+        2024: ["401-500", "801-1000", "1001+", "801-1001", "1001+", "801+", "801+", "801-1000", "601+", "301+", "601+"],
+        2025: ["401-500", "801-1000", "1251+", "801-1000", "1001+", "1001+", "801+", "801-1000", "601+", "301+", "601+"],
+        2026: ["401-500", "801-1000", "1251+", "801-1001", "1001+", "1001+", "801+", "801-1001", "601+", "301+", "601+"]
+      }
+    };
+
+    // Cores para gráficos
+    const colors = {
+      blue: '#3B82F6',
+      green: '#10B981',
+      orange: '#F59E0B',
+      red: '#EF4444',
+      purple: '#8B5CF6',
+      pink: '#EC4899',
+      cyan: '#06D6A0',
+      teal: '#118AB2',
+      indigo: '#6366F1',
+      yellow: '#EAB308',
+      gray: '#9CA3AF',
+      darkBlue: '#1E40AF',
+      darkGreen: '#059669'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: true,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+      toImageButtonOptions: {
+        format: 'png',
+        filename: 'uff-the-ranking',
+        height: 500,
+        width: 1000,
+        scale: 1
+      }
+    };
+
+    // Layout comum
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 30, r: 30, b: 60, l: 60 },
+      hovermode: 'closest',
+      showlegend: true,
+      legend: {
+        orientation: 'h',
+        y: -0.25,
+        x: 0.5,
+        xanchor: 'center',
+        bgcolor: 'rgba(255, 255, 255, 0.9)',
+        bordercolor: 'rgba(0,0,0,0.1)',
+        borderwidth: 1
+      },
+      xaxis: {
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickmode: 'linear',
+        tickformat: 'd',
+        dtick: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      },
+      yaxis: {
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      }
+    };
+
+    // Layout para gráficos de posição
+    const positionLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        autorange: 'reversed',
+        title: 'Posição (menor = melhor)',
+        tickformat: 'd',
+        nticks: 6,
+        separatethousands: true
+      }
+    };
+
+    // Função para calcular range do eixo y com zoom
+    function calculateYRange(values) {
+      const validValues = values.filter(v => v !== null && v !== undefined);
+      if (validValues.length === 0) return [0, 100];
+
+      const min = Math.min(...validValues);
+      const max = Math.max(...validValues);
+      const range = max - min;
+
+      // Adiciona 15% de margem em cima e embaixo
+      const margin = range * 0.15;
+      return [Math.max(0, min - margin), max + margin];
+    }
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico THE World - Posição no Brasil COM PARTICIPANTES
+      // Traço da linha (posição no Brasil)
+      const worldBrazilTrace = {
+        x: data.yearsWorld,
+        y: data.worldBrazilPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição da UFF',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.worldBrazilPosition.map(v => v.toString() + "º"),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>',
+        yaxis: 'y1'
+      };
+
+      // Traço das barras (participantes brasileiros)
+      const brazilParticipantsTrace = {
+        x: data.yearsWorld,
+        y: data.worldBrazilParticipants,
+        text: data.worldBrazilParticipants.map(v => v.toString()),
+        textposition: 'middle center',
+        textfont: {
+          size: 10,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
+        type: 'bar',
+        name: 'Universidades Brasileiras',
+        marker: {
+          color: '#86EFAC',
+          opacity: 0.6,
+          line: {
+            color: colors.green,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Universidades Brasileiras:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      // Layout para gráfico combinado (linha + barra)
+      const worldBrazilLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição da UFF (menor = melhor)',
+          tickformat: 'd',
+          nticks: 6,
+          separatethousands: true,
+          side: 'left',
+          showgrid: false
+        },
+        yaxis2: {
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          nticks: 5,
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            size: 10,
+            color: colors.green
+          },
+          title: {
+            text: 'Nº de participantes (Brasil)',
+            font: {
+              size: 11,
+              color: colors.green
+            }
+          }
+        },
+        xaxis: {
+          ...commonLayout.xaxis,
+          range: [2016.5, 2026.5]
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        },
+        margin: {
+          ...commonLayout.margin,
+          r: 80
+        }
+      };
+
+      Plotly.newPlot('world-brazil-chart', [worldBrazilTrace, brazilParticipantsTrace], worldBrazilLayout, chartConfig);
+
+      // 2. Gráfico THE World - Posição entre as Federais
+      const federaisTrace = {
+        x: data.yearsWorld,
+        y: data.worldFederaisPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Entre as Federais',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.worldFederaisPosition.map(v => v.toString() + "º"),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição entre Federais:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('world-federais-chart', [federaisTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 3. Gráfico THE World - Posição Mundial
+      const worldGlobalTrace = {
+        x: data.yearsWorld,
+        y: data.worldGlobalPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Mundial',
+        line: {
+          color: colors.orange,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.orange,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.worldGlobalPositionLabels,
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.orange,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Mundial:</b> %{text}<extra></extra>'
+      };
+
+      Plotly.newPlot('world-global-chart', [worldGlobalTrace], {
+        ...positionLayout,
+        yaxis: {
+          ...positionLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição Mundial (menor = melhor)'
+        },
+        title: ''
+      }, chartConfig);
+
+      // 4. Gráfico THE Latin America - Posição
+      const latamPositionTrace = {
+        x: data.yearsLatam,
+        y: data.latamPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição América Latina',
+        line: {
+          color: colors.purple,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.purple,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.latamPosition.map(v => v.toString() + "º"),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: colors.purple,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('latam-position-chart', [latamPositionTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 5. Gráficos de indicadores
+      createWorldIndicatorsChart('teaching');
+      createLatamIndicatorsChart('teaching');
+
+      // 6. Tabela de áreas
+      createSubjectTable('2026');
+    }
+
+    // Função para criar gráfico de indicadores THE World
+    function createWorldIndicatorsChart(tab) {
+      const years = data.yearsWorld;
+      let traces = [];
+      let yRange = [0, 100]; // Range padrão
+
+      if (tab === 'teaching') {
+        traces = [
+          createTrace(years, data.worldTeaching, 'Ensino', colors.blue, 4)
+        ];
+        yRange = calculateYRange(data.worldTeaching);
+      } else if (tab === 'research') {
+        // Para pesquisa, mostrar Research até 2023 e depois ResearchEnv/ResearchQuality
+        const researchTrace = createTrace(years.slice(0, 7), data.worldResearch.slice(0, 7), 'Pesquisa (até 2023)', colors.red, 4);
+        const researchEnvTrace = createTrace(years.slice(7), data.worldResearchEnv.slice(7), 'Ambiente de Pesquisa', colors.pink, 4);
+        const researchQualityTrace = createTrace(years.slice(7), data.worldResearchQuality.slice(7), 'Qualidade da Pesquisa', colors.purple, 4);
+
+        traces = [researchTrace, researchEnvTrace, researchQualityTrace];
+
+        // Calcular range combinado
+        const allValues = [...data.worldResearch.filter(v => v !== null),
+        ...data.worldResearchEnv.filter(v => v !== null),
+        ...data.worldResearchQuality.filter(v => v !== null)];
+        yRange = calculateYRange(allValues);
+      } else if (tab === 'citations') {
+        traces = [
+          createTrace(years.slice(0, 7), data.worldCitations.slice(0, 7), 'Citações', colors.green, 4)
+        ];
+        yRange = calculateYRange(data.worldCitations.slice(0, 7));
+      } else if (tab === 'industry') {
+        traces = [
+          createTrace(years, data.worldIndustry, 'Indústria', colors.orange, 4)
+        ];
+        yRange = calculateYRange(data.worldIndustry);
+      } else if (tab === 'international') {
+        traces = [
+          createTrace(years, data.worldInternational, 'Internacionalização', colors.indigo, 4)
+        ];
+        yRange = calculateYRange(data.worldInternational);
+      }
+
+      const layout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          title: 'Pontuação',
+          tickformat: '.1f',
+          nticks: 5,
+          range: yRange
+        }
+      };
+
+      Plotly.newPlot('world-indicators-chart', traces, layout, chartConfig);
+    }
+
+    // Função para criar gráfico de indicadores THE Latin America
+    function createLatamIndicatorsChart(tab) {
+      const years = data.yearsLatam;
+      let traces = [];
+      let yRange = [0, 100];
+
+      if (tab === 'teaching') {
+        traces = [
+          createTrace(years, data.latamTeaching, 'Ensino', colors.blue, 4)
+        ];
+        yRange = calculateYRange(data.latamTeaching);
+      } else if (tab === 'research') {
+        // Para pesquisa, mostrar Research até 2023 e depois ResearchEnv/ResearchQuality
+        const researchTrace = createTrace(years.slice(0, 8), data.latamResearch.slice(0, 8), 'Pesquisa (até 2023)', colors.red, 4);
+        const researchEnvTrace = createTrace([years[8], years[9]], [data.latamResearchEnv[8], data.latamResearchEnv[9]], 'Ambiente de Pesquisa', colors.pink, 4);
+        const researchQualityTrace = createTrace([years[8], years[9]], [data.latamResearchQuality[8], data.latamResearchQuality[9]], 'Qualidade da Pesquisa', colors.purple, 4);
+
+        traces = [researchTrace, researchEnvTrace, researchQualityTrace];
+
+        // Calcular range combinado
+        const allValues = [...data.latamResearch.filter(v => v !== null),
+        ...data.latamResearchEnv.filter(v => v !== null),
+        ...data.latamResearchQuality.filter(v => v !== null)];
+        yRange = calculateYRange(allValues);
+      } else if (tab === 'citations') {
+        traces = [
+          createTrace(years.slice(0, 8), data.latamCitations.slice(0, 8), 'Citações', colors.green, 4)
+        ];
+        yRange = calculateYRange(data.latamCitations.slice(0, 8));
+      } else if (tab === 'industry') {
+        traces = [
+          createTrace(years, data.latamIndustry, 'Indústria', colors.orange, 4)
+        ];
+        yRange = calculateYRange(data.latamIndustry);
+      }
+
+      const layout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          title: 'Pontuação',
+          tickformat: '.1f',
+          nticks: 5,
+          range: yRange
+        }
+      };
+
+      Plotly.newPlot('latam-indicators-chart', traces, layout, chartConfig);
+    }
+
+    // Função para criar tabela de áreas
+    function createSubjectTable(year) {
+      const container = document.getElementById('subject-table-container');
+      const rankings = data.subjectRankings[year];
+
+      let tableHTML = `
+        <table class="subject-table">
+          <thead>
+            <tr>
+              <th>Área</th>
+              <th>Classificação ${year}</th>
+              <th>Tendência</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      data.subjectAreas.forEach((area, index) => {
+        const rank = rankings[index];
+        const prevYear = parseInt(year) - 1;
+        let trend = '';
+
+        // Determinar tendência (se possível)
+        if (data.subjectRankings[prevYear]) {
+          const prevRank = data.subjectRankings[prevYear][index];
+          // Simplificação: se o ranking tem "+", consideramos igual
+          if (rank === prevRank) {
+            trend = '<i class="fas fa-minus" style="color: #6b7280;"></i>';
+          } else if (rank.includes('+') && prevRank.includes('+')) {
+            // Comparação simplificada
+            const currentNum = parseInt(rank) || 1000;
+            const prevNum = parseInt(prevRank) || 1000;
+            if (currentNum < prevNum) {
+              trend = '<i class="fas fa-arrow-up" style="color: #10B981;"></i>';
+            } else if (currentNum > prevNum) {
+              trend = '<i class="fas fa-arrow-down" style="color: #EF4444;"></i>';
+            } else {
+              trend = '<i class="fas fa-minus" style="color: #6b7280;"></i>';
+            }
+          } else {
+            trend = '<i class="fas fa-minus" style="color: #6b7280;"></i>';
+          }
+        } else {
+          trend = '<i class="fas fa-minus" style="color: #6b7280;"></i>';
+        }
+
+        // Determinar classe CSS para cor da célula
+        let rankClass = '';
+        if (rank.includes('301')) rankClass = 'rank-1';
+        else if (rank.includes('401')) rankClass = 'rank-2';
+        else if (rank.includes('501')) rankClass = 'rank-3';
+        else if (rank.includes('601')) rankClass = 'rank-4';
+        else if (rank.includes('801')) rankClass = 'rank-5';
+        else if (rank.includes('1001') || rank.includes('1251')) rankClass = 'rank-6';
+
+        tableHTML += `
+          <tr>
+            <td>${area}</td>
+            <td class="rank-cell ${rankClass}">${rank}</td>
+            <td style="text-align: center;">${trend}</td>
+          </tr>
+        `;
+      });
+
+      tableHTML += `
+          </tbody>
+        </table>
+      `;
+
+      container.innerHTML = tableHTML;
+    }
+
+    // Função auxiliar para criar traços
+    function createTrace(x, y, name, color, width) {
+      // Filtrar valores nulos
+      const validData = x.map((year, index) => ({
+        x: year,
+        y: y[index]
+      })).filter(point => point.y !== null && point.y !== undefined);
+
+      const xFiltered = validData.map(point => point.x);
+      const yFiltered = validData.map(point => point.y);
+
+      return {
+        x: xFiltered,
+        y: yFiltered,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: name,
+        line: {
+          color: color,
+          width: width,
+          shape: 'spline'
+        },
+        marker: {
+          color: color,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        text: yFiltered.map(v => v.toFixed(1)),
+        textposition: 'top center',
+        textfont: {
+          size: 10,
+          color: color,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: `<b>${name}:</b> %{y:.1f}<br><b>Ano:</b> %{x}<extra></extra>`
+      };
+    }
+
+    // Funções para trocar abas
+    function changeWorldIndicatorsTab(tab) {
+      updateTabButtons('world-indicators-chart', tab);
+      createWorldIndicatorsChart(tab);
+    }
+
+    function changeLatamIndicatorsTab(tab) {
+      updateTabButtons('latam-indicators-chart', tab);
+      createLatamIndicatorsChart(tab);
+    }
+
+    function changeSubjectTab(year) {
+      updateTabButtons('subject-table-container', year);
+      createSubjectTable(year);
+    }
+
+    function updateTabButtons(chartId, activeTab) {
+      const chartContainer = document.getElementById(chartId).closest('.chart-container');
+      const tabBtns = chartContainer.querySelectorAll('.tab-btn');
+      tabBtns.forEach(btn => btn.classList.remove('active'));
+
+      // Encontrar o botão correspondente à aba ativa
+      tabBtns.forEach(btn => {
+        if (btn.textContent.toLowerCase().includes(activeTab.toLowerCase()) ||
+          btn.getAttribute('onclick').includes(`'${activeTab}'`)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
