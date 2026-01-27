@@ -986,12 +986,6 @@
             size: 10,
             color: colors.blue
           },
-          title: {
-            font: {
-              size: 11,
-              color: colors.blue
-            }
-          }
         },
         xaxis: {
           ...commonLayout.xaxis,
@@ -1000,6 +994,10 @@
         legend: {
           ...commonLayout.legend,
           y: -0.3 // Ajusta para dar espaço ao eixo secundário
+        },
+        margin: {
+          ...commonLayout.margin,
+          r: 80  // Aumenta a margem direita para dar mais espaço
         }
       };
 
@@ -1077,7 +1075,6 @@
           showgrid: false // Remove grid do eixo esquerdo para não poluir
         },
         yaxis2: {
-          title: 'Nº de participantes (Brasil)',
           overlaying: 'y',
           side: 'right',
           tickformat: 'd',
@@ -1091,10 +1088,8 @@
             color: colors.green
           },
           title: {
-            font: {
-              size: 11,
-              color: colors.green
-            }
+            text: 'Nº de participantes (Brasil)',
+
           }
         },
         xaxis: {
@@ -1104,6 +1099,10 @@
         legend: {
           ...commonLayout.legend,
           y: -0.3 // Ajusta para dar espaço ao eixo secundário
+        },
+          margin: {
+          ...commonLayout.margin,
+          r: 80  // Aumenta a margem direita para dar mais espaço
         }
       };
 
