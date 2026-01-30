@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFF no THE Impact Rankings | Dashboard Completo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header - Tons de roxo */
+    .dashboard-header {
+      background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 40px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards com cores únicas - IGUAL AO QS */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 25px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card - IGUAL AO QS */
+    .card-1 {
+      border-top-color: #3B82F6;
+    }
+
+    .card-1 .indicator-value {
+      color: #3B82F6;
+    }
+
+    .card-1 .card-icon {
+      color: #3B82F6;
+    }
+
+    .card-2 {
+      border-top-color: #10B981;
+    }
+
+    .card-2 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-2 .card-icon {
+      color: #10B981;
+    }
+
+    .card-3 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-3 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-3 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-4 {
+      border-top-color: #EF4444;
+    }
+
+    .card-4 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-4 .card-icon {
+      color: #EF4444;
+    }
+
+    .card-5 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-5 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-5 .card-icon {
+      color: #8B5CF6;
+    }
+
+    .card-6 {
+      border-top-color: #EC4899;
+    }
+
+    .card-6 .indicator-value {
+      color: #EC4899;
+    }
+
+    .card-6 .card-icon {
+      color: #EC4899;
+    }
+
+    .card-7 {
+      border-top-color: #06D6A0;
+    }
+
+    .card-7 .indicator-value {
+      color: #06D6A0;
+    }
+
+    .card-7 .card-icon {
+      color: #06D6A0;
+    }
+
+    .card-8 {
+      border-top-color: #118AB2;
+    }
+
+    .card-8 .indicator-value {
+      color: #118AB2;
+    }
+
+    .card-8 .card-icon {
+      color: #118AB2;
+    }
+
+    .card-9 {
+      border-top-color: #6366F1;
+    }
+
+    .card-9 .indicator-value {
+      color: #6366F1;
+    }
+
+    .card-9 .card-icon {
+      color: #6366F1;
+    }
+
+    .card-10 {
+      border-top-color: #F97316;
+    }
+
+    .card-10 .indicator-value {
+      color: #F97316;
+    }
+
+    .card-10 .card-icon {
+      color: #F97316;
+    }
+
+    .card-11 {
+      border-top-color: #14B8A6;
+    }
+
+    .card-11 .indicator-value {
+      color: #14B8A6;
+    }
+
+    .card-11 .card-icon {
+      color: #14B8A6;
+    }
+
+    .card-12 {
+      border-top-color: #84CC16;
+    }
+
+    .card-12 .indicator-value {
+      color: #84CC16;
+    }
+
+    .card-12 .card-icon {
+      color: #84CC16;
+    }
+
+    .card-13 {
+      border-top-color: #0EA5E9;
+    }
+
+    .card-13 .indicator-value {
+      color: #0EA5E9;
+    }
+
+    .card-13 .card-icon {
+      color: #0EA5E9;
+    }
+
+    .card-14 {
+      border-top-color: #A855F7;
+    }
+
+    .card-14 .indicator-value {
+      color: #A855F7;
+    }
+
+    .card-14 .card-icon {
+      color: #A855F7;
+    }
+
+    .card-15 {
+      border-top-color: #E11D48;
+    }
+
+    .card-15 .indicator-value {
+      color: #E11D48;
+    }
+
+    .card-15 .card-icon {
+      color: #E11D48;
+    }
+
+    .card-16 {
+      border-top-color: #F43F5E;
+    }
+
+    .card-16 .indicator-value {
+      color: #F43F5E;
+    }
+
+    .card-16 .card-icon {
+      color: #F43F5E;
+    }
+
+    .card-17 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-17 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-17 .card-icon {
+      color: #8B5CF6;
+    }
+
+    /* Section Headers */
+    .section-header {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 40px;
+      border-left: 4px solid;
+    }
+
+    .world-section {
+      border-left-color: #1e40af;
+    }
+
+    .ods-section {
+      border-left-color: #059669;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-icon {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .world-icon {
+      color: #1e40af;
+    }
+
+    .ods-icon {
+      color: #059669;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 25px;
+      margin-top: 10px;
+      margin-bottom: 50px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Tabs */
+    .chart-tabs {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: #6b7280;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: #1e40af;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .ods-tab.active {
+      color: #059669;
+    }
+
+    /* Espaçamento entre linhas de cards */
+    .card-row-spacing {
+      margin-bottom: 30px;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+        margin-bottom: 35px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.6rem;
+      }
+
+      .chart-container {
+        padding: 20px;
+        margin-bottom: 40px;
+      }
+
+      .tab-btn {
+        min-width: 120px;
+        font-size: 0.7rem;
+      }
+
+      .section-header {
+        margin-bottom: 35px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header {
+        margin-bottom: 30px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+
+      .chart-container {
+        padding: 15px;
+        margin-bottom: 35px;
+      }
+
+      .tab-btn {
+        min-width: 100px;
+        font-size: 0.65rem;
+        padding: 6px 8px;
+      }
+
+      .indicator-value {
+        font-size: 1.4rem;
+      }
+
+      .section-header {
+        margin-bottom: 30px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .tab-btn {
+        min-width: 80px;
+        font-size: 0.6rem;
+      }
+
+      .indicator-card {
+        margin-bottom: 20px;
+      }
+
+      .chart-container {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>A UFF no THE Impact Rankings</h1>
+          <p class="mt-2">Desempenho da Universidade Federal Fluminense nos Objetivos de Desenvolvimento Sustentável
+            (ODS) - 2020 a 2025</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <span class="header-badge">
+            <i class="fas fa-earth-americas me-2"></i>Impact Rankings 2020-2025
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Principais -->
+    <div class="row card-row-spacing">
+      <div class="col-12 mb-3">
+        <div class="section-header world-section">
+          <h2 class="section-title">
+            <i class="fas fa-trophy section-icon world-icon"></i>THE Impact Rankings - Desempenho Geral
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: Posição no Brasil -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">9º</div>
+            <p class="card-subtitle">2025 | Melhor em 6 anos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Posição no Mundo -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição no Mundo</h5>
+            <div class="indicator-value">401-600</div>
+            <p class="card-subtitle">2025 | THE Impact</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Entre as Federais -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h5 class="card-title">Entre as Federais</h5>
+            <div class="indicator-value">6º</div>
+            <p class="card-subtitle">2025 | Melhor em 6 anos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Pontuação Geral -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Pontuação Geral</h5>
+            <div class="indicator-value">73.9</div>
+            <p class="card-subtitle">2025 | Recorde da série</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos de Desempenho Geral -->
+    <div class="row mb-5">
+      <!-- Posição no Brasil COM PARTICIPANTES -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição no Brasil e Participantes Brasileiras (2020-2025)</h4>
+          <div id="brazil-position-chart"></div>
+        </div>
+      </div>
+
+      <!-- Posição no Mundo COM PARTICIPANTES MUNDIAIS -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição no Mundo e Universidades Participantes (2020-2025)</h4>
+          <div id="world-position-chart"></div>
+        </div>
+      </div>
+
+      <!-- Posição entre Federais -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição entre as Federais (2020-2025)</h4>
+          <div id="federais-position-chart"></div>
+        </div>
+      </div>
+
+      <!-- Pontuação Geral -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Pontuação Geral (2020-2025)</h4>
+          <div id="overall-score-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção ODS com TODOS os 17 cards -->
+    <div class="row card-row-spacing">
+      <div class="col-12 mb-3">
+        <div class="section-header ods-section">
+          <h2 class="section-title">
+            <i class="fas fa-globe-americas section-icon ods-icon"></i>Desempenho por Objetivo de Desenvolvimento
+            Sustentável (ODS)
+          </h2>
+        </div>
+      </div>
+
+      <!-- Cards ODS 1-17 -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <h5 class="card-title">ODS 1 - Pobreza</h5>
+            <div class="indicator-value">10º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <h5 class="card-title">ODS 2 - Fome Zero</h5>
+            <div class="indicator-value">19º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-heartbeat"></i>
+            </div>
+            <h5 class="card-title">ODS 3 - Saúde</h5>
+            <div class="indicator-value">15º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h5 class="card-title">ODS 4 - Educação</h5>
+            <div class="indicator-value">23º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-venus-mars"></i>
+            </div>
+            <h5 class="card-title">ODS 5 - Igualdade</h5>
+            <div class="indicator-value">8º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <h5 class="card-title">ODS 6 - Água</h5>
+            <div class="indicator-value">20º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-7">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h5 class="card-title">ODS 7 - Energia</h5>
+            <div class="indicator-value">12º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-8">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h5 class="card-title">ODS 8 - Trabalho</h5>
+            <div class="indicator-value">7º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-9">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-industry"></i>
+            </div>
+            <h5 class="card-title">ODS 9 - Indústria</h5>
+            <div class="indicator-value">21º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-10">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-balance-scale"></i>
+            </div>
+            <h5 class="card-title">ODS 10 - Igualdade</h5>
+            <div class="indicator-value">18º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-11">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-city"></i>
+            </div>
+            <h5 class="card-title">ODS 11 - Cidades</h5>
+            <div class="indicator-value">19º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-12">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-recycle"></i>
+            </div>
+            <h5 class="card-title">ODS 12 - Consumo</h5>
+            <div class="indicator-value">19º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-13">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-temperature-high"></i>
+            </div>
+            <h5 class="card-title">ODS 13 - Clima</h5>
+            <div class="indicator-value">13º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-14">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-water"></i>
+            </div>
+            <h5 class="card-title">ODS 14 - Vida Água</h5>
+            <div class="indicator-value">2º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-15">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-tree"></i>
+            </div>
+            <h5 class="card-title">ODS 15 - Vida Terra</h5>
+            <div class="indicator-value">10º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-16">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-balance-scale-left"></i>
+            </div>
+            <h5 class="card-title">ODS 16 - Paz</h5>
+            <div class="indicator-value">1º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-17">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <h5 class="card-title">ODS 17 - Parcerias</h5>
+            <div class="indicator-value">3º</div>
+            <p class="card-subtitle">2025 | Brasil</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos ODS lado a lado (sem barras de participantes) -->
+    <div class="row mb-5">
+      <!-- Posição Nacional por ODS -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Nacional por ODS (2020-2025)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn ods-tab active"
+              onclick="changeOdsChart('national-position', 'group1', 'national-ods-chart')">ODS 1-3 (Pobreza, Fome,
+              Saúde)</button>
+            <button class="tab-btn ods-tab"
+              onclick="changeOdsChart('national-position', 'group2', 'national-ods-chart')">ODS 4-6 (Educação,
+              Igualdade,
+              Água)</button>
+            <button class="tab-btn ods-tab"
+              onclick="changeOdsChart('national-position', 'group3', 'national-ods-chart')">ODS 7-9 (Energia, Trabalho,
+              Indústria)</button>
+            <button class="tab-btn ods-tab"
+              onclick="changeOdsChart('national-position', 'group4', 'national-ods-chart')">ODS 10-12 (Igualdade,
+              Cidades,
+              Consumo)</button>
+            <button class="tab-btn ods-tab"
+              onclick="changeOdsChart('national-position', 'group5', 'national-ods-chart')">ODS 13-15 (Clima, Vida Água,
+              Vida
+              Terra)</button>
+            <button class="tab-btn ods-tab"
+              onclick="changeOdsChart('national-position', 'group6', 'national-ods-chart')">ODS 16-17 (Paz,
+              Parcerias)</button>
+          </div>
+          <div id="national-ods-chart"></div>
+        </div>
+      </div>
+
+      <!-- Posição Mundial por ODS -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Mundial por ODS (2020-2025)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn ods-tab active"
+              onclick="changeOdsChart('world-position', 'group1', 'world-ods-chart')">ODS 1-3 (Pobreza, Fome,
+              Saúde)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('world-position', 'group2', 'world-ods-chart')">ODS
+              4-6 (Educação, Igualdade, Água)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('world-position', 'group3', 'world-ods-chart')">ODS
+              7-9 (Energia, Trabalho,
+              Indústria)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('world-position', 'group4', 'world-ods-chart')">ODS
+              10-12 (Igualdade, Cidades,
+              Consumo)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('world-position', 'group5', 'world-ods-chart')">ODS
+              13-15 (Clima, Vida Água, Vida
+              Terra)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('world-position', 'group6', 'world-ods-chart')">ODS
+              16-17 (Paz,
+              Parcerias)</button>
+          </div>
+          <div id="world-ods-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pontuação Mundial por ODS -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="chart-container">
+          <h4 class="chart-title">Pontuação Mundial por ODS (2020-2025)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn ods-tab active" onclick="changeOdsChart('score', 'group1', 'score-ods-chart')">ODS
+              1-3 (Pobreza, Fome, Saúde)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('score', 'group2', 'score-ods-chart')">ODS 4-6
+              (Educação,
+              Igualdade, Água)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('score', 'group3', 'score-ods-chart')">ODS 7-9
+              (Energia,
+              Trabalho, Indústria)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('score', 'group4', 'score-ods-chart')">ODS 10-12
+              (Igualdade,
+              Cidades, Consumo)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('score', 'group5', 'score-ods-chart')">ODS 13-15
+              (Clima, Vida
+              Água, Vida Terra)</button>
+            <button class="tab-btn ods-tab" onclick="changeOdsChart('score', 'group6', 'score-ods-chart')">ODS 16-17
+              (Paz,
+              Parcerias)</button>
+          </div>
+          <div id="score-ods-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        <i class="fas fa-database me-1"></i>
+        Dados extraídos do THE Impact Rankings (2020-2025) - Times Higher Education
+      </p>
+      <p class="mb-0">
+        <i class="fa-solid fa-arrow-trend-up me-1"></i>
+        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido
+          pela PGI/PLAN - UFF</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dados do THE Impact Rankings
+    const data = {
+      // Anos
+      years: [2020, 2021, 2022, 2023, 2024, 2025],
+
+      // Desempenho Geral
+      brazilPosition: [11, 23, 25, 23, 14, 9],
+      worldPosition: [250, 500, 700, 700, 500, 500], // Ponto médio das faixas
+      federaisPosition: [7, 17, 18, 16, 10, 6],
+      overallScore: [70.8, 59.7, 59.9, 62.2, 70.2, 73.9],
+
+      // Participantes
+      brazilParticipants: [30, 38, 48, 47, 55, 56],
+      worldParticipants: [768, 1117, 1410, 1591, 1963, 2318],
+
+      // Dados ODS - Posição Nacional (2020-2025)
+      odsNationalPosition: {
+        ods1: [7, 13, 31, 13, 25, 10],    // Pobreza
+        ods2: [7, 17, 26, 28, 11, 19],    // Fome
+        ods3: [5, 39, 29, 12, 5, 15],     // Saúde
+        ods4: [17, 25, 20, 36, 21, 23],   // Educação
+        ods5: [null, null, null, 27, 12, 8], // Igualdade
+        ods6: [null, null, null, 27, 16, 20], // Água
+        ods7: [4, null, null, 29, 14, 12], // Energia
+        ods8: [14, 23, 22, 11, 11, 7],    // Trabalho
+        ods9: [9, null, null, 22, 22, 21], // Indústria
+        ods10: [10, 23, null, 28, 20, 18], // Igualdade 2
+        ods11: [null, null, null, 13, 9, 19], // Cidades
+        ods12: [null, null, null, 20, 9, 19], // Consumo
+        ods13: [null, null, null, null, 16, 13], // Clima
+        ods14: [null, null, null, 18, 8, 2], // Vida Água
+        ods15: [null, null, null, 22, 12, 10], // Vida Terra
+        ods16: [null, null, null, 4, 10, 1], // Paz
+        ods17: [18, 12, 18, 47, 2, 3]     // Parcerias
+      },
+
+      // Dados ODS - Pontuação Mundial (2020-2025)
+      odsScore: {
+        ods1: [60.9, 54.3, 43.0, 55.8, 49.7, 56.5],
+        ods2: [69.5, 57.4, 36.5, 33.6, 63.6, 52.5],
+        ods3: [70.7, 41.7, 62.8, 64.5, 72.0, 60.7],
+        ods4: [52.0, 51.7, 51.4, 41.4, 53.3, 50.6],
+        ods5: [null, null, null, 29.6, 52.8, 59.4],
+        ods6: [null, null, null, 22.0, 37.4, 35.3],
+        ods7: [65.1, null, null, 16.7, 54.3, 50.9],
+        ods8: [47.7, 49.3, 56.9, 66.1, 66.6, 67.6],
+        ods9: [51.8, null, null, 30.8, 32.7, 34.2],
+        ods10: [40.4, 41.2, null, 39.7, 45.0, 42.0],
+        ods11: [null, null, null, 39.8, 46.2, 40.8],
+        ods12: [null, null, null, 36.9, 48.7, 36.2],
+        ods13: [null, null, null, null, 24.2, 33.8],
+        ods14: [null, null, null, 33.5, 52.9, 61.4],
+        ods15: [null, null, null, 31.2, 48.6, 54.7],
+        ods16: [null, null, null, 64.0, 65.1, 64.3],
+        ods17: [53.6, 60.1, 55.8, 40.3, 85.5, 80.7]
+      },
+
+      // Dados ODS - Classificação Mundial (2020-2025) - convertendo faixas para pontos médios
+      odsWorldPosition: {
+        ods1: [91, 150, 500, 250, 500, 350],
+        ods2: [50, 150, 350, 500, 150, 350],
+        ods3: [150, 700, 500, 350, 250, 500],
+        ods4: [250, 500, 500, 900, 700, 900],
+        ods5: [null, null, null, 900, 500, 350],
+        ods6: [null, null, null, 700, 500, 700],
+        ods7: [77, null, null, 700, 500, 500],
+        ods8: [250, 350, 350, 250, 250, 250],
+        ods9: [250, null, null, 700, 700, 700],
+        ods10: [250, 500, null, 700, 700, 700],
+        ods11: [null, null, null, 500, 500, 700],
+        ods12: [null, null, null, 500, 500, 700],
+        ods13: [null, null, null, null, 700, 700],
+        ods14: [null, null, null, 350, 250, 150],
+        ods15: [null, null, null, 500, 350, 350],
+        ods16: [null, null, null, 250, 350, 250],
+        ods17: [500, 350, 700, 1100, 150, 350]
+      },
+
+      // Mapeamento das faixas para labels
+      worldPositionLabels: {
+        91: "91",
+        50: "50",
+        77: "77",
+        150: "101-200",
+        250: "201-300",
+        350: "301-400",
+        500: "401-600",
+        700: "601-800",
+        900: "801-1000",
+        1100: "1001+"
+      },
+
+      // Grupos de ODS (3 por aba)
+      odsGroups: {
+        group1: ['ods1', 'ods2', 'ods3'],
+        group2: ['ods4', 'ods5', 'ods6'],
+        group3: ['ods7', 'ods8', 'ods9'],
+        group4: ['ods10', 'ods11', 'ods12'],
+        group5: ['ods13', 'ods14', 'ods15'],
+        group6: ['ods16', 'ods17']
+      },
+
+      // Labels ODS completas para legenda
+      odsLabels: {
+        ods1: 'ODS 1: Erradicação da pobreza',
+        ods2: 'ODS 2: Fome zero e agricultura sustentável',
+        ods3: 'ODS 3: Saúde e bem-estar',
+        ods4: 'ODS 4: Educação de qualidade',
+        ods5: 'ODS 5: Igualdade de gênero',
+        ods6: 'ODS 6: Água potável e saneamento',
+        ods7: 'ODS 7: Energia limpa e acessível',
+        ods8: 'ODS 8: Trabalho decente e crescimento econômico',
+        ods9: 'ODS 9: Indústria, inovação e infraestrutura',
+        ods10: 'ODS 10: Redução de desigualdades',
+        ods11: 'ODS 11: Cidades e comunidades sustentáveis',
+        ods12: 'ODS 12: Consumo e produção responsáveis',
+        ods13: 'ODS 13: Ação contra a mudança global do clima',
+        ods14: 'ODS 14: Vida na água',
+        ods15: 'ODS 15: Vida terrestre',
+        ods16: 'ODS 16: Paz, justiça e instituições eficazes',
+        ods17: 'ODS 17: Parcerias e meios de implementação'
+      },
+
+      // Labels curtas para annotations
+      odsShortLabels: {
+        ods1: 'ODS 1',
+        ods2: 'ODS 2',
+        ods3: 'ODS 3',
+        ods4: 'ODS 4',
+        ods5: 'ODS 5',
+        ods6: 'ODS 6',
+        ods7: 'ODS 7',
+        ods8: 'ODS 8',
+        ods9: 'ODS 9',
+        ods10: 'ODS 10',
+        ods11: 'ODS 11',
+        ods12: 'ODS 12',
+        ods13: 'ODS 13',
+        ods14: 'ODS 14',
+        ods15: 'ODS 15',
+        ods16: 'ODS 16',
+        ods17: 'ODS 17'
+      }
+    };
+
+    // Cores
+    const colors = {
+      blue: '#3B82F6',
+      green: '#10B981',
+      orange: '#F59E0B',
+      red: '#EF4444',
+      purple: '#8B5CF6',
+      pink: '#EC4899',
+      cyan: '#06D6A0',
+      teal: '#118AB2',
+      indigo: '#6366F1',
+      yellow: '#EAB308',
+      gray: '#9CA3AF',
+      lightBlue: '#93C5FD',
+      lightGreen: '#86EFAC',
+      lightOrange: '#FCD34D',
+      lightRed: '#FCA5A5',
+      lightPurple: '#C4B5FD',
+      lightPink: '#FBCFE8'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: true,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+      toImageButtonOptions: {
+        format: 'png',
+        filename: 'uff-the-impact',
+        height: 500,
+        width: 1000,
+        scale: 1
+      }
+    };
+
+    // Layout comum
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 40, r: 30, b: 70, l: 60 },
+      hovermode: 'closest',
+      showlegend: true,
+      legend: {
+        orientation: 'h',
+        y: -0.25,
+        x: 0.5,
+        xanchor: 'center',
+        bgcolor: 'rgba(255, 255, 255, 0.9)',
+        bordercolor: 'rgba(0,0,0,0.1)',
+        borderwidth: 1
+      },
+      xaxis: {
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickmode: 'linear',
+        tickformat: 'd',
+        dtick: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          text: 'Ano',
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      },
+      yaxis: {
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      }
+    };
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico Posição no Brasil COM PARTICIPANTES
+      // Traço da linha (posição)
+      const brazilPosTrace = {
+        x: data.years,
+        y: data.brazilPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição da UFF',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brazilPosition.map(v => `${v}º`),
+        textposition: 'bottom center',
+        textfont: {
+          size: 12,
+          color: colors.purple,
+          family: 'Inter, sans-serif',
+          weight: 'bold'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>',
+        yaxis: 'y1'
+      };
+
+      // Traço das barras (participantes brasileiros) - com números em cima
+      const brazilPartTrace = {
+        x: data.years,
+        y: data.brazilParticipants,
+        type: 'bar',
+        name: 'Universidades Brasileiras',
+        text: data.brazilParticipants.map(v => v.toString()),
+        textposition: 'outside',
+        textfont: {
+          size: 10,
+          color: colors.blue
+        },
+        marker: {
+          color: colors.lightBlue,
+          opacity: 0.4,
+          line: {
+            color: colors.blue,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Universidades Brasileiras:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      // Layout para gráfico combinado
+      const brazilLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição da UFF (menor = melhor)',
+          tickformat: 'd',
+          nticks: 5,
+          separatethousands: true,
+          side: 'left',
+          showgrid: false
+        },
+        yaxis2: {
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          nticks: 5,
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            size: 10,
+            color: colors.green
+          },
+          title: {
+            text: 'Nº de participantes (Brasil)',
+            font: {
+              //size: 11,
+              //color: colors.b
+            }
+          }
+        },
+        xaxis: {
+          ...commonLayout.xaxis,
+          range: [2019.5, 2025.5]
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        },
+        margin: {
+          ...commonLayout.margin,
+          r: 80,
+          t: 40,
+          b: 80
+        },
+        annotations: []
+      };
+
+      Plotly.newPlot('brazil-position-chart', [brazilPosTrace, brazilPartTrace], brazilLayout, chartConfig);
+
+      // 2. Gráfico Posição no Mundo COM PARTICIPANTES MUNDIAIS
+      // Traço da linha (posição)
+      const worldPosTrace = {
+        x: data.years,
+        y: data.worldPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Mundial',
+        line: {
+          color: colors.orange,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.orange,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.worldPosition.map(v => data.worldPositionLabels[v] || v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 11,
+          color: colors.red,
+          family: 'Inter, sans-serif',
+          weight: 'bold'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Mundial:</b> %{y}<extra></extra>',
+        yaxis: 'y1'
+      };
+
+      // Traço das barras (participantes mundiais) - com números em cima
+      const worldPartTrace = {
+        x: data.years,
+        y: data.worldParticipants,
+        type: 'bar',
+        name: 'Total de Universidades',
+        text: data.worldParticipants.map(v => v.toString()),
+        textposition: 'outside',
+        textfont: {
+          size: 10,
+          color: colors.orange
+        },
+        marker: {
+          color: colors.lightOrange,
+          opacity: 0.4,
+          line: {
+            color: colors.orange,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Total de Universidades:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      // Layout para gráfico combinado
+      const worldLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição da UFF (menor = melhor)',
+          tickformat: 'd',
+          nticks: 5,
+          separatethousands: true,
+          side: 'left',
+          showgrid: false
+        },
+        yaxis2: {
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          nticks: 5,
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            size: 10,
+            color: colors.orange
+          },
+          title: {
+            text: 'Nº total de participantes',
+            font: {
+              //size: 11,
+              //color: colors.orange
+            }
+          }
+        },
+        xaxis: {
+          ...commonLayout.xaxis,
+          range: [2019.5, 2025.5]
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        },
+        margin: {
+          ...commonLayout.margin,
+          r: 80,
+          t: 40,
+          b: 80
+        },
+        annotations: []
+      };
+
+      Plotly.newPlot('world-position-chart', [worldPosTrace, worldPartTrace], worldLayout, chartConfig);
+
+      // 3. Gráfico Posição entre Federais
+      const federaisTrace = {
+        x: data.years,
+        y: data.federaisPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Entre as Federais',
+        line: {
+          color: colors.orange,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.orange,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.federaisPosition.map(v => `${v}º`),
+        textposition: 'bottom center',
+        textfont: {
+          size: 12,
+          color: colors.red,
+          family: 'Inter, sans-serif',
+          weight: 'bold'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição entre Federais:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('federais-position-chart', [federaisTrace], {
+        ...commonLayout,
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição (menor = melhor)',
+          tickformat: 'd',
+          nticks: 5
+        },
+        title: '',
+        margin: {
+          ...commonLayout.margin,
+          t: 40,
+          b: 80
+        },
+        annotations: []
+      }, chartConfig);
+
+      // 4. Gráfico Pontuação Geral
+      const scoreTrace = {
+        x: data.years,
+        y: data.overallScore,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Pontuação Geral',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.overallScore.map(v => v.toFixed(1)),
+        textposition: 'bottom center',
+        textfont: {
+          size: 12,
+          color: colors.purple,
+          family: 'Inter, sans-serif',
+          weight: 'bold'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Pontuação Geral:</b> %{y}<extra></extra>'
+      };
+
+      Plotly.newPlot('overall-score-chart', [scoreTrace], {
+        ...commonLayout,
+        yaxis: {
+          ...commonLayout.yaxis,
+          title: 'Pontuação',
+          range: [55, 80],
+          tickformat: '.1f'
+        },
+        title: '',
+        margin: {
+          ...commonLayout.margin,
+          t: 40,
+          b: 80
+        },
+        annotations: []
+      }, chartConfig);
+
+      // 5. Inicializar gráficos ODS
+      changeOdsChart('national-position', 'group1', 'national-ods-chart');
+      changeOdsChart('world-position', 'group1', 'world-ods-chart');
+      changeOdsChart('score', 'group1', 'score-ods-chart');
+    }
+
+    // Função para criar gráfico de ODS
+    function createOdsChart(metric, group, chartId) {
+      const years = data.years;
+      const odsList = data.odsGroups[group];
+      let traces = [];
+      let yAxisTitle = '';
+      let layoutOptions = {};
+
+      // Cores para os ODS (3 cores diferentes)
+      const colorsList = [colors.blue, colors.green, colors.orange];
+
+      if (metric === 'national-position') {
+        yAxisTitle = 'Posição no Brasil (menor = melhor)';
+        layoutOptions = {
+          yaxis: {
+            ...commonLayout.yaxis,
+            autorange: 'reversed',
+            title: yAxisTitle,
+            tickformat: 'd',
+            range: [0, 50]
+          }
+        };
+
+      } else if (metric === 'world-position') {
+        yAxisTitle = 'Posição Mundial (menor = melhor)';
+        layoutOptions = {
+          yaxis: {
+            ...commonLayout.yaxis,
+            autorange: 'reversed',
+            title: yAxisTitle,
+            tickformat: 'd',
+            range: [0, 1200]
+          }
+        };
+
+      } else if (metric === 'score') {
+        yAxisTitle = 'Pontuação';
+        layoutOptions = {
+          yaxis: {
+            ...commonLayout.yaxis,
+            title: yAxisTitle,
+            tickformat: '.1f',
+            range: [0, 100]
+          }
+        };
+      }
+
+      // Criar traços para cada ODS (3 ODS por grupo)
+      odsList.forEach((ods, index) => {
+        let odsData;
+        let label = data.odsLabels[ods];
+
+        if (metric === 'national-position') {
+          odsData = data.odsNationalPosition[ods];
+        } else if (metric === 'world-position') {
+          odsData = data.odsWorldPosition[ods];
+        } else if (metric === 'score') {
+          odsData = data.odsScore[ods];
+        }
+
+        // Preparar texto para exibir
+        let textArray = odsData.map((value, idx) => {
+          if (value === null) return '';
+
+          if (metric === 'world-position') {
+            return data.worldPositionLabels[value] || value.toString();
+          } else if (metric === 'national-position') {
+            return `${value}º`;
+          } else if (metric === 'score') {
+            return value.toFixed(1);
+          }
+          return '';
+        });
+
+        traces.push({
+          x: years,
+          y: odsData,
+          type: 'scatter',
+          mode: 'lines+markers+text',
+          name: label,
+          text: textArray,
+          textposition: 'bottom center',
+          textfont: {
+            size: 10,
+            color: colorsList[index % colorsList.length],
+            family: 'Inter, sans-serif',
+            weight: 'bold'
+          },
+          line: {
+            color: colorsList[index % colorsList.length],
+            width: 3,
+            shape: 'spline',
+            dash: odsData.includes(null) ? 'dash' : 'solid'
+          },
+          marker: {
+            color: colorsList[index % colorsList.length],
+            size: 8,
+            line: {
+              color: 'white',
+              width: 1
+            }
+          },
+          connectgaps: false,
+          hovertemplate: `<b>${label}:</b> %{y}<br><b>Ano:</b> %{x}<extra></extra>`
+        });
+      });
+
+      // Layout final
+      const finalLayout = {
+        ...commonLayout,
+        ...layoutOptions,
+        title: '',
+        margin: {
+          ...commonLayout.margin,
+          b: 80,
+          t: 40
+        }
+      };
+
+      Plotly.newPlot(chartId, traces, finalLayout, chartConfig);
+    }
+
+    // Função para trocar o gráfico ODS
+    function changeOdsChart(metric, group, chartId) {
+      // Atualizar botões da aba ativa
+      const tabButtons = document.querySelectorAll(`[onclick*="${chartId}"]`);
+      tabButtons.forEach(btn => {
+        if (btn.onclick.toString().includes(group)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Criar o gráfico
+      createOdsChart(metric, group, chartId);
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
