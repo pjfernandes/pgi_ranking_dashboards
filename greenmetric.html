@@ -946,7 +946,7 @@
         y: data.worldWorldRank,
         type: 'scatter',
         mode: 'lines+markers',
-        name: 'Posição Mundial',
+        name: 'Posição Mundial  ',
         line: {
           color: colors.blue,
           width: 4,
@@ -981,7 +981,7 @@
         y: data.scoreWorld,
         type: 'scatter',
         mode: 'lines+markers',
-        name: 'Pontuação Geral',
+        name: 'Pontuação Geral  ',
         line: {
           color: colors.green,
           width: 4,
@@ -1025,7 +1025,7 @@
       if (tab === 'infrastructure') {
         traces = [
           //createTrace(years, data.brazilWorldRank, 'World Ranking', colors.green, 4),
-          createTrace(years, data.brazilSettingInfrastructure, 'Setting & Infrastructure', colors.blue, 3),
+          createTrace(years, data.brazilSettingInfrastructure, 'Setting & Infrastructure  ', colors.blue, 3),
           createTrace(years, data.brazilTransportation, 'Transportation', colors.red, 3)
         ];
         
@@ -1080,7 +1080,7 @@
       if (tab === 'infrastructure') {
         traces = [
           //createTrace(years, data.worldWorldRank, 'World Ranking', colors.green, 4),
-          createTrace(years, data.worldSettingInfrastructure, 'Setting & Infrastructure', colors.blue, 3),
+          createTrace(years, data.worldSettingInfrastructure, 'Setting & Infrastructure  ', colors.blue, 3),
           createTrace(years, data.worldTransportation, 'Transportation', colors.red, 3)
         ];
         
@@ -1135,7 +1135,7 @@
       if (tab === 'infrastructure') {
         traces = [
           //createScoreTrace(years, data.scoreWorld, 'Pontuação Geral', colors.green, 4),
-          createScoreTrace(years, data.scoreSettingInfrastructure, 'Setting & Infrastructure', colors.blue, 3),
+          createScoreTrace(years, data.scoreSettingInfrastructure, 'Setting & Infrastructure  ', colors.blue, 3),
           createScoreTrace(years, data.scoreTransportation, 'Transportation', colors.red, 3)
         ];
         
