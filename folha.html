@@ -813,10 +813,10 @@
             width: 2
           }
         },
-        text: data.brazilPosition.map(v => v.toString() + 'º'),
+        text: data.brazilPosition.map(v => v.toString() + ''),
         textposition: 'top center',
         textfont: {
-          size: 11,
+          size: 8,
           color: colors.blue,
           family: 'Inter, sans-serif',
           weight: 'bold'
@@ -832,7 +832,7 @@
         text: data.participants.map(v => v.toString()),
         textposition: 'inside',
         textfont: {
-          size: 10,
+          size: 8,
           color: colors.gray,
           family: 'Inter, sans-serif'
         },
@@ -914,10 +914,10 @@
             width: 2
           }
         },
-        text: data.federaisPosition.map(v => v.toString() + 'º'),
+        text: data.federaisPosition.map(v => v.toString() + ''),
         textposition: 'top center',
         textfont: {
-          size: 11,
+          size: 8,
           color: colors.green,
           family: 'Inter, sans-serif',
           weight: 'bold'
@@ -955,7 +955,7 @@
         text: data.overallScore.map(v => v.toFixed(2)),
         textposition: 'top center',
         textfont: {
-          size: 11,
+          size: 8,
           color: colors.purple,
           family: 'Inter, sans-serif',
           weight: 'bold'
@@ -1144,7 +1144,7 @@
         trace.text = y.map(v => formatValue(v) + suffix);
         trace.textposition = textPosition || 'top center';
         trace.textfont = {
-          size: 10,
+          size: 8,
           color: color,
           family: 'Inter, sans-serif'
         };
