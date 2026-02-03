@@ -947,7 +947,7 @@
     // Configurações do gráfico
     const chartConfig = {
       responsive: true,
-      displayModeBar: true,
+      displayModeBar: false,
       displaylogo: false,
       modeBarButtonsToRemove: ['lasso2d', 'select2d'],
       toImageButtonOptions: {
@@ -980,6 +980,7 @@
         borderwidth: 1
       },
       xaxis: {
+        fixedrange: true,
         gridcolor: 'rgba(0,0,0,0.03)',
         showgrid: true,
         showline: true,
@@ -1000,6 +1001,7 @@
         }
       },
       yaxis: {
+        fixedrange: true,
         gridcolor: 'rgba(0,0,0,0.03)',
         showgrid: true,
         showline: true,
@@ -1119,6 +1121,7 @@
           showgrid: false
         },
         yaxis2: {
+          fixedrange: true,
           overlaying: 'y',
           side: 'right',
           tickformat: 'd',

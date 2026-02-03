@@ -693,7 +693,7 @@
     // Configurações do gráfico
     const chartConfig = {
       responsive: true,
-      displayModeBar: true,
+      displayModeBar: false,
       displaylogo: false,
       modeBarButtonsToRemove: ['lasso2d', 'select2d'],
       toImageButtonOptions: {
@@ -732,6 +732,7 @@
         borderwidth: 1
       },
       xaxis: {
+        fixedrange: true,
         gridcolor: 'rgba(0,0,0,0.03)', // Grid muito sutil
         showgrid: true,
         showline: true,
@@ -752,6 +753,7 @@
         }
       },
       yaxis: {
+        fixedrange: true,
         gridcolor: 'rgba(0,0,0,0.03)', // Grid muito sutil
         showgrid: true,
         showline: true,
@@ -973,6 +975,7 @@
           showgrid: false // Remove grid do eixo esquerdo para não poluir
         },
         yaxis2: {
+          fixedrange: true,
           title: 'Nº de participantes (total)',
           overlaying: 'y',
           side: 'right',
@@ -1075,6 +1078,7 @@
           showgrid: false // Remove grid do eixo esquerdo para não poluir
         },
         yaxis2: {
+          fixedrange: true,
           overlaying: 'y',
           side: 'right',
           tickformat: 'd',
