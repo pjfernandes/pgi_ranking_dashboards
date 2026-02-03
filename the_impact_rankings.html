@@ -1115,7 +1115,7 @@
       // Labels ODS completas para legenda
       odsLabels: {
         ods1: 'ODS 1: Erradicação da pobreza',
-        ods2: 'ODS 2: Fome zero e agricultura sustentável  ',
+        ods2: 'ODS 2: Fome zero e agricultura sustentável      ',
         ods3: 'ODS 3: Saúde e bem-estar',
         ods4: 'ODS 4: Educação de qualidade',
         ods5: 'ODS 5: Igualdade de gênero',
@@ -1653,7 +1653,7 @@
           if (metric === 'world-position') {
             return data.worldPositionLabels[value] || value.toString();
           } else if (metric === 'national-position') {
-            return `${value}º`;
+            return `${value}`;
           } else if (metric === 'score') {
             return value.toFixed(1);
           }
@@ -1669,7 +1669,7 @@
           text: textArray,
           textposition: 'bottom center',
           textfont: {
-            size: 10,
+            size: 8,
             color: colorsList[index % colorsList.length],
             family: 'Inter, sans-serif',
             weight: 'bold'
