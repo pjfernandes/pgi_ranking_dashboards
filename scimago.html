@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFF no Scimago Institutions Rankings | Dashboard</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header com tons de purple */
+    .dashboard-header {
+      background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card */
+    .card-1 {
+      border-top-color: #3B82F6;
+    }
+
+    .card-1 .indicator-value {
+      color: #3B82F6;
+    }
+
+    .card-1 .card-icon {
+      color: #3B82F6;
+    }
+
+    .card-2 {
+      border-top-color: #10B981;
+    }
+
+    .card-2 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-2 .card-icon {
+      color: #10B981;
+    }
+
+    .card-3 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-3 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-3 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-4 {
+      border-top-color: #EF4444;
+    }
+
+    .card-4 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-4 .card-icon {
+      color: #EF4444;
+    }
+
+    .card-5 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-5 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-5 .card-icon {
+      color: #8B5CF6;
+    }
+
+    .card-6 {
+      border-top-color: #EC4899;
+    }
+
+    .card-6 .indicator-value {
+      color: #EC4899;
+    }
+
+    .card-6 .card-icon {
+      color: #EC4899;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>A UFF no Scimago Institutions Rankings</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards de Destaques -->
+    <div class="row mb-4">
+      <!-- Card 1: Posição entre as Federais -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h5 class="card-title">Posição entre as Federais</h5>
+            <div class="indicator-value">12ª</div>
+            <p class="card-subtitle">2025 | Scimago</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Posição no Brasil -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">15ª</div>
+            <p class="card-subtitle">2025 | Scimago</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Posição na América Latina -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h5 class="card-title">Posição na América Latina</h5>
+            <div class="indicator-value">27ª</div>
+            <p class="card-subtitle">2025 | Scimago</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Odontologia -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-tooth"></i>
+            </div>
+            <h5 class="card-title">Destaque em Odontologia</h5>
+            <div class="indicator-value">9ª</div>
+            <p class="card-subtitle">América Latina | 104ª Mundial</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Artes e Humanidades -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-palette"></i>
+            </div>
+            <h5 class="card-title">Destaque em Artes e Humanidades</h5>
+            <div class="indicator-value">9ª</div>
+            <p class="card-subtitle">Brasil | 17ª América Latina</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Posição Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial</h5>
+            <div class="indicator-value">2970</div>
+            <p class="card-subtitle">2025 | Overall Rank</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7: Participantes Brasileiros -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h5 class="card-title">Instituições Brasileiras</h5>
+            <div class="indicator-value">165</div>
+            <p class="card-subtitle">Participantes no ranking 2025</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8: Participantes América Latina -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe-americas"></i>
+            </div>
+            <h5 class="card-title">Instituições América Latina</h5>
+            <div class="indicator-value">430</div>
+            <p class="card-subtitle">Participantes no ranking 2025</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row">
+      <!-- Gráfico Participantes Brasil -->
+      <div class="col-lg-6 mb-4">
+        <div class="chart-container">
+          <h4 class="chart-title">Participantes Brasileira e Posição da UFF (2014-2025)</h4>
+          <div id="brazil-participants-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Posição entre as Federais -->
+      <div class="col-lg-6 mb-4">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF entre as Federais (2014-2025)</h4>
+          <div id="federais-position-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Participantes América Latina -->
+      <div class="col-lg-6 mb-4">
+        <div class="chart-container">
+          <h4 class="chart-title">Participantes da América Latina e Posição da UFF (2014-2025)</h4>
+          <div id="latam-participants-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Posição Mundial -->
+      <div class="col-lg-6 mb-4">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Mundial da UFF (2014-2025)</h4>
+          <div id="world-position-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        <i class="fas fa-database me-1"></i>
+        Dados extraídos do Scimago Institutions Rankings (2014-2025)
+      </p>
+      <p class="mb-0">
+        <i class="fa-solid fa-arrow-trend-up me-1"></i>
+        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido
+          pela PGI/PLAN - UFF</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dados extraídos do arquivo Excel
+    const data = {
+      // Anos disponíveis
+      years: [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      
+      // Posição entre as federais
+      federaisPosition: [13, 14, 14, 11, 11, 12, 14, 11, 14, 16, 11, 12],
+      
+      // Posição no Brasil
+      brazilPosition: [16, 19, 17, 14, 15, 16, 19, 15, 18, 20, 15, 15],
+      
+      // Número de participantes brasileiras
+      brazilParticipants: [94, 99, 94, 103, 115, 122, 133, 134, 151, 170, 166, 165],
+      
+      // Posição na América Latina
+      latamPosition: [29, 37, 32, 24, 29, 26, 30, 29, 29, 34, 27, 27],
+      
+      // Número de participantes América Latina
+      latamParticipants: [194, 204, 206, 228, 263, 288, 317, 344, 388, 418, 422, 430],
+      
+      // Posição Mundial (Overall Rank)
+      worldPosition: [2616, 2830, 2401, 1939, 2438, 2212, 2433, 2520, 2521, 3389, 2489, 2970]
+    };
+
+    // Cores para gráficos
+    const colors = {
+      green: '#10B981',
+      lightGreen: '#86EFAC',
+      orange: '#F59E0B',
+      lightBlue: '#93C5FD',
+      blue: '#3B82F6',
+      red: '#EF4444',
+      purple: '#8B5CF6',
+      black: '#1f2937'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d']
+    };
+
+    // Layout comum para gráficos
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 30, r: 80, b: 70, l: 70 },
+      hovermode: 'closest',
+      showlegend: true,
+      legend: {
+        orientation: 'h',
+        y: -0.25,
+        x: 0.5,
+        xanchor: 'center',
+        bgcolor: 'rgba(255, 255, 255, 0.9)',
+        bordercolor: 'rgba(0,0,0,0.1)',
+        borderwidth: 1
+      },
+      xaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickmode: 'array',
+        tickvals: data.years,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          text: 'Ano',
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      },
+      yaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        }
+      }
+    };
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico Participantes Brasileiros com Posição
+      // Traço da linha (posição) - COM VALORES EM BOTTOM CENTER
+      const brazilPosTrace = {
+        x: data.years,
+        y: data.brazilPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição da UFF',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brazilPosition.map(v => v.toString() + ''),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}ª<extra></extra>',
+        yaxis: 'y1'
+      };
+
+      // Traço das barras (participantes brasileiros) - COM VALORES OUTSIDE
+      const brazilPartTrace = {
+        x: data.years,
+        y: data.brazilParticipants,
+        type: 'bar',
+        name: 'Instituições Brasileiras   ',
+        text: data.brazilParticipants.map(v => v.toString()),
+        textposition: 'outside',
+        textfont: {
+          size: 8,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+        marker: {
+          color: colors.blue,
+          opacity: 0.5,
+          line: {
+            color: colors.blue,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Instituições Brasileiras:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      // Layout para gráfico combinado
+      const brazilCombinedLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: {
+            text: 'Posição da UFF (menor = melhor)',
+            font: {
+              size: 11,
+            }
+          },
+          tickformat: 'd',
+          nticks: 6,
+          side: 'left',
+          showgrid: false,
+          tickfont: {
+            color: '#6b7280',
+            size: 10
+          }
+        },
+        yaxis2: {
+          fixedrange: true,
+          title: {
+            text: 'Nº de Instituições Brasileiras',
+            font: {
+              size: 11,
+            }
+          },
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          nticks: 5,
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            color: '#6b7280',
+            size: 10
+          }
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        }
+      };
+
+      Plotly.newPlot('brazil-participants-chart', [brazilPosTrace, brazilPartTrace, ], brazilCombinedLayout, chartConfig);
+
+      // 2. Gráfico Posição entre as Federais - COM VALORES EM BOTTOM CENTER
+      const federaisTrace = {
+        x: data.years,
+        y: data.federaisPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição da UFF   ',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.federaisPosition.map(v => v.toString() + ''),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição entre Federais:</b> %{y}ª<extra></extra>'
+      };
+
+      const federaisLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: {
+            text: 'Posição (menor = melhor)',
+            font: {
+              size: 11,
+            }
+          },
+          tickformat: 'd',
+          nticks: 6
+        }
+      };
+
+      Plotly.newPlot('federais-position-chart', [federaisTrace], federaisLayout, chartConfig);
+
+      // 3. Gráfico Participantes América Latina com Posição
+      // Traço da linha (posição) - COM VALORES EM BOTTOM CENTER
+      const latamPosTrace = {
+        x: data.years,
+        y: data.latamPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição da UFF',
+        line: {
+          color: colors.orange,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.orange,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.latamPosition.map(v => v.toString() + ''),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.orange,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição América Latina:</b> %{y}ª<extra></extra>',
+        yaxis: 'y1'
+      };
+
+      // Traço das barras (participantes América Latina) - COM VALORES OUTSIDE
+      const latamPartTrace = {
+        x: data.years,
+        y: data.latamParticipants,
+        type: 'bar',
+        name: 'Instituições América Latina   ',
+        text: data.latamParticipants.map(v => v.toString()),
+        textposition: 'outside',
+        textfont: {
+          size: 8,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+        marker: {
+          color: colors.lightBlue,
+          opacity: 0.6,
+          line: {
+            color: colors.blue,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Instituições América Latina:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      // Layout para gráfico combinado
+      const latamCombinedLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: {
+            text: 'Posição da UFF (menor = melhor)',
+            font: {
+              size: 11,
+    
+            }
+          },
+          tickformat: 'd',
+          nticks: 6,
+          side: 'left',
+          showgrid: false,
+          tickfont: {
+            color: '#6b7280',
+            size: 10
+          }
+        },
+        yaxis2: {
+          fixedrange: true,
+          title: {
+            text: 'Nº de Instituições América Latina',
+            font: {
+              size: 11,
+            }
+          },
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          nticks: 5,
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            color: '#6b7280',
+            size: 10
+          }
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        }
+      };
+
+      Plotly.newPlot('latam-participants-chart', [latamPosTrace, latamPartTrace], latamCombinedLayout, chartConfig);
+
+      // 4. Gráfico Posição Mundial - COM VALORES EM BOTTOM CENTER
+      const worldTrace = {
+        x: data.years,
+        y: data.worldPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Mundial   ',
+        line: {
+          color: colors.purple,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.purple,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.worldPosition.map(v => v.toString() + ''),
+        textposition: 'bottom center',
+        textfont: {
+          size: 7,
+          color: colors.black,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Mundial:</b> %{y}º<extra></extra>'
+      };
+
+      const worldLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          title: {
+            text: 'Posição Mundial',
+            font: {
+              size: 11,
+            }
+          },
+          tickformat: 'd',
+          nticks: 6,
+          separatethousands: true
+        }
+      };
+
+      Plotly.newPlot('world-position-chart', [worldTrace], worldLayout, chartConfig);
+    }
+
+    // Inicializar gráficos quando a página carregar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
