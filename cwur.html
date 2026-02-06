@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFF no CWUR Ranking | Dashboard Completo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header */
+    .dashboard-header {
+      background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards com cores únicas */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card */
+    .card-1 {
+      border-top-color: #DC2626;
+    }
+
+    .card-1 .indicator-value {
+      color: #DC2626;
+    }
+
+    .card-1 .card-icon {
+      color: #DC2626;
+    }
+
+    .card-2 {
+      border-top-color: #EF4444;
+    }
+
+    .card-2 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-2 .card-icon {
+      color: #EF4444;
+    }
+
+    .card-3 {
+      border-top-color: #F97316;
+    }
+
+    .card-3 .indicator-value {
+      color: #F97316;
+    }
+
+    .card-3 .card-icon {
+      color: #F97316;
+    }
+
+    .card-4 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-4 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-4 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-5 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-5 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-5 .card-icon {
+      color: #8B5CF6;
+    }
+
+    .card-6 {
+      border-top-color: #EC4899;
+    }
+
+    .card-6 .indicator-value {
+      color: #EC4899;
+    }
+
+    .card-6 .card-icon {
+      color: #EC4899;
+    }
+
+    .card-7 {
+      /* border-top-color: #06D6A0; */
+      border-top-color: green;
+    }
+
+    .card-7 .indicator-value {
+      /* color: #06D6A0; */
+      color: green;
+    }
+
+    .card-7 .card-icon {
+      /* color: #06D6A0; */
+      color: green;
+    }
+
+    .card-8 {
+      border-top-color: #118AB2;
+    }
+
+    .card-8 .indicator-value {
+      color: #118AB2;
+    }
+
+    .card-8 .card-icon {
+      color: #118AB2;
+    }
+
+    /* Section Headers */
+    .section-header {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+
+    .world-section {
+      border-left-color: #DC2626;
+    }
+
+    .brazil-section {
+      border-left-color: #059669;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-icon {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .world-icon {
+      color: #DC2626;
+    }
+
+    .brazil-icon {
+      color: #059669;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>A UFF no CWUR Ranking</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Brasil -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header brazil-section">
+          <h2 class="section-title">
+            <i class="fas fa-flag section-icon brazil-icon"></i>CWUR Ranking Brasil
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: Posição no Brasil -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">18º</div>
+            <p class="card-subtitle">2025 | CWUR Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Pontuação Geral -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Pontuação Geral</h5>
+            <div class="indicator-value">70.7</div>
+            <p class="card-subtitle">2025 | CWUR Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Employability Rank Brasil -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h5 class="card-title">Employability Rank</h5>
+            <div class="indicator-value">8º</div>
+            <p class="card-subtitle">2025 | CWUR Brasil</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Research Ranking Brasil -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flask"></i>
+            </div>
+            <h5 class="card-title">Research Ranking</h5>
+            <div class="indicator-value">18º</div>
+            <p class="card-subtitle">2025 | CWUR Brasil</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos Brasil -->
+    <div class="row mb-5">
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF vs. Número de Participantes no Brasil</h4>
+          <div id="brazil-participants-chart"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Pontuação Geral da UFF no Brasil (2014-2025)</h4>
+          <div id="brazil-score-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Employability e Research -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Employability e Research Ranking Brasil (2018-2025)</h4>
+          <div id="brazil-subrankings-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Mundo -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header world-section">
+          <h2 class="section-title">
+            <i class="fas fa-globe section-icon world-icon"></i>CWUR Ranking Mundial
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 5: Posição Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial</h5>
+            <div class="indicator-value">982º</div>
+            <p class="card-subtitle">2025 | CWUR Mundo</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Employability Rank Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h5 class="card-title">Employability Rank</h5>
+            <div class="indicator-value">988º</div>
+            <p class="card-subtitle">2025 | CWUR Mundo</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7: Research Rank Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-7">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flask"></i>
+            </div>
+            <h5 class="card-title">Research Rank</h5>
+            <div class="indicator-value">938º</div>
+            <p class="card-subtitle">2025 | CWUR Mundo</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8: Número de Participantes -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-8">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h5 class="card-title">Participantes Mundiais</h5>
+            <div class="indicator-value">21,462</div>
+            <p class="card-subtitle">2025 | CWUR Mundo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos Mundo -->
+    <div class="row mb-4">
+      <!-- Gráfico Posição Mundial vs Participantes -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Mundial vs. Número de Participantes Globais</h4>
+          <div id="world-participants-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Employability Mundial -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Employability Rank Mundial (2014-2025)</h4>
+          <div id="world-employability-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Research Rank Mundial -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Research Rank Mundial (2018-2025)</h4>
+          <div id="world-research-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        <i class="fas fa-database me-1"></i>
+        Dados extraídos do CWUR World University Rankings (2014-2025)
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Extrair dados APENAS da primeira aba do Excel fornecido (CWUR Ranking)
+    const data = {
+      // Anos
+      years: [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+
+      // Dados Brasil - DA PRIMEIRA ABA
+      brazilPosition: [9, 9, 10, 13, 17, 18, 21, 21, 21, 20, 20, 18],
+      brazilScore: [44.45, 44.12, 44.3, 42.52, 70.5, 70.7, 70.4, 70.4, 70.4, 70.6, 70.7, 70.7],
+      brazilParticipants: [18, 18, 17, 18, 20, 52, 57, 56, 56, 54, 54, 53],
+      brazilEmployability: [null, null, null, null, 4, 6, 10, 9, 8, 8, 8, 8],
+      brazilResearch: [null, null, null, null, 17, 17, 20, 20, 21, 19, 19, 18],
+
+      // Dados Mundo - DA PRIMEIRA ABA
+      worldPosition: [852, 915, 911, 962, 857, 931, 980, 979, 967, 967, 967, 982],
+      worldParticipants: [1000, 1000, 1000, 1000, 1000, 2000, 2000, 19788, 19788, 20531, 20966, 21462],
+      worldEmployability: [300, 313, 340, 348, 857, 913, 948, 958, 976, 980, 980, 988],
+      worldResearch: [null, null, null, null, 653, 898, 941, 937, 925, 927, 925, 938]
+    };
+
+    // Cores
+    const colors = {
+      red: '#DC2626',
+      orange: '#F97316',
+      yellow: '#F59E0B',
+      green: '#10B981',
+      blue: '#3B82F6',
+      purple: '#8B5CF6',
+      pink: '#EC4899',
+      cyan: '#06D6A0',
+      teal: '#118AB2',
+      gray: '#9CA3AF',
+      lightRed: '#FCA5A5',
+      lightBlue: '#93C5FD'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+      toImageButtonOptions: {
+        format: 'png',
+        filename: 'uff-cwur-ranking',
+        height: 500,
+        width: 1000,
+        scale: 1
+      }
+    };
+
+    // Layout comum
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 30, r: 30, b: 60, l: 60 },
+      hovermode: 'closest',
+      showlegend: true,
+      legend: {
+        orientation: 'h',
+        y: -0.25,
+        x: 0.5,
+        xanchor: 'center',
+        bgcolor: 'rgba(255, 255, 255, 0.9)',
+        bordercolor: 'rgba(0,0,0,0.1)',
+        borderwidth: 1
+      },
+      xaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickmode: 'linear',
+        tickformat: 'd',
+        dtick: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      },
+      yaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      }
+    };
+
+    // Layout para gráficos de posição
+    const positionLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        autorange: 'reversed',
+        title: 'Posição (menor = melhor)',
+        tickformat: 'd',
+        nticks: 6
+      }
+    };
+
+    // Layout para gráficos de linha
+    const lineLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        title: 'Pontuação',
+        tickformat: '.1f',
+        nticks: 6
+      }
+    };
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico Brasil - Pontuação
+      const brazilScoreTrace = {
+        x: data.years,
+        y: data.brazilScore,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Pontuação Geral   ',
+        line: {
+          color: colors.orange,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.orange,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brazilScore.map(v => v.toFixed(2)),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.orange
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Pontuação Geral:</b> %{y}<extra></extra>'
+      };
+
+      Plotly.newPlot('brazil-score-chart', [brazilScoreTrace], {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          title: 'Pontuação (0-100)',
+          range: [40, 75]
+        }
+      }, chartConfig);
+
+      // 2. Gráfico Brasil - Employability e Research
+      const brazilEmployabilityTrace = {
+        x: data.years.slice(4), // A partir de 2018
+        y: data.brazilEmployability.slice(4),
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Employability Rank   ',
+        line: {
+          color: colors.purple,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.purple,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brazilEmployability.slice(4).map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.purple
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Employability Rank:</b> %{y}º<extra></extra>'
+      };
+
+      const brazilResearchTrace = {
+        x: data.years.slice(4), // A partir de 2018
+        y: data.brazilResearch.slice(4),
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Research Ranking   ',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brazilResearch.slice(4).map(v => v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 10,
+          color: colors.blue
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Research Ranking:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('brazil-subrankings-chart', [brazilEmployabilityTrace, brazilResearchTrace], {
+        ...positionLayout,
+        title: '',
+        xaxis: {
+          ...positionLayout.xaxis,
+          range: [2017.5, 2025.5]
+        }
+      }, chartConfig);
+
+      // 3. Gráfico Brasil - Posição vs Participantes
+      const brazilPositionTrace = {
+        x: data.years,
+        y: data.brazilPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição da UFF',
+        text: data.brazilPosition.map(v => v),
+        textposition: 'top center',
+        textfont: {
+        size: 8,
+          color: colors.red
+        },
+        line: {
+          color: colors.red,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.red,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>',
+        yaxis: 'y1'
+      };
+
+      const brazilParticipantsTrace = {
+        x: data.years,
+        y: data.brazilParticipants,
+        type: 'bar',
+        name: 'Participantes no Brasil   ',
+        text: data.brazilParticipants.map(v => v),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.purple
+        },
+        marker: {
+          color: colors.lightBlue,
+          opacity: 0.6,
+          line: {
+            color: colors.blue,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Participantes:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      const brazilParticipantsLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição da UFF (menor = melhor)',
+          tickformat: 'd',
+          side: 'left',
+          showgrid: false
+        },
+        yaxis2: {
+          fixedrange: true,
+          title: 'Nº de participantes',
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            size: 10,
+            color: colors.blue
+          }
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        },
+        margin: {
+          ...commonLayout.margin,
+          r: 80
+        }
+      };
+
+      Plotly.newPlot('brazil-participants-chart', [brazilPositionTrace, brazilParticipantsTrace], brazilParticipantsLayout, chartConfig);
+
+      // 4. Gráfico Mundo - Employability
+      const worldEmployabilityTrace = {
+        x: data.years,
+        y: data.worldEmployability,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Employability Rank Mundial   ',
+        line: {
+          color: colors.pink,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.pink,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.worldEmployability.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.pink
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Employability Rank:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('world-employability-chart', [worldEmployabilityTrace], {
+        ...positionLayout,
+        title: '',
+        yaxis: {
+          ...positionLayout.yaxis,
+          range: [1100, 250] // Invertido para mostrar valores decrescentes
+        }
+      }, chartConfig);
+
+      // 5. Gráfico Mundo - Research
+      const worldResearchTrace = {
+        x: data.years.slice(4), // A partir de 2018
+        y: data.worldResearch.slice(4),
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Research Rank Mundial   ',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.worldResearch.slice(4).map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.green
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Research Rank:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('world-research-chart', [worldResearchTrace], {
+        ...positionLayout,
+        title: '',
+        xaxis: {
+          ...positionLayout.xaxis,
+          range: [2017.5, 2025.5]
+        },
+        yaxis: {
+          ...positionLayout.yaxis,
+          range: [1100, 600] // Invertido para mostrar valores decrescentes
+        }
+      }, chartConfig);
+
+      // 6. Gráfico Mundo - Posição vs Participantes
+      const worldPositionTrace = {
+        x: data.years,
+        y: data.worldPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Mundial da UFF',
+        text: data.worldPosition.map(v => v),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.purple
+        },
+        line: {
+          color: colors.purple,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.purple,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição:</b> %{y}º<extra></extra>',
+        yaxis: 'y1'
+      };
+
+      const worldParticipantsTrace = {
+        x: data.years,
+        y: data.worldParticipants,
+        type: 'bar',
+        name: 'Participantes Globais   ',
+        text: data.worldParticipants.map(v => v),
+        textfont: {
+          size: 8,
+          color: colors.red
+        },
+        marker: {
+          color: colors.lightRed,
+          opacity: 0.6,
+          line: {
+            color: colors.red,
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Participantes:</b> %{y}<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      const worldParticipantsLayout = {
+        ...commonLayout,
+        title: '',
+        yaxis: {
+          ...commonLayout.yaxis,
+          autorange: 'reversed',
+          title: 'Posição Mundial (menor = melhor)',
+          tickformat: 'd',
+          side: 'left',
+          showgrid: false,
+          range: [1100, 800]
+        },
+        yaxis2: {
+          fixedrange: true,
+          title: 'Nº de participantes',
+          overlaying: 'y',
+          side: 'right',
+          tickformat: ',d',
+          gridcolor: 'rgba(0,0,0,0.03)',
+          showgrid: true,
+          linecolor: 'rgba(0,0,0,0.1)',
+          linewidth: 1,
+          tickfont: {
+            size: 10,
+            color: colors.red
+          }
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        },
+        margin: {
+          ...commonLayout.margin,
+          r: 80
+        }
+      };
+
+      Plotly.newPlot('world-participants-chart', [worldPositionTrace, worldParticipantsTrace], worldParticipantsLayout, chartConfig);
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

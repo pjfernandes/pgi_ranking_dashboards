@@ -270,9 +270,6 @@
         <div class="col-lg-8">
           <h1>A UFF no Webometrics</h1>
         </div>
-        <div class="col-lg-4 text-lg-end">
-          <span class="header-badge">Dados: 2013-2025</span>
-        </div>
       </div>
     </div>
 
@@ -553,7 +550,7 @@
       // 3. Gráfico Posição na América Latina (sem 2025)
       const latamYears = data.years.filter((year, index) => data.latam[index] !== null);
       const latamValues = data.latam.filter(value => value !== null);
-      
+
       const latamTrace = {
         x: latamYears,
         y: latamValues,
