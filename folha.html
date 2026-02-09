@@ -580,7 +580,6 @@
           </div>
         </div>
       </div>
-    </div>
 
       <!-- Card 9: Pontuação Internacionalização -->
       <div class="col-md-6 col-lg-3 mb-3">
@@ -595,7 +594,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
 
     <!-- Gráficos de Pontuação -->
     <div class="row mb-4">
@@ -642,6 +641,7 @@
       </p>
     </div>
   </div>
+
 
   <!-- JavaScript -->
   <script>
@@ -1199,7 +1199,7 @@
           } else if (tab === 'pesquisa-inovacao' && btnText.includes('pesquisa')) {
             btn.classList.add('active');
             found = true;
-          } else if (tab === 'internacionalizacao' && btnText.includes('internacionalização')) {
+          } else if (tab === 'internacionalizacao' && btnText.includes('internacional')) {
             btn.classList.add('active');
             found = true;
           }
@@ -1226,13 +1226,13 @@
       tabBtns.forEach(btn => {
         const btnText = btn.textContent.trim().toLowerCase();
         if (!found) {
-          if (tab === 'main' && btnText.includes('principais')) {
+          if (tab === 'main' && btnText.includes('ensino')) {
             btn.classList.add('active');
             found = true;
           } else if (tab === 'research' && btnText.includes('pesquisa')) {
             btn.classList.add('active');
             found = true;
-          } else if (tab === 'international' && btnText.includes('internacionalização')) {
+          } else if (tab === 'international' && btnText.includes('internacional')) {
             btn.classList.add('active');
             found = true;
           }
