@@ -476,7 +476,7 @@
         <div class="chart-container">
           <h4 class="chart-title">Classificação por Indicadores e Nº de Participantes</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn active" onclick="changeClassificationTab('ensino-mercado')">Ensino e Mercado</button>
+            <button class="tab-btn active" onclick="changeClassificationTab('ensino-mercado')">Ensino & Mercado</button>
             <button class="tab-btn" onclick="changeClassificationTab('pesquisa-inovacao')">Pesquisa & Inovação</button>
             <button class="tab-btn"
               onclick="changeClassificationTab('internacionalizacao')">Internacionalização</button>
@@ -577,7 +577,7 @@
         <div class="chart-container">
           <h4 class="chart-title">Pontuação por Indicadores</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn score-tab active" onclick="changeScoreTab('main')">Principais</button>
+            <button class="tab-btn score-tab active" onclick="changeScoreTab('main')">Ensino & Mercado</button>
             <button class="tab-btn score-tab" onclick="changeScoreTab('research')">Pesquisa & Inovação</button>
             <button class="tab-btn score-tab" onclick="changeScoreTab('international')">Internacionalização</button>
           </div>
@@ -684,7 +684,7 @@
     // Função para formatar valores
     function formatValue(val) {
       if (val === null || val === undefined) return '';
-      return Number.isInteger(val) ? val.toString() : val.toFixed(2);
+      return Number.isInteger(val) ? val.toString() : val.toFixed(1);
     }
 
     // Layout comum
@@ -952,7 +952,7 @@
             width: 2
           }
         },
-        text: data.overallScore.map(v => v.toFixed(2)),
+        text: data.overallScore.map(v => v.toFixed(1)),
         textposition: 'top center',
         textfont: {
           size: 8,
@@ -976,7 +976,7 @@
         createTrace(data.years, data.pesquisaScore, 'Pesquisa', colors.green, 3, '', false, 'solid'),
         createTrace(data.years, data.mercadoScore, 'Mercado', colors.orange, 3, '', false, 'solid'),
         createTrace(data.years, data.inovacaoScore, 'Inovação', colors.purple, 2.5, '', false, 'dash'),
-        createTrace(data.years, data.internacionalizacaoScore, 'Internacionalização', colors.red, 2.5, '', false, 'dot')
+        createTrace(data.years, data.internacionalizacaoScore, 'Internacionalização   ', colors.red, 2.5, '', false, 'dot')
       ];
 
       Plotly.newPlot('score-comparison-chart', scoreComparisonTraces, {
@@ -997,19 +997,19 @@
       if (tab === 'ensino-mercado') {
         // Aba: Ensino e Mercado
         lineTraces = [
-          createTrace(years, data.ensinoPosition, 'Ensino', colors.blue, 3, 'º', true, 'solid', 'top center'),
-          createTrace(years, data.mercadoPosition, 'Mercado', colors.orange, 3, 'º', true, 'solid', 'top center')
+          createTrace(years, data.ensinoPosition, 'Ensino', colors.blue, 3, '', true, 'solid', 'bottom center'),
+          createTrace(years, data.mercadoPosition, 'Mercado', colors.orange, 3, '', true, 'solid', 'bottom center')
         ];
       } else if (tab === 'pesquisa-inovacao') {
         // Aba: Pesquisa & Inovação
         lineTraces = [
-          createTrace(years, data.pesquisaPosition, 'Pesquisa', colors.green, 3, 'º', true, 'solid', 'bottom right'),
-          createTrace(years, data.inovacaoPosition, 'Inovação', colors.purple, 3, 'º', true, 'solid', 'top center')
+          createTrace(years, data.pesquisaPosition, 'Pesquisa', colors.green, 3, '', true, 'solid', 'bottom center'),
+          createTrace(years, data.inovacaoPosition, 'Inovação', colors.purple, 3, '', true, 'solid', 'top center')
         ];
       } else if (tab === 'internacionalizacao') {
         // Aba: Internacionalização (APENAS internacionalização)
         lineTraces = [
-          createTrace(years, data.internacionalizacaoPosition, 'Internacionalização', colors.red, 3, 'º', true, 'solid', 'top center')
+          createTrace(years, data.internacionalizacaoPosition, 'Internacionalização', colors.red, 3, '', true, 'solid', 'bottom center')
         ];
       }
 
@@ -1025,7 +1025,7 @@
           family: 'Inter, sans-serif'
         },
         type: 'bar',
-        name: 'Nº de Universidades',
+        name: 'Nº de Universidades   ',
         marker: {
           color: colors.lightBlue,
           opacity: 0.3,
@@ -1092,7 +1092,7 @@
         // Principais indicadores
         traces = [
           createTrace(years, data.ensinoScore, 'Ensino', colors.blue, 3, '', true, 'solid', 'top center'),
-          createTrace(years, data.pesquisaScore, 'Pesquisa', colors.green, 3, '', true, 'solid', 'top center'),
+          //createTrace(years, data.pesquisaScore, 'Pesquisa', colors.green, 3, '', true, 'solid', 'top center'),
           createTrace(years, data.mercadoScore, 'Mercado', colors.orange, 3, '', true, 'solid', 'top center')
         ];
       } else if (tab === 'research') {
