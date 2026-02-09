@@ -814,10 +814,10 @@
           }
         },
         text: data.brazilPosition.map(v => v.toString() + ''),
-        textposition: 'top center',
+        textposition: 'bottom center',
         textfont: {
           size: 8,
-          color: colors.blue,
+          //color: colors.blue,
           family: 'Inter, sans-serif',
           weight: 'bold'
         },
@@ -830,7 +830,7 @@
         x: data.years,
         y: data.participants,
         text: data.participants.map(v => v.toString()),
-        textposition: 'inside',
+        textposition: 'outside',
         textfont: {
           size: 8,
           color: colors.gray,
