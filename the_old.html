@@ -597,6 +597,10 @@
         <div class="chart-container">
           <h4 class="chart-title">Posição da UFF no Brasil</h4>
           <div id="world-brazil-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Linha: Posição da UFF (eixo esquerdo) | Barras: Universidades brasileiras no ranking (eixo direito)
+          </div> -->
         </div>
       </div>
 
@@ -604,6 +608,10 @@
         <div class="chart-container">
           <h4 class="chart-title">Posição entre as Federais</h4>
           <div id="world-federais-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Evolução da posição da UFF entre as universidades federais brasileiras.
+          </div> -->
         </div>
       </div>
     </div>
@@ -614,6 +622,10 @@
         <div class="chart-container">
           <h4 class="chart-title">Posição Mundial</h4>
           <div id="world-global-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Posição mundial da UFF no THE World University Rankings.
+          </div> -->
         </div>
       </div>
 
@@ -632,6 +644,10 @@
           <div id="world-indicators-chart">
             <!-- Conteúdo dinâmico - gráfico para Ensino, tabela para Overall -->
           </div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Principais indicadores do THE World University Ranking
+          </div> -->
         </div>
       </div>
     </div>
@@ -710,24 +726,30 @@
         <div class="chart-container">
           <h4 class="chart-title">Posição na América Latina</h4>
           <div id="latam-position-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Evolução da posição da UFF no ranking da América Latina. Melhor posição: 26º em 2024.
+          </div> -->
         </div>
       </div>
 
-      <!-- Gráfico Pontuações THE Latin America - AGORA COM ABA INTERNACIONAL -->
+      <!-- Gráfico Pontuações THE Latin America -->
       <div class="col-lg-6 mb-3">
         <div class="chart-container">
           <h4 class="chart-title">Pontuações THE Latin America</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn latam-tab active" onclick="changeLatamIndicatorsTab('teaching')">Ensino</button>
+            <button class="tab-btn latam-tab active" onclick="changeLatamIndicatorsTab('overall')">Pontuação
+              Geral</button>
+            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('teaching')">Ensino</button>
             <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('research')">Pesquisa</button>
             <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('citations')">Citações</button>
             <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('industry')">Indústria</button>
-            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('international')">Internacional</button>
-            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('overall')">Pontuação Geral</button>
           </div>
-          <div id="latam-indicators-chart">
-            <!-- Conteúdo dinâmico -->
-          </div>
+          <div id="latam-indicators-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Pontuações nos principais indicadores do THE Latin America Ranking
+          </div> -->
         </div>
       </div>
     </div>
@@ -776,6 +798,10 @@
           <div id="subject-table-container">
             <!-- A tabela será gerada dinamicamente pelo JavaScript -->
           </div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Classificação da UFF nas diferentes áreas do conhecimento no THE World University Rankings by Subject
+          </div> -->
         </div>
       </div>
     </div>
@@ -798,16 +824,16 @@
 
   <!-- JavaScript -->
   <script>
-    // Dados completos do THE - dados conferidos com a planilha
+    // Dados completos do THE - CORRIGIDOS com Overall como intervalo
     const data = {
-      // ==================== THE World ====================
+      // Anos THE World
       yearsWorld: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
 
       // Posição no Brasil (THE World)
-      worldBrazilPosition: [13, 22, 16, 13, 14, 18, 29, 28, 20, 16],
+      worldBrazilPosition: [13,	22,	16,	13,	14,	18,	29,	28,	20,	16],
 
       // Posição entre as Federais (THE World)
-      worldFederaisPosition: [8, 14, 11, 8, 9, 11, 19, 19, 13, 10],
+      worldFederaisPosition: [8,	14,	11,	8,	9,	11,	19,	19,	13,	10],
 
       // Número de brasileiras participantes (THE World)
       worldBrazilParticipants: [27, 32, 36, 46, 52, 70, 73, 67, 70, 81],
@@ -819,6 +845,8 @@
       // Pontuações THE World - Overall como intervalo
       worldOverallLower: [8.3, 9.2, 9.8, 10.7, 10.3, 10.6, 10.4, 9.7, 10.5, 10.3],
       worldOverallUpper: [8.3, 15.5, 18.9, 22.1, 25.0, 22.3, 18.3, 22.7, 21.1, 27.2],
+
+      // Overall labels para exibição
       worldOverallLabels: ["8.3", "9.2-15.5", "9.8-18.9", "10.7-22.1", "10.3-25.0", "10.6-22.3", "10.4-18.3", "9.7-22.7", "10.5-21.1", "10.3-27.2"],
 
       // Citations (até 2023, depois null)
@@ -842,22 +870,23 @@
       // Research Quality (a partir de 2024)
       worldResearchQuality: [null, null, null, null, null, null, null, 27.8, 28.6, 27.9],
 
-      // ==================== THE Latin America ====================
+      // Anos THE Latin America
       yearsLatam: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2026],
 
       // Posição América Latina (THE Latin America)
       latamPosition: [28, 43, 45, 33, 30, 31, 40, 36, 26, 48],
 
-      // Overall score (a partir de 2018)
+      // Pontuações THE Latin America
+      // Overall score (a partir de 2018) - valor único, não intervalo
       latamOverall: [null, null, 55.8, 63.4, 63.5, 62.1, 61.1, 61.9, 59.6, 26.3],
 
-      // Citations (até 2023; 2024 e 2026 não disponível)
+      // Citations
       latamCitations: [26.9, 32.5, 42.3, 34.3, 34.8, 34.9, 44.4, 41.7, null, null],
 
       // Industry income
       latamIndustry: [33.1, 35.3, 36.6, 39.2, 37.2, 38.8, 47.0, 43.5, 26.9, 27.2],
 
-      // International outlook (DADOS DA PLANILHA - distintos do World)
+      // International outlook
       latamInternational: [40.6, 37.3, 37.7, 31.0, 37.1, 40.4, 33.7, 37.7, 29.1, 31.5],
 
       // Teaching
@@ -872,7 +901,7 @@
       // Research Quality (2024 e 2026)
       latamResearchQuality: [null, null, null, null, null, null, null, null, 51.6, 39.9],
 
-      // ==================== THE by Subject ====================
+      // THE by Subject
       subjectYears: [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
       subjectAreas: [
         "Arts and Humanities",
@@ -895,7 +924,7 @@
         2023: ["401-500", "801+", "1001+", "801-1000", "1001+", "801+", "601-800", "801+", "601+", "301+", "601+"],
         2024: ["401-500", "801-1000", "1001+", "801-1001", "1001+", "801+", "801+", "801-1000", "601+", "301+", "601+"],
         2025: ["401-500", "801-1000", "1251+", "801-1000", "1001+", "1001+", "801+", "801-1000", "601+", "301+", "601+"],
-        2026: ["501-600", "1001+", "1251+", "801-1000", "1001-1250", "1001+", "801-1000", "801-1000", "601-800", "401+", "601+"]
+        2026: ["501-600", "1001+", "1251+", "801-1001", "1001-1250", "1001+", "801-1000", "801-1001", "601-800", "401+", "601+"]
       }
     };
 
@@ -1023,6 +1052,7 @@
     // Inicializar gráficos
     function initCharts() {
       // 1. Gráfico THE World - Posição no Brasil COM PARTICIPANTES
+      // Traço da linha (posição no Brasil)
       const worldBrazilTrace = {
         x: data.yearsWorld,
         y: data.worldBrazilPosition,
@@ -1108,6 +1138,10 @@
           },
           title: {
             text: 'Nº de participantes (Brasil)',
+            // font: {
+            //   size: 11,
+            //   color: colors.green
+            // }
           }
         },
         xaxis: {
@@ -1125,7 +1159,6 @@
       };
 
       Plotly.newPlot('world-brazil-chart', [brazilParticipantsTrace, worldBrazilTrace], worldBrazilLayout, chartConfig);
-
       // 2. Gráfico THE World - Posição entre as Federais
       const federaisTrace = {
         x: data.yearsWorld,
@@ -1236,15 +1269,15 @@
         title: ''
       }, chartConfig);
 
-      // 5. Gráficos de indicadores - iniciar com a primeira aba (Ensino)
+      // 5. Gráficos de indicadores - INICIAR COM ENSINO (primeira aba)
       createWorldIndicatorsChart('teaching');
-      createLatamIndicatorsChart('teaching');
+      createLatamIndicatorsChart('overall');
 
       // 6. Tabela de áreas
       createSubjectTable('2026');
     }
 
-    // Função para criar tabela de Overall (THE World)
+    // Função para criar tabela de Overall
     function createOverallTable() {
       const container = document.getElementById('world-indicators-chart');
 
@@ -1302,6 +1335,7 @@
 
         traces = [researchTrace, researchEnvTrace, researchQualityTrace];
 
+        // Calcular range combinado
         const allValues = [...data.worldResearch.filter(v => v !== null),
         ...data.worldResearchEnv.filter(v => v !== null),
         ...data.worldResearchQuality.filter(v => v !== null)];
@@ -1339,50 +1373,13 @@
       Plotly.newPlot(container, traces, layout, chartConfig);
     }
 
-    // Função para criar tabela de Overall (THE Latin America)
-    function createLatamOverallTable() {
-      const container = document.getElementById('latam-indicators-chart');
-
-      let tableHTML = `
-        <table class="overall-table">
-          <thead>
-            <tr>
-              <th>Ano</th>
-              <th>Pontuação Geral</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      data.yearsLatam.forEach((year, index) => {
-        const score = data.latamOverall[index];
-        const scoreDisplay = (score === null || score === undefined) ? '—' : score.toFixed(1);
-
-        tableHTML += `
-          <tr>
-            <td class="year-col" style="color:#059669; background-color:#ecfdf5;">${year}</td>
-            <td class="score-col" style="color:#059669;">${scoreDisplay}</td>
-          </tr>
-        `;
-      });
-
-      tableHTML += `
-          </tbody>
-        </table>
-      `;
-
-      container.innerHTML = tableHTML;
-    }
-
     // Função para criar gráfico de indicadores THE Latin America
     function createLatamIndicatorsChart(tab) {
-      const container = document.getElementById('latam-indicators-chart');
       const years = data.yearsLatam;
       let traces = [];
       let yRange = [0, 100];
 
       if (tab === 'overall') {
-        // Tabela para Overall (mesma lógica do THE World)
         traces = [
           createTrace(years.slice(2), data.latamOverall.slice(2), 'Pontuação Geral', colors.purple, 4)
         ];
@@ -1400,6 +1397,7 @@
 
         traces = [researchTrace, researchEnvTrace, researchQualityTrace];
 
+        // Calcular range combinado
         const allValues = [...data.latamResearch.filter(v => v !== null),
         ...data.latamResearchEnv.filter(v => v !== null),
         ...data.latamResearchQuality.filter(v => v !== null)];
@@ -1414,12 +1412,6 @@
           createTrace(years, data.latamIndustry, 'Indústria', colors.indigo, 4)
         ];
         yRange = calculateYRange(data.latamIndustry);
-      } else if (tab === 'international') {
-        // NOVA ABA - Internacionalização (dados específicos da Latin America)
-        traces = [
-          createTrace(years, data.latamInternational, 'Internacionalização', colors.teal, 4)
-        ];
-        yRange = calculateYRange(data.latamInternational);
       }
 
       const layout = {
@@ -1434,8 +1426,7 @@
         }
       };
 
-      container.innerHTML = ''; // Limpar container
-      Plotly.newPlot(container, traces, layout, chartConfig);
+      Plotly.newPlot('latam-indicators-chart', traces, layout, chartConfig);
     }
 
     // Função para criar tabela de áreas
@@ -1460,11 +1451,14 @@
         const prevYear = parseInt(year) - 1;
         let trend = '';
 
+        // Determinar tendência (se possível)
         if (data.subjectRankings[prevYear]) {
           const prevRank = data.subjectRankings[prevYear][index];
+          // Simplificação: se o ranking tem "+", consideramos igual
           if (rank === prevRank) {
             trend = '<i class="fas fa-minus" style="color: #6b7280;"></i>';
           } else if (rank.includes('+') && prevRank.includes('+')) {
+            // Comparação simplificada
             const currentNum = parseInt(rank) || 1000;
             const prevNum = parseInt(prevRank) || 1000;
             if (currentNum < prevNum) {
@@ -1481,6 +1475,7 @@
           trend = '<i class="fas fa-minus" style="color: #6b7280;"></i>';
         }
 
+        // Determinar classe CSS para cor da célula
         let rankClass = '';
         if (rank.includes('301')) rankClass = 'rank-1';
         else if (rank.includes('401')) rankClass = 'rank-2';
@@ -1508,6 +1503,7 @@
 
     // Função auxiliar para criar traços
     function createTrace(x, y, name, color, width) {
+      // Filtrar valores nulos
       const validData = x.map((year, index) => ({
         x: year,
         y: y[index]
@@ -1567,8 +1563,10 @@
       const tabBtns = chartContainer.querySelectorAll('.tab-btn');
       tabBtns.forEach(btn => btn.classList.remove('active'));
 
+      // Encontrar o botão correspondente à aba ativa
       tabBtns.forEach(btn => {
-        if (btn.getAttribute('onclick').includes(`'${activeTab}'`)) {
+        if (btn.textContent.toLowerCase().includes(activeTab.toLowerCase()) ||
+          btn.getAttribute('onclick').includes(`'${activeTab}'`)) {
           btn.classList.add('active');
         }
       });
