@@ -223,6 +223,54 @@
       color: #118AB2;
     }
 
+    .card-9 {
+      border-top-color: #10B981;
+    }
+
+    .card-9 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-9 .card-icon {
+      color: #10B981;
+    }
+
+    .card-10 {
+      border-top-color: #0D9488;
+    }
+
+    .card-10 .indicator-value {
+      color: #0D9488;
+    }
+
+    .card-10 .card-icon {
+      color: #0D9488;
+    }
+
+    .card-11 {
+      border-top-color: #84CC16;
+    }
+
+    .card-11 .indicator-value {
+      color: #84CC16;
+    }
+
+    .card-11 .card-icon {
+      color: #84CC16;
+    }
+
+    .card-12 {
+      border-top-color: #059669;
+    }
+
+    .card-12 .indicator-value {
+      color: #059669;
+    }
+
+    .card-12 .card-icon {
+      color: #059669;
+    }
+
     /* Section Headers */
     .section-header {
       background: white;
@@ -239,6 +287,10 @@
 
     .latam-section {
       border-left-color: #059669;
+    }
+
+    .sustainability-section {
+      border-left-color: #0D9488;
     }
 
     .section-title {
@@ -260,6 +312,10 @@
 
     .latam-icon {
       color: #059669;
+    }
+
+    .sustainability-icon {
+      color: #0D9488;
     }
 
     /* Charts */
@@ -327,6 +383,10 @@
 
     .latam-tab.active {
       color: #059669;
+    }
+
+    .sustainability-tab.active {
+      color: #0D9488;
     }
 
     /* Footer */
@@ -557,8 +617,8 @@
             <div class="card-icon">
               <i class="fas fa-star"></i>
             </div>
-            <h5 class="card-title">Pontuação Geral</h5>
-            <div class="indicator-value">57.0</div>
+            <h5 class="card-title">Posição no Cone Sul</h5>
+            <div class="indicator-value">37º</div>
             <p class="card-subtitle">2026 | QS Latin America</p>
           </div>
         </div>
@@ -609,11 +669,118 @@
       </div>
     </div>
 
+    <!-- Cards QS Sustainability -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header sustainability-section">
+          <h2 class="section-title">
+            <i class="fas fa-leaf section-icon sustainability-icon"></i>QS Sustainability Rankings
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 9: Posição no Brasil (QS Sustainability) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-9">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">8º</div>
+            <p class="card-subtitle">2026 | QS Sustainability</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 10: Entre as Federais (QS Sustainability) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-10">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h5 class="card-title">Entre as Federais</h5>
+            <div class="indicator-value">6º</div>
+            <p class="card-subtitle">2026 | QS Sustainability</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 11: Posição Mundial (QS Sustainability) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-11">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial</h5>
+            <div class="indicator-value">548º</div>
+            <p class="card-subtitle">2026 | QS Sustainability</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 12: Pontuação Geral (QS Sustainability) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-12">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Pontuação Geral</h5>
+            <div class="indicator-value">66,9</div>
+            <p class="card-subtitle">2026 | QS Sustainability</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos QS Sustainability -->
+    <div class="row mb-4">
+      <!-- Gráfico Posição no Brasil (QS Sustainability) -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF no Brasil - QS Sustainability</h4>
+          <div id="sust-brazil-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Posição Mundial (QS Sustainability) -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Mundial - QS Sustainability</h4>
+          <div id="sust-world-chart"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Perfil de Sustentabilidade (radar) -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Perfil de Sustentabilidade por Categoria</h4>
+          <div id="sust-radar-chart"></div>
+        </div>
+      </div>
+
+      <!-- Indicadores QS Sustainability -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Indicadores QS Sustainability</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn sustainability-tab active" onclick="changeSustIndicatorsTab('principais')">Principais</button>
+            <button class="tab-btn sustainability-tab" onclick="changeSustIndicatorsTab('ambiental')">Ambiental</button>
+            <button class="tab-btn sustainability-tab" onclick="changeSustIndicatorsTab('social')">Social</button>
+          </div>
+          <div id="sust-indicators-chart"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer -->
     <div class="footer-note">
       <p class="mb-2">
         <i class="fas fa-database me-1"></i>
-        Dados extraídos dos rankings QS World University e QS Latin America (2013-2026)
+        Dados extraídos dos rankings QS World University, QS Latin America (2013-2026) e QS Sustainability (2024-2026)
       </p>
       <p class="mb-0">
         <i class="fa-solid fa-arrow-trend-up me-1"></i>
@@ -670,7 +837,31 @@
       // Dados de participantes do QS Latin America
       participantsYears: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
       totalParticipants: [385, 391, 400, 411, 418, 428, 430, 437, 492],
-      brazilParticipants: [83, 90, 94, 94, 95, 98, 97, 96, 130]
+      brazilParticipants: [83, 90, 94, 94, 95, 98, 97, 96, 130],
+
+      // QS Sustainability Rankings (2024-2026)
+      yearsSustainability: [2024, 2025, 2026],
+      sustBrazilPosition: [9, 9, 8],       // Posição no Brasil
+      sustFederaisPosition: [6, 6, 6],     // Entre as federais
+      sustWorldPosition: [627, 595, 548],  // Posição no mundo
+
+      // Pontuação da UFF por categoria (2024, 2025, 2026)
+      sustCategories: ['Overall', 'Good Governance', 'Environmental Education', 'Environmental Sustainability', 'Environmental Research', 'Equality', 'Knowledge Exchange', 'Impact of Education', 'Employability & Outcomes', 'Health & Wellbeing'],
+      sustOverall: [53.0, 57.3, 66.9],
+      sustGoodGovernance: [65.8, 79.0, 92.0],
+      sustEnvEducation: [42.5, 41.4, 57.4],
+      sustEnvSustainability: [32.2, 36.4, 50.5],
+      sustEnvResearch: [58.2, 74.1, 75.6],
+      sustEquality: [65.2, 56.2, 72.5],
+      sustKnowledgeExchange: [73.1, 76.6, 85.1],
+      sustImpactEducation: [51.2, 58.5, 61.1],
+      sustEmployability: [42.0, 43.5, 45.2],
+      sustHealthWellbeing: [61.8, 68.5, 72.8],
+
+      // Perfis completos por ano (ordem de sustCategories) - para radar
+      sust2024Profile: [53.0, 65.8, 42.5, 32.2, 58.2, 65.2, 73.1, 51.2, 42.0, 61.8],
+      sust2025Profile: [57.3, 79.0, 41.4, 36.4, 74.1, 56.2, 76.6, 58.5, 43.5, 68.5],
+      sust2026Profile: [66.9, 92.0, 57.4, 50.5, 75.6, 72.5, 85.1, 61.1, 45.2, 72.8]
     };
 
     // Cores vibrantes para gráficos
@@ -1115,6 +1306,184 @@
       // 6. Gráficos de indicadores
       createWorldIndicatorsChart('main');
       createLatamIndicatorsChart('main');
+
+      // 7. Gráficos QS Sustainability
+      const sustBrazilTrace = {
+        x: data.yearsSustainability,
+        y: data.sustBrazilPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição no Brasil',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'linear'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.sustBrazilPosition.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('sust-brazil-chart', [sustBrazilTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      const sustWorldTrace = {
+        x: data.yearsSustainability,
+        y: data.sustWorldPosition,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Mundial',
+        line: {
+          color: colors.teal,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.teal,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.sustWorldPosition.map(v => v.toString() + 'º'),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.teal,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Mundial:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('sust-world-chart', [sustWorldTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      createSustRadarChart();
+      createSustIndicatorsChart('principais');
+    }
+
+    // Converte cor hex em rgba (para preenchimento do radar)
+    function hexToRgba(hex, alpha) {
+      const h = hex.replace('#', '');
+      const r = parseInt(h.substring(0, 2), 16);
+      const g = parseInt(h.substring(2, 4), 16);
+      const b = parseInt(h.substring(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    // Gráfico radar - perfil de sustentabilidade por categoria
+    function createSustRadarChart() {
+      const cats = data.sustCategories;
+      const theta = [...cats, cats[0]];
+
+      const makeTrace = (vals, name, color, fillAlpha) => ({
+        type: 'scatterpolar',
+        r: [...vals, vals[0]],
+        theta: theta,
+        fill: 'toself',
+        name: name,
+        line: { color: color, width: 2 },
+        fillcolor: hexToRgba(color, fillAlpha),
+        marker: { color: color, size: 4 },
+        hovertemplate: '<b>%{theta}</b><br>' + name + ': %{r}<extra></extra>'
+      });
+
+      const traces = [
+        makeTrace(data.sust2024Profile, '2024', colors.gray, 0.05),
+        makeTrace(data.sust2025Profile, '2025', colors.orange, 0.08),
+        makeTrace(data.sust2026Profile, '2026', colors.green, 0.15)
+      ];
+
+      const radarLayout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: {
+          family: 'Inter, sans-serif',
+          color: '#1f2937'
+        },
+        margin: { t: 40, r: 60, b: 60, l: 60 },
+        polar: {
+          bgcolor: 'rgba(0,0,0,0)',
+          radialaxis: {
+            visible: true,
+            range: [0, 100],
+            tickfont: { size: 8, color: '#9ca3af' },
+            gridcolor: 'rgba(0,0,0,0.06)',
+            linecolor: 'rgba(0,0,0,0.1)'
+          },
+          angularaxis: {
+            tickfont: { size: 8, color: '#6b7280' },
+            gridcolor: 'rgba(0,0,0,0.06)',
+            linecolor: 'rgba(0,0,0,0.1)'
+          }
+        },
+        showlegend: true,
+        legend: {
+          orientation: 'h',
+          y: -0.12,
+          x: 0.5,
+          xanchor: 'center',
+          bgcolor: 'rgba(255, 255, 255, 0.9)',
+          bordercolor: 'rgba(0,0,0,0.1)',
+          borderwidth: 1
+        }
+      };
+
+      Plotly.newPlot('sust-radar-chart', traces, radarLayout, chartConfig);
+    }
+
+    // Gráfico de indicadores QS Sustainability
+    function createSustIndicatorsChart(tab) {
+      const years = data.yearsSustainability;
+      let traces = [];
+
+      if (tab === 'principais') {
+        traces = [
+          createTrace(years, data.sustOverall, 'Overall', colors.green, 4),
+          createTrace(years, data.sustGoodGovernance, 'Good Governance', colors.blue, 4),
+          createTrace(years, data.sustKnowledgeExchange, 'Knowledge Exchange', colors.purple, 4),
+          createTrace(years, data.sustHealthWellbeing, 'Health & Wellbeing', colors.pink, 4)
+        ];
+      } else if (tab === 'ambiental') {
+        traces = [
+          createTrace(years, data.sustEnvEducation, 'Environmental Education', colors.cyan, 3),
+          createTrace(years, data.sustEnvSustainability, 'Environmental Sustainability', colors.teal, 3),
+          createTrace(years, data.sustEnvResearch, 'Environmental Research', colors.green, 3)
+        ];
+      } else if (tab === 'social') {
+        traces = [
+          createTrace(years, data.sustEquality, 'Equality', colors.orange, 3),
+          createTrace(years, data.sustImpactEducation, 'Impact of Education', colors.red, 3),
+          createTrace(years, data.sustEmployability, 'Employability & Outcomes', colors.indigo, 3)
+        ];
+      }
+
+      Plotly.newPlot('sust-indicators-chart', traces, {
+        ...lineLayout,
+        title: ''
+      }, chartConfig);
+    }
+
+    function changeSustIndicatorsTab(tab) {
+      updateTabButtons('sust-indicators-chart', tab);
+      createSustIndicatorsChart(tab);
     }
 
     // Função para criar gráfico de indicadores QS World
