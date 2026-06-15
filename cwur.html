@@ -351,7 +351,7 @@
             </div>
             <h5 class="card-title">Posição no Brasil</h5>
             <div class="indicator-value">18º</div>
-            <p class="card-subtitle">2025 | CWUR Brasil</p>
+            <p class="card-subtitle">2026 | CWUR Brasil</p>
           </div>
         </div>
       </div>
@@ -364,8 +364,8 @@
               <i class="fas fa-star"></i>
             </div>
             <h5 class="card-title">Pontuação Geral</h5>
-            <div class="indicator-value">70.7</div>
-            <p class="card-subtitle">2025 | CWUR Brasil</p>
+            <div class="indicator-value">70.5</div>
+            <p class="card-subtitle">2026 | CWUR Brasil</p>
           </div>
         </div>
       </div>
@@ -379,7 +379,7 @@
             </div>
             <h5 class="card-title">Employability Rank</h5>
             <div class="indicator-value">8º</div>
-            <p class="card-subtitle">2025 | CWUR Brasil</p>
+            <p class="card-subtitle">2026 | CWUR Brasil</p>
           </div>
         </div>
       </div>
@@ -392,8 +392,8 @@
               <i class="fas fa-flask"></i>
             </div>
             <h5 class="card-title">Research Ranking</h5>
-            <div class="indicator-value">18º</div>
-            <p class="card-subtitle">2025 | CWUR Brasil</p>
+            <div class="indicator-value">17º</div>
+            <p class="card-subtitle">2026 | CWUR Brasil</p>
           </div>
         </div>
       </div>
@@ -410,7 +410,7 @@
 
       <div class="col-lg-6 p-3">
         <div class="chart-container">
-          <h4 class="chart-title">Pontuação Geral da UFF no Brasil (2014-2025)</h4>
+          <h4 class="chart-title">Pontuação Geral da UFF no Brasil (2014-2026)</h4>
           <div id="brazil-score-chart"></div>
         </div>
       </div>
@@ -418,7 +418,7 @@
       <!-- Gráfico Employability e Research -->
       <div class="col-lg-6 mb-3">
         <div class="chart-container">
-          <h4 class="chart-title">Employability e Research Ranking Brasil (2018-2025)</h4>
+          <h4 class="chart-title">Employability e Research Ranking Brasil (2018-2026)</h4>
           <div id="brazil-subrankings-chart"></div>
         </div>
       </div>
@@ -442,8 +442,8 @@
               <i class="fas fa-globe"></i>
             </div>
             <h5 class="card-title">Posição Mundial</h5>
-            <div class="indicator-value">982º</div>
-            <p class="card-subtitle">2025 | CWUR Mundo</p>
+            <div class="indicator-value">1006º</div>
+            <p class="card-subtitle">2026 | CWUR Mundo</p>
           </div>
         </div>
       </div>
@@ -457,7 +457,7 @@
             </div>
             <h5 class="card-title">Employability Rank</h5>
             <div class="indicator-value">988º</div>
-            <p class="card-subtitle">2025 | CWUR Mundo</p>
+            <p class="card-subtitle">2026 | CWUR Mundo</p>
           </div>
         </div>
       </div>
@@ -470,8 +470,8 @@
               <i class="fas fa-flask"></i>
             </div>
             <h5 class="card-title">Research Rank</h5>
-            <div class="indicator-value">938º</div>
-            <p class="card-subtitle">2025 | CWUR Mundo</p>
+            <div class="indicator-value">964º</div>
+            <p class="card-subtitle">2026 | CWUR Mundo</p>
           </div>
         </div>
       </div>
@@ -484,8 +484,8 @@
               <i class="fas fa-university"></i>
             </div>
             <h5 class="card-title">Participantes Mundiais</h5>
-            <div class="indicator-value">21,462</div>
-            <p class="card-subtitle">2025 | CWUR Mundo</p>
+            <div class="indicator-value">21291</div>
+            <p class="card-subtitle">2026 | CWUR Mundo</p>
           </div>
         </div>
       </div>
@@ -504,7 +504,7 @@
       <!-- Gráfico Employability Mundial -->
       <div class="col-lg-6 mb-3">
         <div class="chart-container">
-          <h4 class="chart-title">Employability Rank Mundial (2014-2025)</h4>
+          <h4 class="chart-title">Employability Rank Mundial (2014-2026)</h4>
           <div id="world-employability-chart"></div>
         </div>
       </div>
@@ -512,7 +512,7 @@
       <!-- Gráfico Research Rank Mundial -->
       <div class="col-lg-6 mb-3">
         <div class="chart-container">
-          <h4 class="chart-title">Research Rank Mundial (2018-2025)</h4>
+          <h4 class="chart-title">Research Rank Mundial (2018-2026)</h4>
           <div id="world-research-chart"></div>
         </div>
       </div>
@@ -520,7 +520,7 @@
     <div class="footer-note">
       <p class="mb-2">
         <i class="fas fa-database me-1"></i>
-        Dados extraídos do CWUR World University Rankings (2014-2025)
+        Dados extraídos do CWUR World University Rankings (2014-2026)
       </p>
       <p class="mb-0">
         <i class="fa-solid fa-arrow-trend-up me-1"></i>
@@ -535,20 +535,20 @@
     // Extrair dados APENAS da primeira aba do Excel fornecido (CWUR Ranking)
     const data = {
       // Anos
-      years: [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      years: [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
 
       // Dados Brasil - DA PRIMEIRA ABA
-      brazilPosition: [9, 9, 10, 13, 17, 18, 21, 21, 21, 20, 20, 18],
-      brazilScore: [44.45, 44.12, 44.3, 42.52, 70.5, 70.7, 70.4, 70.4, 70.4, 70.6, 70.7, 70.7],
-      brazilParticipants: [18, 18, 17, 18, 20, 52, 57, 56, 56, 54, 54, 53],
-      brazilEmployability: [null, null, null, null, 4, 6, 10, 9, 8, 8, 8, 8],
-      brazilResearch: [null, null, null, null, 17, 17, 20, 20, 21, 19, 19, 18],
+      brazilPosition: [9, 9, 10, 13, 17, 18, 21, 21, 21, 20, 20, 18, 18],
+      brazilScore: [44.45, 44.12, 44.3, 42.52, 70.5, 70.7, 70.4, 70.4, 70.4, 70.6, 70.7, 70.7, 70.5],
+      brazilParticipants: [18, 18, 17, 18, 20, 52, 57, 56, 56, 54, 54, 53, 52],
+      brazilEmployability: [null, null, null, null, 4, 6, 10, 9, 8, 8, 8, 8, 8],
+      brazilResearch: [null, null, null, null, 17, 17, 20, 20, 21, 19, 19, 18, 17],
 
       // Dados Mundo - DA PRIMEIRA ABA
-      worldPosition: [852, 915, 911, 962, 857, 931, 980, 979, 967, 967, 967, 982],
-      worldParticipants: [1000, 1000, 1000, 1000, 1000, 2000, 2000, 19788, 19788, 20531, 20966, 21462],
-      worldEmployability: [300, 313, 340, 348, 857, 913, 948, 958, 976, 980, 980, 988],
-      worldResearch: [null, null, null, null, 653, 898, 941, 937, 925, 927, 925, 938]
+      worldPosition: [852, 915, 911, 962, 857, 931, 980, 979, 967, 967, 967, 982, 1006],
+      worldParticipants: [1000, 1000, 1000, 1000, 1000, 2000, 2000, 19788, 19788, 20531, 20966, 21462, 21291],
+      worldEmployability: [300, 313, 340, 348, 857, 913, 948, 958, 976, 980, 980, 988, 988],
+      worldResearch: [null, null, null, null, 653, 898, 941, 937, 925, 927, 925, 938, 964]
     };
 
     // Cores
