@@ -559,8 +559,25 @@
         </div>
       </div>
 
+      <!-- Classificação no Brasil por indicador (QS World) -->
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Classificação da UFF no Brasil por Indicador - QS World</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn active" onclick="changeWorldBrIndTab('main', this)">Principais</button>
+            <button class="tab-btn" onclick="changeWorldBrIndTab('academic', this)">Acadêmicos</button>
+            <button class="tab-btn" onclick="changeWorldBrIndTab('international', this)">Internacional</button>
+          </div>
+          <div id="world-br-indicators-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Posição da UFF entre as universidades brasileiras em cada indicador (menor = melhor).
+          </div>
+        </div>
+      </div>
+
       <!-- Gráfico Posição no Mundo (faixas) -->
-      <div class="col-12 p-3">
+      <div class="col-lg-6 p-3">
         <div class="chart-container">
           <h4 class="chart-title">Posição da UFF no Mundo - QS World</h4>
           <div id="world-world-chart"></div>
@@ -835,6 +852,18 @@
       worldWorldHigh:  [700, 800, 800, 800, 1000, 1000, 1000, 1200, 1200, 1400, 1400, 1200, 1400, 1400],
       worldWorldLabel: ['651-700', '701+', '701+', '701+', '801-1000', '801-1000', '801-1000', '1001+', '1001-1200', '1201-1400', '1201-1400', '1001-1200', '1201-1400', '1201-1400'],
       worldWorldOpen:  [false, true, true, true, false, false, false, true, false, false, false, false, false, false],
+
+      // QS World - Classificação da UFF no Brasil por indicador (posição, 2024-2027)
+      worldBrIndYears: [2024, 2025, 2026, 2027],
+      brAcademicRep:        [15, 15, 17, 18],
+      brEmployerRep:        [25, 23, 21, 26],
+      brFacultyStudentRatio:[20, 19, 18, 11],
+      brCitationsPerFaculty:[21, 21, 19, 21],
+      brIntFacultyRatio:    [9, 7, 7, 6],
+      brIntStudentsRatio:   [29, 25, 23, 22],
+      brEmploymentOutcomes: [15, 13, 14, 14],
+      brResearchNetwork:    [9, 12, 10, 8],
+      brSustainability:     [16, 9, 9, 8],
 
       // QS Latin America - DADOS CORRIGIDOS
       latamPosition: [47, 49, 50, 47, 53, 50, 54, 60, 61, 61, 55, 54, 64], // Item d
@@ -1373,6 +1402,7 @@
 
       // 6. Gráficos de indicadores
       createWorldIndicatorsChart('main');
+      createWorldBrIndicatorsChart('main');
       createLatamIndicatorsChart('main');
 
       // 7. Gráficos QS Sustainability
@@ -1589,6 +1619,57 @@
         ...lineLayout,
         title: ''
       }, chartConfig);
+    }
+
+    // Classificação da UFF no Brasil por indicador (posição, eixo invertido)
+    function createWorldBrIndicatorsChart(tab) {
+      const years = data.worldBrIndYears;
+      const mk = (y, name, color, w) => {
+        const t = createTrace(years, y, name, color, w);
+        t.line.shape = 'spline'; // a pedido do usuário
+        t.text = y.map(v => v + 'º');
+        t.hovertemplate = `<b>${name}:</b> %{y}º no Brasil<br><b>Ano:</b> %{x}<extra></extra>`;
+        return t;
+      };
+
+      let traces = [];
+      if (tab === 'main') {
+        traces = [
+          mk(data.brAcademicRep, 'Reputação Acadêmica', colors.blue, 4),
+          mk(data.brEmployerRep, 'Reputação Empregadores', colors.orange, 4),
+          mk(data.brSustainability, 'Sustentabilidade', colors.cyan, 4)
+        ];
+      } else if (tab === 'academic') {
+        traces = [
+          mk(data.brAcademicRep, 'Reputação Acadêmica', colors.blue, 3),
+          mk(data.brFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 3),
+          mk(data.brCitationsPerFaculty, 'Citações por Professor', colors.purple, 3),
+          mk(data.brEmploymentOutcomes, 'Resultados de Emprego', colors.red, 3)
+        ];
+      } else if (tab === 'international') {
+        traces = [
+          mk(data.brIntFacultyRatio, 'Professores Internacionais', colors.pink, 3),
+          mk(data.brIntStudentsRatio, 'Estudantes Internacionais', colors.yellow, 3),
+          mk(data.brResearchNetwork, 'Rede de Pesquisa', colors.indigo, 3)
+        ];
+      }
+
+      Plotly.newPlot('world-br-indicators-chart', traces, {
+        ...positionLayout,
+        title: '',
+        yaxis: {
+          ...positionLayout.yaxis,
+          title: 'Posição no Brasil (menor = melhor)',
+          nticks: 6
+        }
+      }, chartConfig);
+    }
+
+    function changeWorldBrIndTab(tab, btn) {
+      const container = btn.closest('.chart-container');
+      container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      createWorldBrIndicatorsChart(tab);
     }
 
     // Função para criar gráfico de indicadores QS Latin America
