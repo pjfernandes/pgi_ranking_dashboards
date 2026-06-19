@@ -455,8 +455,8 @@
               <i class="fas fa-flag"></i>
             </div>
             <h5 class="card-title">Posição no Brasil</h5>
-            <div class="indicator-value">15º</div>
-            <p class="card-subtitle">2026 | QS World</p>
+            <div class="indicator-value">14º</div>
+            <p class="card-subtitle">2027 | QS World</p>
           </div>
         </div>
       </div>
@@ -470,12 +470,26 @@
             </div>
             <h5 class="card-title">Entre as Federais</h5>
             <div class="indicator-value">9º</div>
-            <p class="card-subtitle">2026 | QS World</p>
+            <p class="card-subtitle">2027 | QS World</p>
           </div>
         </div>
       </div>
 
-      <!-- Card 3: Posição Mundial (QS World) -->
+      <!-- Card 3: Posição na América Latina (QS World) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h5 class="card-title">Posição América Latina</h5>
+            <div class="indicator-value">72º</div>
+            <p class="card-subtitle">2027 | QS World</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Posição Mundial (QS World) -->
       <div class="col-md-6 col-lg-3 mb-3">
         <div class="indicator-card card-3">
           <div class="card-body text-center">
@@ -484,24 +498,12 @@
             </div>
             <h5 class="card-title">Posição Mundial</h5>
             <div class="indicator-value">1201-1400</div>
-            <p class="card-subtitle">2026 | QS World</p>
+            <p class="card-subtitle">2027 | QS World</p>
           </div>
         </div>
       </div>
 
-      <!-- Card 4: Posição na América Latina (QS World) -->
-      <div class="col-md-6 col-lg-3 mb-3">
-        <div class="indicator-card card-4">
-          <div class="card-body text-center">
-            <div class="card-icon">
-              <i class="fas fa-map-marked-alt"></i>
-            </div>
-            <h5 class="card-title">Posição América Latina</h5>
-            <div class="indicator-value">109º</div>
-            <p class="card-subtitle">2026 | QS World</p>
-          </div>
-        </div>
-      </div>
+
     </div>
 
     <!-- Gráficos QS World -->
@@ -554,6 +556,14 @@
             <i class="fas fa-info-circle me-1"></i>
             Principais indicadores do QS World University Ranking
           </div> -->
+        </div>
+      </div>
+
+      <!-- Gráfico Posição no Mundo (faixas) -->
+      <div class="col-12 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF no Mundo - QS World</h4>
+          <div id="world-world-chart"></div>
         </div>
       </div>
     </div>
@@ -780,7 +790,7 @@
     <div class="footer-note">
       <p class="mb-2">
         <i class="fas fa-database me-1"></i>
-        Dados extraídos dos rankings QS World University, QS Latin America (2013-2026) e QS Sustainability (2024-2026)
+        Dados extraídos dos rankings QS World University (2013-2027), QS Latin America (2013-2026) e QS Sustainability (2024-2026)
       </p>
       <p class="mb-0">
         <i class="fa-solid fa-arrow-trend-up me-1"></i>
@@ -796,27 +806,35 @@
     const data = {
       // Anos
       yearsWorld: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
-      yearsWorldShort: [2022, 2023, 2024, 2025, 2026],
+      yearsWorldBrazil: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
+      yearsWorldShort: [2022, 2023, 2024, 2025, 2026, 2027],
       yearsLatam: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
       yearsLatamBrazil: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
 
-      // QS World University Ranking - DADOS CORRIGIDOS
-      worldBrazilPosition: [16, 17, 17, 17, 17, 16, 16, 17, 16, 22, 16, 12, 15], // Item a
-      worldFederaisPosition: [10, 12, 10, 7, 9], // Item b (2022-2026)
-      worldLatamPosition: [113, 171, 147, 93, 109], // Item c (2022-2026)
+      // QS World University Ranking - DADOS DO XLSX
+      worldBrazilPosition: [16, 13, 12, 13, 13, 11, 15, 15, 18, 15, 11, 14, 14], // No Brasil (2015-2027)
+      worldFederaisPosition: [10, 12, 10, 7, 9, 9], // Entre as federais (2022-2027)
+      worldLatamPosition: [79, 109, 104, 61, 76, 72], // Na América Latina (2022-2027)
 
-      // QS World Indicators (2021-2026)
-      worldIndicatorsYears: [2021, 2022, 2023, 2024, 2025, 2026],
-      worldAcademicRep: [8.4, 8.4, 8.9, 10.0, 9.6, 12.5],
-      worldEmployerRep: [3.4, 3.4, 3.2, 2.3, 2.5, 3.1],
-      worldFacultyStudentRatio: [14.3, 14.3, 10.9, 11.7, 12.8, 17.4],
-      worldCitationsPerFaculty: [3.7, 3.7, 3.6, 3.7, 3.6, 6.4],
-      worldIntFacultyRatio: [2.0, 2.0, 6.0, 5.3, 6.3, 8.8],
-      worldIntStudentsRatio: [1.7, 1.7, 1.6, 1.1, 1.2, 1.3],
-      worldEmploymentOutcomes: [null, null, 7.5, 7.6, 10.9, 17.6],
-      worldResearchNetwork: [null, null, 54.5, 10.1, 52.2, 57.0],
-      worldSustainability: [null, null, null, 4.1, 13.1, 55.7],
-      worldStudentDiversity: [null, null, null, null, null, 5.8],
+      // QS World Indicators (2021-2027)
+      worldIndicatorsYears: [2021, 2022, 2023, 2024, 2025, 2026, 2027],
+      worldAcademicRep: [8.4, 8.4, 8.9, 10.0, 9.6, 12.5, 11.8],
+      worldEmployerRep: [3.4, 3.4, 3.2, 2.3, 2.5, 3.1, 2.7],
+      worldFacultyStudentRatio: [14.3, 14.3, 10.9, 11.7, 12.8, 17.4, 19.1],
+      worldCitationsPerFaculty: [3.7, 3.7, 3.6, 3.7, 3.6, 6.4, 5.5],
+      worldIntFacultyRatio: [2.0, 2.0, 6.0, 5.3, 6.3, 8.8, 7.3],
+      worldIntStudentsRatio: [1.7, 1.7, 1.6, 1.1, 1.2, 1.3, 1.4],
+      worldEmploymentOutcomes: [null, null, 7.5, 7.6, 10.9, 17.6, 17.0],
+      worldResearchNetwork: [null, null, 54.5, 10.1, 52.2, 57.0, 60.5],
+      worldSustainability: [null, null, null, 4.1, 13.1, 55.7, 63.3],
+      worldStudentDiversity: [null, null, null, null, null, 5.8, null],
+
+      // QS World - Posição da UFF no mundo (faixas/bandas) 2013-2027
+      worldWorldYears: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
+      worldWorldLow:   [651, 701, 701, 701, 801, 801, 801, 1001, 1001, 1201, 1201, 1001, 1201, 1201],
+      worldWorldHigh:  [700, 800, 800, 800, 1000, 1000, 1000, 1200, 1200, 1400, 1400, 1200, 1400, 1400],
+      worldWorldLabel: ['651-700', '701+', '701+', '701+', '801-1000', '801-1000', '801-1000', '1001+', '1001-1200', '1201-1400', '1201-1400', '1001-1200', '1201-1400', '1201-1400'],
+      worldWorldOpen:  [false, true, true, true, false, false, false, true, false, false, false, false, false, false],
 
       // QS Latin America - DADOS CORRIGIDOS
       latamPosition: [47, 49, 50, 47, 53, 50, 54, 60, 61, 61, 55, 54, 64], // Item d
@@ -991,7 +1009,7 @@
     function initCharts() {
       // 1. Gráfico QS World - Posição no Brasil
       const worldBrazilTrace = {
-        x: data.yearsWorld,
+        x: data.yearsWorldBrazil,
         y: data.worldBrazilPosition,
         type: 'scatter',
         mode: 'lines+markers+text',
@@ -1093,6 +1111,56 @@
         ...positionLayout,
         title: ''
       }, chartConfig);
+
+      // 3b. Gráfico QS World - Posição da UFF no Mundo (linha na média da faixa, rótulo = faixa)
+      const worldWorldMid = data.worldWorldHigh.map((h, i) => (h + data.worldWorldLow[i]) / 2);
+      const worldWorldTrace = {
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        x: data.worldWorldYears,
+        y: worldWorldMid,
+        name: 'Posição no mundo',
+        line: {
+          color: colors.indigo,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.indigo,
+          size: 10,
+          line: { color: 'white', width: 2 }
+        },
+        text: data.worldWorldLabel,
+        textposition: 'top center',
+        textfont: {
+          size: 9,
+          color: colors.black,
+          family: 'Inter, sans-serif'
+        },
+        customdata: data.worldWorldLabel,
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Faixa no mundo:</b> %{customdata}<extra></extra>'
+      };
+
+      const worldWorldLayout = {
+        ...positionLayout,
+        title: '',
+        showlegend: false,
+        yaxis: {
+          ...positionLayout.yaxis,
+          autorange: false,
+          range: [1480, 600], // invertido: menor (melhor) no topo
+          title: 'Posição no mundo (menor = melhor)',
+          tickmode: 'array',
+          tickvals: [650, 700, 800, 1000, 1200, 1400],
+          separatethousands: true
+        },
+        xaxis: {
+          ...commonLayout.xaxis,
+          range: [2012.3, 2027.7]
+        }
+      };
+
+      Plotly.newPlot('world-world-chart', [worldWorldTrace], worldWorldLayout, chartConfig);
 
       // 4. Gráfico QS Latin America - Posição na América Latina COM PARTICIPANTES
       // Traço da linha (posição)
@@ -1351,7 +1419,7 @@
         line: {
           color: colors.teal,
           width: 4,
-          shape: 'spline'
+          shape: 'linear'
         },
         marker: {
           color: colors.teal,
