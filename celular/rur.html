@@ -1227,47 +1227,44 @@
     });
   </script>
 
-  <!-- ===== Séries temporais responsivas: no celular exibe a partir de 2021 ===== -->
+  <!-- ===== Séries temporais responsivas: botão por gráfico (celular: desde 2021) ===== -->
   <style>
-    #tsRangeToggle {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 1080;
+    .ts-chart-toggle {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 5;
       display: none; /* aparece apenas no celular (ver media query) */
       align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border: none;
+      gap: 6px;
+      padding: 5px 11px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 50px;
-      background: #1f2937;
-      color: #fff;
+      background: rgba(255, 255, 255, 0.92);
+      color: #374151;
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.72rem;
       font-weight: 600;
       line-height: 1;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
       cursor: pointer;
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
     }
-    #tsRangeToggle:active { transform: scale(0.97); }
+    .ts-chart-toggle:active { transform: scale(0.96); }
     @media (max-width: 767.98px) {
-      #tsRangeToggle { display: inline-flex; }
+      .ts-chart-toggle { display: inline-flex; }
     }
   </style>
 
-  <button id="tsRangeToggle" type="button" aria-pressed="false">
-    <i class="fa-solid fa-chart-line"></i>
-    <span id="tsRangeToggleLabel">Ver série completa</span>
-  </button>
-
   <script>
-    // Mostra a série a partir de 2021 no celular; completa no desktop.
+    // No celular cada gráfico de série temporal abre a partir de 2021;
+    // um botão no próprio card alterna aquele gráfico para a série completa.
+    // No desktop os gráficos ficam completos e o botão fica oculto.
     // Não altera os dados — apenas a janela visível do eixo X (Plotly.relayout).
     (function () {
       const START_YEAR = 2021;
       const MOBILE_MAX = 768; // px (breakpoint md do Bootstrap)
-      let compact = null;     // estado atual (true = desde 2021)
-      let userOverride = false;
 
       const isMobile = () => window.innerWidth < MOBILE_MAX;
       const graphs = () => Array.from(document.querySelectorAll('.js-plotly-plot'));
@@ -1278,64 +1275,80 @@
           x.every(v => typeof v === 'number' && isFinite(v) && v >= 2000 && v <= 2035);
       }
 
-      // Marca quais gráficos têm eixo X de anos e guarda o range original.
-      function indexGraphs() {
-        graphs().forEach(gd => {
-          if (gd._tsIndexed) return;
-          let maxYear = -Infinity, hasYear = false;
-          (gd.data || []).forEach(tr => {
-            if (isYearArray(tr.x)) {
-              hasYear = true;
-              maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
-            }
-          });
-          gd._tsYearAxis = hasYear;
-          if (hasYear) {
-            const r = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
-            gd._tsFullRange = r ? r.slice() : null; // range "cheio" original (ou null = autorange)
-            gd._tsMaxYear = maxYear;
-          }
-          gd._tsIndexed = true;
-        });
-      }
-
-      function apply(toCompact) {
-        compact = toCompact;
-        indexGraphs();
-        graphs().forEach(gd => {
-          if (!gd._tsYearAxis) return; // ignora radar, barras por categoria, etc.
-          const upd = toCompact
-            ? { 'xaxis.range': [START_YEAR - 0.5, gd._tsMaxYear + 0.5] }
-            : (gd._tsFullRange
-                ? { 'xaxis.range': gd._tsFullRange.slice() }
-                : { 'xaxis.autorange': true });
-          Plotly.relayout(gd, upd);
-        });
-        syncButton();
-      }
-
-      function syncButton() {
-        const btn = document.getElementById('tsRangeToggle');
-        const lbl = document.getElementById('tsRangeToggleLabel');
-        if (!btn || !lbl) return;
-        if (compact) {
-          lbl.textContent = 'Ver série completa';
-          btn.querySelector('i').className = 'fa-solid fa-chart-line';
-          btn.setAttribute('aria-pressed', 'false');
-        } else {
-          lbl.textContent = 'Ver desde 2021';
-          btn.querySelector('i').className = 'fa-solid fa-compress';
-          btn.setAttribute('aria-pressed', 'true');
+      // Aplica a janela do eixo X de um gráfico e atualiza o rótulo do botão.
+      function render(gd, compact) {
+        const upd = compact
+          ? { 'xaxis.range': [START_YEAR - 0.5, gd._tsMaxYear + 0.5] }
+          : (gd._tsFullRange
+              ? { 'xaxis.range': gd._tsFullRange.slice() }
+              : { 'xaxis.autorange': true });
+        Plotly.relayout(gd, upd);
+        const btn = gd._tsBtn;
+        if (btn) {
+          btn.querySelector('span').textContent = compact ? 'Completo' : 'Desde 2021';
+          btn.querySelector('i').className = compact
+            ? 'fa-solid fa-expand'
+            : 'fa-solid fa-compress';
+          btn.setAttribute('aria-pressed', compact ? 'false' : 'true');
         }
       }
 
+      function setupGraph(gd) {
+        if (gd._tsIndexed) return;
+        gd._tsIndexed = true;
+
+        // Detecta eixo X de anos e guarda o range original.
+        let maxYear = -Infinity, hasYear = false;
+        (gd.data || []).forEach(tr => {
+          if (isYearArray(tr.x)) {
+            hasYear = true;
+            maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
+          }
+        });
+        if (!hasYear) return; // ignora radar, barras por categoria, etc.
+
+        const r = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
+        gd._tsFullRange = r ? r.slice() : null; // range original (ou null = autorange)
+        gd._tsMaxYear = maxYear;
+        gd._tsManual = false;
+        gd._tsCompact = isMobile();
+
+        // Cria o botão ancorado no próprio gráfico (canto inferior direito),
+        // para não cobrir o título nem as notas do card.
+        if (getComputedStyle(gd).position === 'static') {
+          gd.style.position = 'relative';
+        }
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ts-chart-toggle';
+        btn.innerHTML = '<i class="fa-solid fa-expand"></i><span>Completo</span>';
+        btn.addEventListener('click', () => {
+          gd._tsManual = true;
+          gd._tsCompact = !gd._tsCompact;
+          render(gd, gd._tsCompact);
+        });
+        gd.appendChild(btn);
+        gd._tsBtn = btn;
+
+        render(gd, gd._tsCompact);
+      }
+
       function setup() {
-        indexGraphs();
-        if (graphs().length === 0) { setTimeout(setup, 120); return; }
-        apply(isMobile()); // celular entra compacto; desktop, completo
-        const btn = document.getElementById('tsRangeToggle');
-        if (btn) btn.addEventListener('click', () => { userOverride = true; apply(!compact); });
-        window.addEventListener('resize', () => { if (!userOverride) apply(isMobile()); });
+        const gs = graphs();
+        if (gs.length === 0) { setTimeout(setup, 120); return; }
+        gs.forEach(setupGraph);
+
+        window.addEventListener('resize', () => {
+          graphs().forEach(gd => {
+            if (!gd._tsBtn) return; // só os de série temporal
+            if (!isMobile()) {
+              render(gd, false); // desktop sempre completo
+            } else {
+              if (!gd._tsManual) gd._tsCompact = true;
+              render(gd, gd._tsCompact);
+            }
+          });
+        });
       }
 
       // Roda depois do initCharts() já existente no arquivo.
