@@ -1044,31 +1044,30 @@
 
   <!-- ===== Séries temporais responsivas: botão por gráfico (celular: desde 2021) ===== -->
   <style>
-    .ts-chart-toggle {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      z-index: 5;
+    .ts-toggle-wrap {
       display: none; /* aparece apenas no celular (ver media query) */
+      text-align: center;
+      margin-top: 8px;
+    }
+    .ts-chart-toggle {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 11px;
+      padding: 6px 14px;
       border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 50px;
-      background: rgba(255, 255, 255, 0.92);
+      background: #fff;
       color: #374151;
       font-family: 'Inter', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 600;
       line-height: 1;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10);
       cursor: pointer;
-      -webkit-backdrop-filter: blur(4px);
-      backdrop-filter: blur(4px);
     }
     .ts-chart-toggle:active { transform: scale(0.96); }
     @media (max-width: 767.98px) {
-      .ts-chart-toggle { display: inline-flex; }
+      .ts-toggle-wrap { display: block; }
     }
   </style>
 
@@ -1128,11 +1127,8 @@
         gd._tsManual = false;
         gd._tsCompact = isMobile();
 
-        // Cria o botão ancorado no próprio gráfico (canto inferior direito),
-        // para não cobrir o título nem as notas do card.
-        if (getComputedStyle(gd).position === 'static') {
-          gd.style.position = 'relative';
-        }
+        // Cria o botão centralizado, logo abaixo do gráfico/legenda,
+        // em fluxo normal — não cobre título, legenda nem notas.
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'ts-chart-toggle';
@@ -1142,7 +1138,10 @@
           gd._tsCompact = !gd._tsCompact;
           render(gd, gd._tsCompact);
         });
-        gd.appendChild(btn);
+        const wrap = document.createElement('div');
+        wrap.className = 'ts-toggle-wrap';
+        wrap.appendChild(btn);
+        gd.parentNode.insertBefore(wrap, gd.nextSibling);
         gd._tsBtn = btn;
 
         render(gd, gd._tsCompact);
