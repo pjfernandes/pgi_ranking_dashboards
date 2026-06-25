@@ -1645,28 +1645,16 @@
         }
       }
 
-      function setupGraph(gd) {
-        if (gd._tsIndexed) return;
-        gd._tsIndexed = true;
+      // Lê o range "cheio" original do gráfico (por gráfico, não compartilhado).
+      function originalRange(gd) {
+        const fl = gd._fullLayout && gd._fullLayout.xaxis && gd._fullLayout.xaxis.range;
+        if (fl && fl.length === 2) return fl.slice();
+        const ul = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
+        if (ul && ul.length === 2) return ul.slice();
+        return null; // sem range conhecido -> autorange
+      }
 
-        // Detecta eixo X de anos e guarda o range original.
-        let maxYear = -Infinity, hasYear = false;
-        (gd.data || []).forEach(tr => {
-          if (isYearArray(tr.x)) {
-            hasYear = true;
-            maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
-          }
-        });
-        if (!hasYear) return; // ignora radar, barras por categoria, etc.
-
-        const r = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
-        gd._tsFullRange = r ? r.slice() : null; // range original (ou null = autorange)
-        gd._tsMaxYear = maxYear;
-        gd._tsManual = false;
-        gd._tsCompact = isMobile();
-
-        // Cria o botão centralizado, logo abaixo do gráfico/legenda,
-        // em fluxo normal — não cobre título, legenda nem notas.
+      function buildButton(gd) {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'ts-chart-toggle';
@@ -1681,14 +1669,39 @@
         wrap.appendChild(btn);
         gd.parentNode.insertBefore(wrap, gd.nextSibling);
         gd._tsBtn = btn;
-
-        render(gd, gd._tsCompact);
       }
 
       function setup() {
         const gs = graphs();
         if (gs.length === 0) { setTimeout(setup, 120); return; }
-        gs.forEach(setupGraph);
+
+        // PASSADA 1 — detecta eixo de anos e captura o range original de TODOS
+        // os gráficos antes de mexer em qualquer um (evita ler um range já
+        // compactado quando os layouts compartilham o mesmo objeto xaxis).
+        gs.forEach(gd => {
+          if (gd._tsIndexed) return;
+          gd._tsIndexed = true;
+          let maxYear = -Infinity, hasYear = false;
+          (gd.data || []).forEach(tr => {
+            if (isYearArray(tr.x)) {
+              hasYear = true;
+              maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
+            }
+          });
+          if (!hasYear) return; // ignora radar, barras por categoria, etc.
+          gd._tsYear = true;
+          gd._tsMaxYear = maxYear;
+          gd._tsFullRange = originalRange(gd);
+        });
+
+        // PASSADA 2 — cria o botão e aplica o estado inicial.
+        gs.forEach(gd => {
+          if (!gd._tsYear || gd._tsBtn) return;
+          gd._tsManual = false;
+          gd._tsCompact = isMobile();
+          buildButton(gd);
+          render(gd, gd._tsCompact);
+        });
 
         window.addEventListener('resize', () => {
           graphs().forEach(gd => {
