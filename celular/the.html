@@ -1681,14 +1681,17 @@
         gs.forEach(gd => {
           if (gd._tsIndexed) return;
           gd._tsIndexed = true;
-          let maxYear = -Infinity, hasYear = false;
+          let minYear = Infinity, maxYear = -Infinity, hasYear = false;
           (gd.data || []).forEach(tr => {
             if (isYearArray(tr.x)) {
               hasYear = true;
+              minYear = Math.min(minYear, Math.min.apply(null, tr.x));
               maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
             }
           });
-          if (!hasYear) return; // ignora radar, barras por categoria, etc.
+          // Só faz sentido compactar se a série tem dados ANTES de 2021.
+          // Gráficos que já começam em 2021+ ficam como estão (sem botão).
+          if (!hasYear || minYear >= START_YEAR) return;
           gd._tsYear = true;
           gd._tsMaxYear = maxYear;
           gd._tsFullRange = originalRange(gd);
