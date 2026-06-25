@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFF no UI GreenMetric | Dashboard Completo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header com tons de verde */
+    .dashboard-header {
+      background: linear-gradient(135deg, #0d6b3a 0%, #1e9e5e 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards com cores únicas */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card (mantendo algumas verdes) */
+    .card-1 {
+      border-top-color: #10B981;
+    }
+
+    .card-1 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-1 .card-icon {
+      color: #10B981;
+    }
+
+    .card-2 {
+      border-top-color: #0EA5E9;
+    }
+
+    .card-2 .indicator-value {
+      color: #0EA5E9;
+    }
+
+    .card-2 .card-icon {
+      color: #0EA5E9;
+    }
+
+    .card-3 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-3 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-3 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-4 {
+      border-top-color: #EF4444;
+    }
+
+    .card-4 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-4 .card-icon {
+      color: #EF4444;
+    }
+
+    .card-5 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-5 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-5 .card-icon {
+      color: #8B5CF6;
+    }
+
+    .card-6 {
+      border-top-color: #06D6A0;
+    }
+
+    .card-6 .indicator-value {
+      color: #06D6A0;
+    }
+
+    .card-6 .card-icon {
+      color: #06D6A0;
+    }
+
+    .card-7 {
+      border-top-color: #EC4899;
+    }
+
+    .card-7 .indicator-value {
+      color: #EC4899;
+    }
+
+    .card-7 .card-icon {
+      color: #EC4899;
+    }
+
+    .card-8 {
+      border-top-color: #118AB2;
+    }
+
+    .card-8 .indicator-value {
+      color: #118AB2;
+    }
+
+    .card-8 .card-icon {
+      color: #118AB2;
+    }
+
+    /* Section Headers */
+    .section-header {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+
+    .brazil-section {
+      border-left-color: #10B981;
+    }
+
+    .world-section {
+      border-left-color: #1e40af;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-icon {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .brazil-icon {
+      color: #10B981;
+    }
+
+    .world-icon {
+      color: #1e40af;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .chart-notes {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    /* Tabs */
+    .chart-tabs {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #6b7280;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: #10B981;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .world-tab.active {
+      color: #1e40af;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header com degradê verde -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>A UFF no UI GreenMetric</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Classificação Brasil -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header brazil-section">
+          <h2 class="section-title">
+            <i class="fas fa-flag section-icon brazil-icon"></i>Classificação UFF no Brasil
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: World Ranking no Brasil -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">12º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Setting & Infrastructure -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <h5 class="card-title">Setting & Infrastructure</h5>
+            <div class="indicator-value">17º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Energy & Climate Change -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-sun"></i>
+            </div>
+            <h5 class="card-title">Energy & Climate Change</h5>
+            <div class="indicator-value">11º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Transportation - Card especial solicitado -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-bus"></i>
+            </div>
+            <h5 class="card-title">Transportation</h5>
+            <div class="indicator-value">1º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mais cards para Brasil -->
+    <div class="row mb-4">
+      <!-- Card 5: Waste -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-trash"></i>
+            </div>
+            <h5 class="card-title">Waste</h5>
+            <div class="indicator-value">25º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Water -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <h5 class="card-title">Water</h5>
+            <div class="indicator-value">31º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7: Education & Research -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-7">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h5 class="card-title">Education & Research</h5>
+            <div class="indicator-value">6º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8: Pontuação Geral -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-8">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Pontuação Geral</h5>
+            <div class="indicator-value">7533</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos Classificação Brasil -->
+    <div class="row mb-5">
+      <!-- Gráfico: Posição no Brasil (2018-2025) -->
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF no Brasil</h4>
+          <div id="brazil-position-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Quanto menor a posição, melhor o desempenho. Em 2025, a UFF alcançou a 12ª posição no Brasil.
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Gráfico: Classificações no Brasil -->
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Classificações no Brasil (2018-2025)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn pr-1 active" onclick="changeBrazilIndicatorsTab('infrastructure')">Infraestrutura & Transporte</button>
+            <button class="tab-btn" onclick="changeBrazilIndicatorsTab('environmental')">Ambientais</button>
+            <button class="tab-btn" onclick="changeBrazilIndicatorsTab('academic')">Educação & Pesquisa</button>
+          </div>
+          <div id="brazil-indicators-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Transportation é o indicador de melhor desempenho da UFF, alcançando a 1ª posição em 2025.
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Classificação Mundial -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header world-section">
+          <h2 class="section-title">
+            <i class="fas fa-globe section-icon world-icon"></i>Classificação UFF no Mundo
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: World Ranking Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial</h5>
+            <div class="indicator-value">347º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Setting & Infrastructure Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <h5 class="card-title">Setting & Infrastructure</h5>
+            <div class="indicator-value">390º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Energy & Climate Change Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-sun"></i>
+            </div>
+            <h5 class="card-title">Energy & Climate Change</h5>
+            <div class="indicator-value">343º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Transportation Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-bus"></i>
+            </div>
+            <h5 class="card-title">Transportation</h5>
+            <div class="indicator-value">22º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mais cards para Mundial -->
+    <div class="row mb-4">
+      <!-- Card 5: Waste Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-trash"></i>
+            </div>
+            <h5 class="card-title">Waste</h5>
+            <div class="indicator-value">510º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Water Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <h5 class="card-title">Water</h5>
+            <div class="indicator-value">1045º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7: Education & Research Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-7">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h5 class="card-title">Education & Research</h5>
+            <div class="indicator-value">303º</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8: Pontuação Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-8">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h5 class="card-title">Pontuação Mundial</h5>
+            <div class="indicator-value">7533</div>
+            <p class="card-subtitle">2025 | UI GreenMetric</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos Classificação Mundial -->
+    <div class="row mb-3">
+      <!-- Gráfico: Posição Mundial (2018-2025) -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Mundial da UFF</h4>
+          <div id="world-position-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Em 2025, a UFF alcançou a 347ª posição mundial, a melhor desde 2020.
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Gráfico: Classificações Mundiais -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Classificações Mundiais (2018-2025)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn pr-1 world-tab active" onclick="changeWorldClassificationsTab('infrastructure')">Infraestrutura & Transporte</button>
+            <button class="tab-btn world-tab" onclick="changeWorldClassificationsTab('environmental')">Ambientais</button>
+            <button class="tab-btn world-tab" onclick="changeWorldClassificationsTab('academic')">Educação & Pesquisa</button>
+          </div>
+          <div id="world-classifications-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Transportation é o indicador com melhor posição mundial (22º em 2025).
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico de Pontuação Geral -->
+    <div class="row mb-3">
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Pontuação Geral da UFF (2018-2025)</h4>
+          <div id="score-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            A pontuação geral da UFF vem crescendo consistentemente, alcançando 7533 pontos em 2025.
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Gráfico: Pontuações por Indicador -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Pontuações por Indicador (2018-2025)</h4>
+          <div class="chart-tabs mb-3">
+            <button class="tab-btn pr-1 active" onclick="changeScoresTab('infrastructure')">Infraestrutura & Transporte</button>
+            <button class="tab-btn" onclick="changeScoresTab('environmental')">Ambientais</button>
+            <button class="tab-btn" onclick="changeScoresTab('academic')">Educação & Pesquisa</button>
+          </div>
+          <div id="scores-chart"></div>
+          <!-- <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Transportation e Education & Research são os indicadores com maior pontuação em 2025.
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        <i class="fas fa-database me-1"></i>
+        Dados extraídos do ranking UI GreenMetric (2018-2025)
+      </p>
+      <p class="mb-0">
+        <i class="fa-solid fa-arrow-trend-up me-1"></i>
+        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido
+          pela PGI/PLAN - UFF</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dados extraídos do arquivo Excel
+    const data = {
+      // Anos
+      years: [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018],
+      
+      // Classificação no Brasil (posição)
+      brazilWorldRank: [12, 19, 22, 23, 18, 13, 17, 19],
+      brazilSettingInfrastructure: [17, 22, 30, 18, 12, 14, 18, 16],
+      brazilEnergyClimate: [11, 14, 20, 34, 30, 11, 17, 19],
+      brazilWaste: [25, 24, 29, 29, 27, 23, 21, 19],
+      brazilWater: [31, 32, 29, 26, 22, 30, 22, 17],
+      brazilTransportation: [1, 8, 9, 7, 4, 6, 12, 10],
+      brazilEducationResearch: [6, 10, 10, 13, 10, 9, 14, 19],
+      
+      // Classificação Mundial (posição)
+      worldWorldRank: [347, 426, 559, 559, 447, 317, 398, 496],
+      worldSettingInfrastructure: [390, 561, 705, 407, 363, 261, 270, 323],
+      worldEnergyClimate: [343, 481, 609, 900, 799, 292, 491, 592],
+      worldWaste: [510, 486, 684, 623, 544, 479, 432, 443],
+      worldWater: [1045, 910, 811, 658, 449, 605, 483, 384],
+      worldTransportation: [22, 305, 301, 272, 214, 193, 360, 373],
+      worldEducationResearch: [303, 249, 218, 337, 278, 247, 382, 590],
+      
+      // Pontuação (absoluta)
+      scoreWorld: [7533, 6995, 6195, 5655, 5775, 6075, 4950, 4100],
+      scoreSettingInfrastructure: [1085, 960, 810, 960, 950, 925, 875, 875],
+      scoreEnergyClimate: [1560, 1385, 1150, 600, 550, 1225, 850, 625],
+      scoreWaste: [1225, 1200, 900, 900, 900, 900, 825, 750],
+      scoreWater: [437.5, 400, 360, 410, 600, 350, 400, 400],
+      scoreTransportation: [1712.5, 1425, 1375, 1375, 1375, 1325, 1000, 825],
+      scoreEducationResearch: [1512.5, 1625, 1600, 1410, 1400, 1350, 1000, 625]
+    };
+
+    // Cores para os gráficos
+    const colors = {
+      green: '#10B981',
+      blue: '#0EA5E9',
+      orange: '#F59E0B',
+      red: '#EF4444',
+      purple: '#8B5CF6',
+      teal: '#06D6A0',
+      pink: '#EC4899',
+      indigo: '#118AB2',
+      gray: '#9CA3AF',
+      lightGreen: '#86EFAC',
+      lightBlue: '#93C5FD'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+      toImageButtonOptions: {
+        format: 'png',
+        filename: 'uff-greenmetric-ranking',
+        height: 500,
+        width: 1000,
+        scale: 1
+      },
+    };
+
+    // Layout comum
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 30, r: 30, b: 60, l: 60 },
+      hovermode: 'closest',
+      showlegend: true,
+      legend: {
+        orientation: 'h',
+        y: -0.25,
+        x: 0.5,
+        xanchor: 'center',
+        bgcolor: 'rgba(255, 255, 255, 0.9)',
+        bordercolor: 'rgba(0,0,0,0.1)',
+        borderwidth: 1
+      },
+      xaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickmode: 'array',
+        tickvals: data.years,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      },
+      yaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 11,
+            color: '#6b7280'
+          }
+        }
+      },
+      
+    };
+
+    // Layout para gráficos de posição
+    const positionLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        autorange: 'reversed',
+        title: 'Posição (menor = melhor)',
+        tickformat: 'd'
+      }
+    };
+
+    // Layout para gráficos de pontuação
+    const scoreLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        title: 'Pontuação',
+        tickformat: '.1f'
+      }
+    };
+
+    // Função para criar annotations nos gráficos
+    function createAnnotations(x, y, color, suffix = '', yshift = -15) {
+      return y.map((value, index) => ({
+        x: x[index],
+        y: value,
+        text: value.toString() + suffix,
+        showarrow: false,
+        font: {
+          size: 10,
+          color: color,
+          family: 'Inter, sans-serif'
+        },
+        yanchor: 'center',
+        yshift: yshift,
+        xshift: 6,
+      }));
+    }
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico: Posição no Brasil (2018-2025)
+      const brazilPositionTrace = {
+        x: data.years,
+        y: data.brazilWorldRank,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Posição no Brasil',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>'
+      };
+
+      const brazilAnnotations = createAnnotations(data.years, data.brazilWorldRank, colors.green, '');
+
+      Plotly.newPlot('brazil-position-chart', [brazilPositionTrace], {
+        ...positionLayout,
+        title: '',
+        yaxis: {
+          ...positionLayout.yaxis,
+          range: [35, 1]
+        },
+        annotations: brazilAnnotations
+      }, chartConfig);
+
+      // 2. Gráfico: Posição Mundial (2018-2025)
+      const worldPositionTrace = {
+        x: data.years,
+        y: data.worldWorldRank,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Posição Mundial  ',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Mundial:</b> %{y}º<extra></extra>'
+      };
+
+      const worldAnnotations = createAnnotations(data.years, data.worldWorldRank, colors.purple, '');
+
+      Plotly.newPlot('world-position-chart', [worldPositionTrace], {
+        ...positionLayout,
+        title: '',
+        yaxis: {
+          ...positionLayout.yaxis,
+          range: [1200, 0]
+        },
+        annotations: worldAnnotations
+      }, chartConfig);
+
+      // 3. Gráfico: Pontuação Geral (2018-2025)
+      const scoreTrace = {
+        x: data.years,
+        y: data.scoreWorld,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Pontuação Geral  ',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Pontuação Geral:</b> %{y}<extra></extra>'
+      };
+
+      const scoreAnnotations = createAnnotations(data.years, data.scoreWorld, colors.green);
+
+      Plotly.newPlot('score-chart', [scoreTrace], {
+        ...scoreLayout,
+        title: '',
+        yaxis: {
+          ...scoreLayout.yaxis,
+          range: [3000, 8000]
+        },
+        annotations: scoreAnnotations
+      }, chartConfig);
+
+      // 4. Inicializar gráficos com abas
+      createBrazilIndicatorsChart('infrastructure');
+      createWorldClassificationsChart('infrastructure');
+      createScoresChart('infrastructure');
+    }
+
+    // Função para criar gráfico de indicadores Brasil
+    function createBrazilIndicatorsChart(tab) {
+      const years = data.years;
+      let traces = [];
+      let annotations = [];
+
+      if (tab === 'infrastructure') {
+        traces = [
+          //createTrace(years, data.brazilWorldRank, 'World Ranking', colors.green, 4),
+          createTrace(years, data.brazilSettingInfrastructure, 'Setting & Infrastructure  ', colors.blue, 3),
+          createTrace(years, data.brazilTransportation, 'Transportation', colors.red, 3)
+        ];
+        
+        annotations = [
+          //...createAnnotations(years, data.brazilWorldRank, colors.green, 'º'),
+          ...createAnnotations(years, data.brazilSettingInfrastructure, colors.blue, ''),
+          ...createAnnotations(years, data.brazilTransportation, colors.red, '')
+        ];
+      } else if (tab === 'environmental') {
+        traces = [
+          createTrace(years, data.brazilEnergyClimate, 'Energy & Climate Change', colors.orange, 4),
+          createTrace(years, data.brazilWaste, 'Waste', colors.purple, 3),
+          createTrace(years, data.brazilWater, 'Water', colors.teal, 3)
+        ];
+        
+        annotations = [
+          ...createAnnotations(years, data.brazilEnergyClimate, colors.orange, '', 15),
+          ...createAnnotations(years, data.brazilWaste, colors.purple, '', 15),
+          ...createAnnotations(years, data.brazilWater, colors.teal, '', 15)
+        ];
+      } else if (tab === 'academic') {
+        traces = [
+          createTrace(years, data.brazilEducationResearch, 'Education & Research', colors.pink, 4),
+          createTrace(years, data.brazilWorldRank, 'World Ranking', colors.green, 3),
+          //createTrace(years, data.brazilTransportation, 'Transportation', colors.red, 3)
+        ];
+        
+        annotations = [
+          ...createAnnotations(years, data.brazilEducationResearch, colors.pink, ''),
+          ...createAnnotations(years, data.brazilWorldRank, colors.green, ''),
+          //...createAnnotations(years, data.brazilTransportation, colors.red, '')
+        ];
+      }
+
+      Plotly.newPlot('brazil-indicators-chart', traces, {
+        ...positionLayout,
+        title: '',
+        yaxis: {
+          ...positionLayout.yaxis,
+          range: [35, 1]
+        },
+        annotations: annotations
+      }, chartConfig);
+    }
+
+    // Função para criar gráfico de classificações mundiais
+    function createWorldClassificationsChart(tab) {
+      const years = data.years;
+      let traces = [];
+      let annotations = [];
+
+      if (tab === 'infrastructure') {
+        traces = [
+          //createTrace(years, data.worldWorldRank, 'World Ranking', colors.green, 4),
+          createTrace(years, data.worldSettingInfrastructure, 'Setting & Infrastructure  ', colors.blue, 3),
+          createTrace(years, data.worldTransportation, 'Transportation', colors.red, 3)
+        ];
+        
+        annotations = [
+          ...createAnnotations(years, data.worldTransportation, colors.red, ''),
+          //...createAnnotations(years, data.worldWorldRank, colors.green, ''),
+          ...createAnnotations(years, data.worldSettingInfrastructure, colors.blue, '')
+        ];
+      } else if (tab === 'environmental') {
+        traces = [
+          createTrace(years, data.worldEnergyClimate, 'Energy & Climate Change', colors.orange, 4),
+          createTrace(years, data.worldWaste, 'Waste', colors.purple, 3),
+          createTrace(years, data.worldWater, 'Water', colors.teal, 3)
+        ];
+        
+        annotations = [
+          ...createAnnotations(years, data.worldEnergyClimate, colors.orange, ''),
+          ...createAnnotations(years, data.worldWaste, colors.purple, ''),
+          ...createAnnotations(years, data.worldWater, colors.teal, '')
+        ];
+      } else if (tab === 'academic') {
+        traces = [
+          createTrace(years, data.worldEducationResearch, 'Education & Research', colors.pink, 4),
+          createTrace(years, data.worldWorldRank, 'World Ranking', colors.green, 3),
+          //createTrace(years, data.worldTransportation, 'Transportation', colors.red, 3)
+        ];
+        
+        annotations = [
+          ...createAnnotations(years, data.worldEducationResearch, colors.pink, ''),
+          ...createAnnotations(years, data.worldWorldRank, colors.green, ''),
+          //...createAnnotations(years, data.worldTransportation, colors.red, '')
+        ];
+      }
+
+      Plotly.newPlot('world-classifications-chart', traces, {
+        ...positionLayout,
+        title: '',
+        yaxis: {
+          ...positionLayout.yaxis,
+          range: [1200, 0]
+        },
+        annotations: annotations
+      }, chartConfig);
+    }
+
+    // Função para criar gráfico de pontuações
+    function createScoresChart(tab) {
+      const years = data.years;
+      let traces = [];
+      let annotations = [];
+
+      if (tab === 'infrastructure') {
+        traces = [
+          //createScoreTrace(years, data.scoreWorld, 'Pontuação Geral', colors.green, 4),
+          createScoreTrace(years, data.scoreSettingInfrastructure, 'Setting & Infrastructure  ', colors.blue, 3),
+          createScoreTrace(years, data.scoreTransportation, 'Transportation', colors.red, 3)
+        ];
+        
+        annotations = [
+            ...createAnnotations(years, data.scoreSettingInfrastructure, colors.blue, ''),
+          ...createAnnotations(years, data.scoreTransportation, colors.red, ''),
+        ];
+      } else if (tab === 'environmental') {
+        traces = [
+          createScoreTrace(years, data.scoreEnergyClimate, 'Energy & Climate Change', colors.orange, 4),
+          createScoreTrace(years, data.scoreWaste, 'Waste', colors.purple, 3),
+          createScoreTrace(years, data.scoreWater, 'Water', colors.teal, 3)
+        ];
+        
+        annotations = [
+          ...createAnnotations(years, data.scoreEnergyClimate, colors.orange, ''),
+          ...createAnnotations(years, data.scoreWaste, colors.purple, ''),
+          ...createAnnotations(years, data.scoreWater, colors.teal, '')
+        ];
+      } else if (tab === 'academic') {
+        traces = [
+          createScoreTrace(years, data.scoreEducationResearch, 'Education & Research', colors.pink, 4),
+          createScoreTrace(years, data.scoreWorld, 'Pontuação Geral', colors.green, 3),
+          //createScoreTrace(years, data.scoreTransportation, 'Transportation', colors.red, 3)
+        ];
+        
+        annotations = [
+          ...createAnnotations(years, data.scoreEducationResearch, colors.pink, ''),
+          ...createAnnotations(years, data.scoreWorld, colors.green, ''),
+          //...createAnnotations(years, data.scoreTransportation, colors.red, '')
+        ];
+      }
+
+      Plotly.newPlot('scores-chart', traces, {
+        ...scoreLayout,
+        title: '',
+        annotations: annotations
+      }, chartConfig);
+    }
+
+    // Funções auxiliares para criar traços
+    function createTrace(x, y, name, color, width) {
+      return {
+        x: x,
+        y: y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: name,
+        line: {
+          color: color,
+          width: width,
+          shape: 'spline'
+        },
+        marker: {
+          color: color,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        hovertemplate: `<b>${name}:</b> %{y}º<br><b>Ano:</b> %{x}<extra></extra>`
+      };
+    }
+
+    function createScoreTrace(x, y, name, color, width) {
+      return {
+        x: x,
+        y: y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: name,
+        line: {
+          color: color,
+          width: width,
+          shape: 'spline'
+        },
+        marker: {
+          color: color,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        hovertemplate: `<b>${name}:</b> %{y}<br><b>Ano:</b> %{x}<extra></extra>`
+      };
+    }
+
+    // Funções para trocar abas
+    function changeBrazilIndicatorsTab(tab) {
+      updateTabButtons('brazil-indicators-chart', tab);
+      createBrazilIndicatorsChart(tab);
+    }
+
+    function changeWorldClassificationsTab(tab) {
+      updateTabButtons('world-classifications-chart', tab);
+      createWorldClassificationsChart(tab);
+    }
+
+    function changeScoresTab(tab) {
+      updateTabButtons('scores-chart', tab);
+      createScoresChart(tab);
+    }
+
+    function updateTabButtons(chartId, activeTab) {
+      const chartContainer = document.getElementById(chartId).closest('.chart-container');
+      const tabBtns = chartContainer.querySelectorAll('.tab-btn');
+      tabBtns.forEach(btn => btn.classList.remove('active'));
+
+      // Encontrar o botão correspondente à aba ativa
+      tabBtns.forEach(btn => {
+        if (btn.textContent.toLowerCase().includes(activeTab) || 
+            (activeTab === 'infrastructure' && btn.textContent.toLowerCase().includes('infraestrutura')) ||
+            (activeTab === 'environmental' && btn.textContent.toLowerCase().includes('ambientais')) ||
+            (activeTab === 'academic' && btn.textContent.toLowerCase().includes('educação'))) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- ===== Séries temporais responsivas: no celular exibe a partir de 2021 ===== -->
+  <style>
+    #tsRangeToggle {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1080;
+      display: none; /* aparece apenas no celular (ver media query) */
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 50px;
+      background: #1f2937;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+    }
+    #tsRangeToggle:active { transform: scale(0.97); }
+    @media (max-width: 767.98px) {
+      #tsRangeToggle { display: inline-flex; }
+    }
+  </style>
+
+  <button id="tsRangeToggle" type="button" aria-pressed="false">
+    <i class="fa-solid fa-chart-line"></i>
+    <span id="tsRangeToggleLabel">Ver série completa</span>
+  </button>
+
+  <script>
+    // Mostra a série a partir de 2021 no celular; completa no desktop.
+    // Não altera os dados — apenas a janela visível do eixo X (Plotly.relayout).
+    (function () {
+      const START_YEAR = 2021;
+      const MOBILE_MAX = 768; // px (breakpoint md do Bootstrap)
+      let compact = null;     // estado atual (true = desde 2021)
+      let userOverride = false;
+
+      const isMobile = () => window.innerWidth < MOBILE_MAX;
+      const graphs = () => Array.from(document.querySelectorAll('.js-plotly-plot'));
+
+      // Considera "ano" um eixo X numérico entre 2000 e 2035.
+      function isYearArray(x) {
+        return Array.isArray(x) && x.length > 0 &&
+          x.every(v => typeof v === 'number' && isFinite(v) && v >= 2000 && v <= 2035);
+      }
+
+      // Marca quais gráficos têm eixo X de anos e guarda o range original.
+      function indexGraphs() {
+        graphs().forEach(gd => {
+          if (gd._tsIndexed) return;
+          let maxYear = -Infinity, hasYear = false;
+          (gd.data || []).forEach(tr => {
+            if (isYearArray(tr.x)) {
+              hasYear = true;
+              maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
+            }
+          });
+          gd._tsYearAxis = hasYear;
+          if (hasYear) {
+            const r = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
+            gd._tsFullRange = r ? r.slice() : null; // range "cheio" original (ou null = autorange)
+            gd._tsMaxYear = maxYear;
+          }
+          gd._tsIndexed = true;
+        });
+      }
+
+      function apply(toCompact) {
+        compact = toCompact;
+        indexGraphs();
+        graphs().forEach(gd => {
+          if (!gd._tsYearAxis) return; // ignora radar, barras por categoria, etc.
+          const upd = toCompact
+            ? { 'xaxis.range': [START_YEAR - 0.5, gd._tsMaxYear + 0.5] }
+            : (gd._tsFullRange
+                ? { 'xaxis.range': gd._tsFullRange.slice() }
+                : { 'xaxis.autorange': true });
+          Plotly.relayout(gd, upd);
+        });
+        syncButton();
+      }
+
+      function syncButton() {
+        const btn = document.getElementById('tsRangeToggle');
+        const lbl = document.getElementById('tsRangeToggleLabel');
+        if (!btn || !lbl) return;
+        if (compact) {
+          lbl.textContent = 'Ver série completa';
+          btn.querySelector('i').className = 'fa-solid fa-chart-line';
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          lbl.textContent = 'Ver desde 2021';
+          btn.querySelector('i').className = 'fa-solid fa-compress';
+          btn.setAttribute('aria-pressed', 'true');
+        }
+      }
+
+      function setup() {
+        indexGraphs();
+        if (graphs().length === 0) { setTimeout(setup, 120); return; }
+        apply(isMobile()); // celular entra compacto; desktop, completo
+        const btn = document.getElementById('tsRangeToggle');
+        if (btn) btn.addEventListener('click', () => { userOverride = true; apply(!compact); });
+        window.addEventListener('resize', () => { if (!userOverride) apply(isMobile()); });
+      }
+
+      // Roda depois do initCharts() já existente no arquivo.
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(setup, 60));
+      } else {
+        setTimeout(setup, 60);
+      }
+    })();
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

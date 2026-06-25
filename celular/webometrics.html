@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFF no Webometrics Ranking | Dashboard Completo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header com tons de verde */
+    .dashboard-header {
+      background: linear-gradient(135deg, #0c7d3e 0%, #4CAF50 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards com cores únicas */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card */
+    .card-1 {
+      border-top-color: #3B82F6;
+    }
+
+    .card-1 .indicator-value {
+      color: #3B82F6;
+    }
+
+    .card-1 .card-icon {
+      color: #3B82F6;
+    }
+
+    .card-2 {
+      border-top-color: #10B981;
+    }
+
+    .card-2 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-2 .card-icon {
+      color: #10B981;
+    }
+
+    .card-3 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-3 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-3 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-4 {
+      border-top-color: #EF4444;
+    }
+
+    .card-4 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-4 .card-icon {
+      color: #EF4444;
+    }
+
+    /* Section Headers */
+    .section-header {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+
+    .ranking-section {
+      border-left-color: #0c7d3e;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-icon {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .ranking-icon {
+      color: #0c7d3e;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>A UFF no Webometrics</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Classificações Webometrics -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header ranking-section">
+          <h2 class="section-title">
+            <i class="fas fa-globe-americas section-icon ranking-icon"></i>Classificações Webometrics 2025
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: Entre as Federais (2025) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h5 class="card-title">Entre as Federais</h5>
+            <div class="indicator-value">9º</div>
+            <p class="card-subtitle">2025 | Webometrics</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Posição no Brasil (2025) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil</h5>
+            <div class="indicator-value">9º</div>
+            <p class="card-subtitle">2025 | Webometrics</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Posição na América Latina (2024) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h5 class="card-title">Posição na América Latina</h5>
+            <div class="indicator-value">14º</div>
+            <p class="card-subtitle">2024 | Webometrics</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Posição Mundial (2025) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial da UFF</h5>
+            <div class="indicator-value">500º</div>
+            <p class="card-subtitle">2025 | Webometrics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos de Evolução -->
+    <div class="row mb-5">
+      <div class="col-lg-6 p-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF entre as Federais (2013-2025)</h4>
+          <div id="federais-chart"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 p-3 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF no Brasil (2013-2025)</h4>
+          <div id="brasil-chart"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição da UFF na América Latina (2013-2024)</h4>
+          <div id="latam-chart"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Posição Mundial da UFF (2013-2025)</h4>
+          <div id="mundo-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        <i class="fas fa-database me-1"></i>
+        Dados extraídos do Ranking Webometrics (2013-2025)
+      </p>
+      <p class="mb-0">
+        <i class="fa-solid fa-arrow-trend-up me-1"></i>
+        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido
+          pela PGI/PLAN - UFF</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dados EXATOS da tabela fornecida (Plan2)
+    const data = {
+      years: [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      federais: [8, 8, 8, 7, 8, 7, 7, 7, 5, 6, 6, 5, 9],
+      brasil: [11, 11, 11, 9, 11, 10, 10, 10, 7, 9, 9, 8, 9],
+      latam: [17, 16, 18, 13, 21, 19, 15, 16, 13, 14, 15, 14, null],
+      mundo: [438, 526, 529, 494, 632, 712, 595, 635, 575, 636, 605, 609, 500]
+    };
+
+    // Cores para gráficos
+    const colors = {
+      azul: '#3B82F6',
+      verde: '#10B981',
+      laranja: '#F59E0B',
+      vermelho: '#EF4444'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d']
+    };
+
+    // Layout comum
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 40, r: 30, b: 60, l: 60 },
+      hovermode: 'closest',
+      showlegend: false,
+      xaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.05)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickmode: 'array',
+        tickvals: data.years,
+        tickangle: 45,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          text: 'Ano',
+          font: {
+            size: 12,
+            color: '#6b7280'
+          }
+        }
+      },
+      yaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.05)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          text: 'Posição (menor = melhor)',
+          font: {
+            size: 12,
+            color: '#6b7280'
+          }
+        }
+      }
+    };
+
+    // Layout para gráficos de posição (menor = melhor)
+    const positionLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        autorange: 'reversed'
+      }
+    };
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico Posição entre as Federais
+      const federaisTrace = {
+        x: data.years,
+        y: data.federais,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        text: data.federais.map(v => v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.azul,
+          family: 'Inter, sans-serif'
+        },
+        name: 'Entre as Federais',
+        line: {
+          color: colors.azul,
+          width: 3,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.azul,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição entre Federais:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('federais-chart', [federaisTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 2. Gráfico Posição no Brasil
+      const brasilTrace = {
+        x: data.years,
+        y: data.brasil,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        text: data.brasil.map(v => v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.verde,
+          family: 'Inter, sans-serif'
+        },
+        name: 'Posição no Brasil',
+        line: {
+          color: colors.verde,
+          width: 3,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.verde,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição no Brasil:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('brasil-chart', [brasilTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 3. Gráfico Posição na América Latina (sem 2025)
+      const latamYears = data.years.filter((year, index) => data.latam[index] !== null);
+      const latamValues = data.latam.filter(value => value !== null);
+
+      const latamTrace = {
+        x: latamYears,
+        y: latamValues,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        text: latamValues.map(v => v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.laranja,
+          family: 'Inter, sans-serif'
+        },
+        name: 'América Latina',
+        line: {
+          color: colors.laranja,
+          width: 3,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.laranja,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição América Latina:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('latam-chart', [latamTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+
+      // 4. Gráfico Posição Mundial
+      const mundoTrace = {
+        x: data.years,
+        y: data.mundo,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        text: data.mundo.map(v => v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.vermelho,
+          family: 'Inter, sans-serif'
+        },
+        name: 'Posição Mundial',
+        line: {
+          color: colors.vermelho,
+          width: 3,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.vermelho,
+          size: 8,
+          line: {
+            color: 'white',
+            width: 1
+          }
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Mundial:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('mundo-chart', [mundoTrace], {
+        ...positionLayout,
+        title: ''
+      }, chartConfig);
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- ===== Séries temporais responsivas: no celular exibe a partir de 2021 ===== -->
+  <style>
+    #tsRangeToggle {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1080;
+      display: none; /* aparece apenas no celular (ver media query) */
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 50px;
+      background: #1f2937;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+    }
+    #tsRangeToggle:active { transform: scale(0.97); }
+    @media (max-width: 767.98px) {
+      #tsRangeToggle { display: inline-flex; }
+    }
+  </style>
+
+  <button id="tsRangeToggle" type="button" aria-pressed="false">
+    <i class="fa-solid fa-chart-line"></i>
+    <span id="tsRangeToggleLabel">Ver série completa</span>
+  </button>
+
+  <script>
+    // Mostra a série a partir de 2021 no celular; completa no desktop.
+    // Não altera os dados — apenas a janela visível do eixo X (Plotly.relayout).
+    (function () {
+      const START_YEAR = 2021;
+      const MOBILE_MAX = 768; // px (breakpoint md do Bootstrap)
+      let compact = null;     // estado atual (true = desde 2021)
+      let userOverride = false;
+
+      const isMobile = () => window.innerWidth < MOBILE_MAX;
+      const graphs = () => Array.from(document.querySelectorAll('.js-plotly-plot'));
+
+      // Considera "ano" um eixo X numérico entre 2000 e 2035.
+      function isYearArray(x) {
+        return Array.isArray(x) && x.length > 0 &&
+          x.every(v => typeof v === 'number' && isFinite(v) && v >= 2000 && v <= 2035);
+      }
+
+      // Marca quais gráficos têm eixo X de anos e guarda o range original.
+      function indexGraphs() {
+        graphs().forEach(gd => {
+          if (gd._tsIndexed) return;
+          let maxYear = -Infinity, hasYear = false;
+          (gd.data || []).forEach(tr => {
+            if (isYearArray(tr.x)) {
+              hasYear = true;
+              maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
+            }
+          });
+          gd._tsYearAxis = hasYear;
+          if (hasYear) {
+            const r = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
+            gd._tsFullRange = r ? r.slice() : null; // range "cheio" original (ou null = autorange)
+            gd._tsMaxYear = maxYear;
+          }
+          gd._tsIndexed = true;
+        });
+      }
+
+      function apply(toCompact) {
+        compact = toCompact;
+        indexGraphs();
+        graphs().forEach(gd => {
+          if (!gd._tsYearAxis) return; // ignora radar, barras por categoria, etc.
+          const upd = toCompact
+            ? { 'xaxis.range': [START_YEAR - 0.5, gd._tsMaxYear + 0.5] }
+            : (gd._tsFullRange
+                ? { 'xaxis.range': gd._tsFullRange.slice() }
+                : { 'xaxis.autorange': true });
+          Plotly.relayout(gd, upd);
+        });
+        syncButton();
+      }
+
+      function syncButton() {
+        const btn = document.getElementById('tsRangeToggle');
+        const lbl = document.getElementById('tsRangeToggleLabel');
+        if (!btn || !lbl) return;
+        if (compact) {
+          lbl.textContent = 'Ver série completa';
+          btn.querySelector('i').className = 'fa-solid fa-chart-line';
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          lbl.textContent = 'Ver desde 2021';
+          btn.querySelector('i').className = 'fa-solid fa-compress';
+          btn.setAttribute('aria-pressed', 'true');
+        }
+      }
+
+      function setup() {
+        indexGraphs();
+        if (graphs().length === 0) { setTimeout(setup, 120); return; }
+        apply(isMobile()); // celular entra compacto; desktop, completo
+        const btn = document.getElementById('tsRangeToggle');
+        if (btn) btn.addEventListener('click', () => { userOverride = true; apply(!compact); });
+        window.addEventListener('resize', () => { if (!userOverride) apply(isMobile()); });
+      }
+
+      // Roda depois do initCharts() já existente no arquivo.
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(setup, 60));
+      } else {
+        setTimeout(setup, 60);
+      }
+    })();
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

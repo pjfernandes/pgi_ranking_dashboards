@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A UFF no CWTS Leiden Ranking | Dashboard Completo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f8fafc;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: #1f2937;
+      line-height: 1.5;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Header - Azul Marinho */
+    .dashboard-header {
+      background: linear-gradient(135deg, #000080 0%, #1e3c72 100%);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      padding: 30px;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cards com cores únicas */
+    .indicator-card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      height: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-top: 4px solid;
+    }
+
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .indicator-card .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .indicator-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    /* Cores únicas para cada card */
+    .card-1 {
+      border-top-color: #3B82F6;
+    }
+
+    .card-1 .indicator-value {
+      color: #3B82F6;
+    }
+
+    .card-1 .card-icon {
+      color: #3B82F6;
+    }
+
+    .card-2 {
+      border-top-color: #10B981;
+    }
+
+    .card-2 .indicator-value {
+      color: #10B981;
+    }
+
+    .card-2 .card-icon {
+      color: #10B981;
+    }
+
+    .card-3 {
+      border-top-color: #F59E0B;
+    }
+
+    .card-3 .indicator-value {
+      color: #F59E0B;
+    }
+
+    .card-3 .card-icon {
+      color: #F59E0B;
+    }
+
+    .card-4 {
+      border-top-color: #EF4444;
+    }
+
+    .card-4 .indicator-value {
+      color: #EF4444;
+    }
+
+    .card-4 .card-icon {
+      color: #EF4444;
+    }
+
+    .card-5 {
+      border-top-color: #8B5CF6;
+    }
+
+    .card-5 .indicator-value {
+      color: #8B5CF6;
+    }
+
+    .card-5 .card-icon {
+      color: #8B5CF6;
+    }
+
+    .card-6 {
+      border-top-color: #EC4899;
+    }
+
+    .card-6 .indicator-value {
+      color: #EC4899;
+    }
+
+    .card-6 .card-icon {
+      color: #EC4899;
+    }
+
+    /* Section Headers */
+    .section-header {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+
+    .numeros-section {
+      border-left-color: #8B5CF6;
+    }
+
+    .brasil-section {
+      border-left-color: #1e40af;
+    }
+
+    .mundo-section {
+      border-left-color: #059669;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-icon {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .numeros-icon {
+      color: #8B5CF6;
+    }
+
+    .brasil-icon {
+      color: #1e40af;
+    }
+
+    .mundo-icon {
+      color: #059669;
+    }
+
+    /* Charts */
+    .chart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      height: 100%;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .chart-notes {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    /* Footer */
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Legend Box - com mesmo estilo dos cards */
+    .legend-box {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 25px;
+      border-left: 4px solid #3B82F6;
+    }
+
+    .legend-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .legend-item {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .legend-badge {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header {
+        padding: 25px;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .indicator-value {
+        font-size: 1.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1>A UFF no CWTS Leiden Ranking</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legenda dos Indicadores -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="legend-box">
+          <h5 class="legend-title">Legenda dos Indicadores</h5>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-badge" style="background-color: #3B82F6;"></span>
+                <strong>P:</strong> Posição baseada no n° de publicações nos últimos 4 anos
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-badge" style="background-color: #10B981;"></span>
+                <strong>P Top 10%:</strong> Posição baseada no n° de publicações que pertencem ao
+                top 10% na sua área
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-badge" style="background-color: #F59E0B;"></span>
+                <strong>PP Top 10%:</strong> Posição baseada na proporção de publicações que pertencem
+                ao top 10% na sua área
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção Números da UFF (PRIMEIRA SEÇÃO) -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header numeros-section">
+          <h2 class="section-title">
+            <i class="fas fa-chart-bar section-icon numeros-icon"></i>Números da UFF (mundo) - Produção Científica
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card Número de Publicações -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <h5 class="card-title">Número de Publicações</h5>
+            <div class="indicator-value">2289</div>
+            <p class="card-subtitle">2025 | Últimos 4 anos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Publicações Top 10% -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h5 class="card-title">Publicações Top 10%</h5>
+            <div class="indicator-value">133</div>
+            <p class="card-subtitle">2025 | Publicações de alto impacto</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Proporção Top 10% -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <h5 class="card-title">Proporção Top 10%</h5>
+            <div class="indicator-value">5.8%</div>
+            <p class="card-subtitle">2025 | Proporção do total</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Crescimento 2016-2025 -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-arrow-up"></i>
+            </div>
+            <h5 class="card-title">Crescimento 2016-2025</h5>
+            <div class="indicator-value">+90%</div>
+            <p class="card-subtitle">Aumento no número de publicações</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficos Números da UFF -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Número de Publicações da UFF (2016-2025)</h4>
+          <div id="publicacoes-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Publicações nos últimos 4 anos (quadriênio) - Crescimento contínuo
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Publicações Top 10% vs Total (2016-2025)</h4>
+          <div id="top10-vs-total-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Comparação entre publicações totais e publicações de alto impacto (Top 10%)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Ranking Brasil -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header brasil-section">
+          <h2 class="section-title">
+            <i class="fas fa-flag section-icon brasil-icon"></i>Ranking Brasil - CWTS Leiden (2025)
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 1: Posição no Brasil (P) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <h5 class="card-title">Posição no Brasil (P)</h5>
+            <div class="indicator-value">17º</div>
+            <p class="card-subtitle">Baseado em 2289 publicações</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Posição Top 10% (P Top 10%) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h5 class="card-title">Posição Top 10% (P Top 10%)</h5>
+            <div class="indicator-value">14º</div>
+            <p class="card-subtitle">Baseado em 133 publicações top 10%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Posição PP Top 10% -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-1">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <h5 class="card-title">Posição PP Top 10%</h5>
+            <div class="indicator-value">10º</div>
+            <p class="card-subtitle">Proporção de 5.8%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Melhor Posição PP Top 10% -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-2">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h5 class="card-title">Melhor PP Top 10%</h5>
+            <div class="indicator-value">6º</div>
+            <p class="card-subtitle">2017 & 2021 | Proporção 6.6% em 2021</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos Ranking Brasil -->
+    <div class="row mb-5">
+      <div class="col-lg-6 p-3 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Evolução das Posições da UFF no Brasil</h4>
+          <div id="brasil-posicoes-chart"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 p-3 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Proporção de Publicações Top 10%</h4>
+          <div id="brasil-proporcao-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            PP Top 10% = proporção de publicações que pertencem ao top 10% na sua área
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Ranking Mundial -->
+    <div class="row mb-4">
+      <div class="col-12 mb-3">
+        <div class="section-header mundo-section">
+          <h2 class="section-title">
+            <i class="fas fa-globe section-icon mundo-icon"></i>Ranking Mundial - CWTS Leiden (2025)
+          </h2>
+        </div>
+      </div>
+
+      <!-- Card 5: Posição Mundial (P) -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-3">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h5 class="card-title">Posição Mundial (P)</h5>
+            <div class="indicator-value">763º</div>
+            <p class="card-subtitle">Entre universidades do mundo todo</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Posição Top 10% Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-4">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h5 class="card-title">Posição Top 10% (P)</h5>
+            <div class="indicator-value">991º</div>
+            <p class="card-subtitle">Impacto das publicações</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7: Posição PP Top 10% Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-5">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <h5 class="card-title">Posição PP Top 10%</h5>
+            <div class="indicator-value">1372º</div>
+            <p class="card-subtitle">Proporção de publicações de alto impacto</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8: Melhor Posição Mundial -->
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="indicator-card card-6">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h5 class="card-title">Melhor Posição (P)</h5>
+            <div class="indicator-value">685º</div>
+            <p class="card-subtitle">2020 | Ranking Mundial</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos Ranking Mundial -->
+    <div class="row mb-4">
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Evolução da Posição Mundial da UFF</h4>
+          <div id="mundo-posicao-chart"></div>
+
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="chart-container">
+          <h4 class="chart-title">Indicadores de Impacto Mundial</h4>
+          <div id="mundo-indicadores-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Análise comparativa dos indicadores de impacto mundial
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p class="mb-2">
+        Dados extraídos do CWTS Leiden Ranking (2016-2025)
+      </p>
+      <p class="mb-0">
+        <i class="fa-solid fa-arrow-trend-up me-1"></i>
+        <a href="https://www.uff.br/proplan/uff-em-numeros/" target="_blank" style="text-decoration: none;">Desenvolvido
+          pela PGI/PLAN - UFF</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dados EXATAMENTE como estão na PRIMEIRA PLANILHA do arquivo XLSX fornecido
+    const data = {
+      // Anos completos disponíveis (2016-2025)
+      years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+
+      // RANKING BRASIL - Dados COMPLETOS da planilha
+      brasilP: [15, 16, 16, 16, 16, 17, 17, 17, 17, 17],
+      brasilPTop10: [14, 14, 13, 15, 12, 13, 16, 13, 14, 14],
+      brasilPPTop10: [8, 6, 7, 14, 7, 6, 11, 8, 11, 10],
+
+      // NÚMEROS DA UFF - Dados COMPLETOS da planilha
+      publicacoes: [1203, 1302, 1441, 1576, 1740, 1826, 2041, 2199, 2279, 2289],
+      publicacoesTop10: [66, 76, 85, 92, 112, 121, 132, 150, 143, 133],
+      proporcaoTop10: [0.055, 0.058, 0.059, 0.058, 0.064, 0.066, 0.065, 0.068, 0.063, 0.058],
+
+      // RANKING MUNDO - Dados COMPLETOS da planilha
+      mundoP: [741, 747, 731, 707, 685, 705, 693, 706, 734, 763],
+      mundoPTop10: [791, 807, 811, 814, 800, 810, 832, 820, 900, 991],
+      mundoPPTop10: [748, 756, 778, 814, 889, 930, 1060, 1095, 1250, 1372]
+    };
+
+    // Cores para gráficos
+    const colors = {
+      blue: '#3B82F6',
+      green: '#10B981',
+      orange: '#F59E0B',
+      red: '#EF4444',
+      purple: '#8B5CF6',
+      pink: '#EC4899',
+      cyan: '#06D6A0',
+      teal: '#118AB2',
+      indigo: '#6366F1',
+      yellow: '#EAB308'
+    };
+
+    // Configurações do gráfico
+    const chartConfig = {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+      toImageButtonOptions: {
+        format: 'png',
+        filename: 'uff-cwts-leiden-ranking',
+        height: 500,
+        width: 1000,
+        scale: 1
+      }
+    };
+
+    // Função para formatar valores - SEM ARREDONDAMENTO
+    function formatValue(val) {
+      if (val === null || val === undefined) return '';
+      if (typeof val === 'number') {
+        // Para números decimais, mostrar exatamente como está
+        if (val % 1 !== 0) {
+          const str = val.toString();
+          return str;
+        }
+        return val.toString();
+      }
+      return val;
+    }
+
+    // Layout comum com eixos em preto e afastados
+    const commonLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, sans-serif',
+        color: '#1f2937'
+      },
+      margin: { t: 30, r: 30, b: 70, l: 70 },
+      hovermode: 'closest',
+      showlegend: true,
+      legend: {
+        orientation: 'h',
+        y: -0.25,
+        x: 0.5,
+        xanchor: 'center',
+        bgcolor: 'rgba(255, 255, 255, 0.9)',
+        bordercolor: 'rgba(0,0,0,0.1)',
+        borderwidth: 1
+      },
+      xaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickmode: 'array',
+        tickvals: data.years,
+        tickformat: 'd',
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          text: 'Ano',
+          font: {
+            size: 12,
+            color: '#000000',
+            weight: 'bold'
+          },
+          standoff: 15
+        }
+      },
+      yaxis: {
+        fixedrange: true,
+        gridcolor: 'rgba(0,0,0,0.03)',
+        showgrid: true,
+        showline: true,
+        linecolor: 'rgba(0,0,0,0.1)',
+        linewidth: 1,
+        tickfont: {
+          size: 10,
+          color: '#6b7280'
+        },
+        title: {
+          font: {
+            size: 12,
+            color: '#000000',
+            weight: 'bold'
+          },
+          standoff: 15
+        }
+      }
+    };
+
+    // Layout para gráficos de posição (menor = melhor)
+    const positionLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        autorange: 'reversed',
+        title: {
+          text: 'Posição (menor = melhor)',
+          font: {
+            size: 12,
+            color: '#000000',
+            weight: 'bold'
+          },
+          standoff: 15
+        },
+        tickformat: 'd',
+        nticks: 8,
+        separatethousands: true
+      }
+    };
+
+    // Layout para gráficos de valor absoluto
+    const valueLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        title: {
+          text: 'Quantidade',
+          font: {
+            size: 12,
+            color: '#000000',
+            weight: 'bold'
+          },
+          standoff: 15
+        },
+        tickformat: 'd',
+        nticks: 8
+      }
+    };
+
+    // Layout para gráficos de porcentagem
+    const percentageLayout = {
+      ...commonLayout,
+      yaxis: {
+        ...commonLayout.yaxis,
+        title: {
+          text: 'Porcentagem (%)',
+          font: {
+            size: 12,
+            color: '#000000',
+            weight: 'bold'
+          },
+          standoff: 15
+        },
+        tickformat: '.1f',
+        nticks: 8,
+        ticksuffix: '%'
+      }
+    };
+
+    // Inicializar gráficos
+    function initCharts() {
+      // 1. Gráfico Número de Publicações
+      const publicacoesTrace = {
+        x: data.years,
+        y: data.publicacoes,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Número de Publicações   ',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.publicacoes.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Publicações:</b> %{y}<extra></extra>'
+      };
+
+      Plotly.newPlot('publicacoes-chart', [publicacoesTrace], {
+        ...valueLayout,
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          tickvals: data.years,
+          title: {
+            text: 'Ano',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          }
+        },
+        yaxis: {
+          ...valueLayout.yaxis,
+          title: {
+            text: 'Número de Publicações',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          }
+        }
+      }, chartConfig);
+
+      // 2. Gráfico Top 10% vs Total
+      const top10TotalTrace1 = {
+        x: data.years,
+        y: data.publicacoes,
+        type: 'bar',
+        name: 'Total de Publicações   ',
+        marker: {
+          color: colors.blue,
+          opacity: 0.7
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Total:</b> %{y} publicações<extra></extra>',
+        yaxis: 'y1',
+        text: data.publicacoes.map(v => v.toString()),
+        textposition: 'outside',
+                textfont: {
+          size: 10,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+      };
+
+      const top10TotalTrace2 = {
+        x: data.years,
+        y: data.publicacoesTop10,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Publicações Top 10%   ',
+        line: {
+          color: colors.red,
+          width: 3,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.red,
+          size: 7,
+          line: {
+            //color: 'white',
+            //width: 2
+          }
+        },
+        text: data.publicacoesTop10.map(v => v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.red,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Top 10%:</b> %{y} publicações<extra></extra>',
+        yaxis: 'y2'
+      };
+
+      const top10TotalLayout = {
+        ...commonLayout,
+        title: '',
+          margin: {
+          ...commonLayout.margin,
+          r: 100  // Aumenta a margem direita para dar mais espaço
+        },
+        yaxis: {
+          ...commonLayout.yaxis,
+          title: {
+            text: 'Total de Publicações',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          },
+          tickformat: 'd',
+          side: 'left',
+          color: colors.blue
+        },
+        yaxis2: {
+          fixedrange: true,
+          title: {
+            text: 'Publicações Top 10%',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          },
+          overlaying: 'y',
+          side: 'right',
+          tickformat: 'd',
+          color: colors.red
+        },
+        legend: {
+          ...commonLayout.legend,
+          y: -0.3
+        },
+        xaxis: {
+          ...commonLayout.xaxis,
+          tickvals: data.years,
+          title: {
+            text: 'Ano',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          }
+        }
+      };
+
+      Plotly.newPlot('top10-vs-total-chart', [top10TotalTrace1, top10TotalTrace2], top10TotalLayout, chartConfig);
+
+      // 3. Gráfico Posições no Brasil
+      const brasilPosicoesTrace1 = {
+        x: data.years,
+        y: data.brasilP,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição (P)   ',
+        line: {
+          color: colors.blue,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.blue,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brasilP.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.blue,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição (P):</b> %{y}º<extra></extra>'
+      };
+
+      const brasilPosicoesTrace2 = {
+        x: data.years,
+        y: data.brasilPTop10,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Top 10% (P)   ',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brasilPTop10.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Top 10% (P):</b> %{y}º<extra></extra>'
+      };
+
+      const brasilPosicoesTrace3 = {
+        x: data.years,
+        y: data.brasilPPTop10,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição PP Top 10%   ',
+        line: {
+          color: colors.orange,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.orange,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.brasilPPTop10.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.orange,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição PP Top 10%:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('brasil-posicoes-chart', [brasilPosicoesTrace1, brasilPosicoesTrace2, brasilPosicoesTrace3], {
+        ...positionLayout,
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          tickvals: data.years,
+          title: {
+            text: 'Ano',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          }
+        }
+      }, chartConfig);
+
+      // 4. Gráfico Proporção Top 10% em porcentagem
+      const proporcaoPercentual = data.proporcaoTop10.map(val => val * 100);
+
+      const proporcaoTrace = {
+        x: data.years,
+        y: proporcaoPercentual,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Proporção Top 10%   ',
+        line: {
+          color: colors.orange,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.orange,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: proporcaoPercentual.map(v => v.toFixed(1) + '%'),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.orange,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Proporção Top 10%:</b> %{y:.1f}%<extra></extra>'
+      };
+
+      Plotly.newPlot('brasil-proporcao-chart', [proporcaoTrace], {
+        ...percentageLayout,
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          tickvals: data.years,
+          title: {
+            text: 'Ano',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          }
+        },
+        yaxis: {
+          ...percentageLayout.yaxis,
+          range: [4, 7] // Limitar escala para melhor visualização
+        }
+      }, chartConfig);
+
+      // 5. Gráfico Posição Mundial
+      const mundoPosicaoTrace = {
+        x: data.years,
+        y: data.mundoP,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Mundial (P)   ',
+        line: {
+          color: colors.green,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.green,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.mundoP.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.green,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Mundial (P):</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('mundo-posicao-chart', [mundoPosicaoTrace], {
+        ...positionLayout,
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          tickvals: data.years,
+          title: {
+            text: 'Ano',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          }
+        }
+      }, chartConfig);
+
+      // 6. Gráfico Indicadores de Impacto Mundial (apenas Top 10% e PP Top 10%)
+      const mundoIndicadoresTrace1 = {
+        x: data.years,
+        y: data.mundoPTop10,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição Top 10% (P)   ',
+        line: {
+          color: colors.teal,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.teal,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.mundoPTop10.map(v => v.toString()),
+        textposition: 'bottom center',
+        textfont: {
+          size: 8,
+          color: colors.teal,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição Top 10% (P):</b> %{y}º<extra></extra>'
+      };
+
+      const mundoIndicadoresTrace2 = {
+        x: data.years,
+        y: data.mundoPPTop10,
+        type: 'scatter',
+        mode: 'lines+markers+text',
+        name: 'Posição PP Top 10%   ',
+        line: {
+          color: colors.cyan,
+          width: 4,
+          shape: 'spline'
+        },
+        marker: {
+          color: colors.cyan,
+          size: 10,
+          line: {
+            color: 'white',
+            width: 2
+          }
+        },
+        text: data.mundoPPTop10.map(v => v.toString()),
+        textposition: 'top center',
+        textfont: {
+          size: 8,
+          color: colors.cyan,
+          family: 'Inter, sans-serif'
+        },
+        hovertemplate: '<b>Ano:</b> %{x}<br><b>Posição PP Top 10%:</b> %{y}º<extra></extra>'
+      };
+
+      Plotly.newPlot('mundo-indicadores-chart', [mundoIndicadoresTrace1, mundoIndicadoresTrace2], {
+        ...positionLayout,
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          tickvals: data.years,
+          title: {
+            text: 'Ano',
+            font: {
+              size: 12,
+              color: '#000000',
+              weight: 'bold'
+            },
+            standoff: 15
+          }
+        }
+      }, chartConfig);
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function () {
+      initCharts();
+    });
+  </script>
+
+  <!-- ===== Séries temporais responsivas: no celular exibe a partir de 2021 ===== -->
+  <style>
+    #tsRangeToggle {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1080;
+      display: none; /* aparece apenas no celular (ver media query) */
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 50px;
+      background: #1f2937;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+    }
+    #tsRangeToggle:active { transform: scale(0.97); }
+    @media (max-width: 767.98px) {
+      #tsRangeToggle { display: inline-flex; }
+    }
+  </style>
+
+  <button id="tsRangeToggle" type="button" aria-pressed="false">
+    <i class="fa-solid fa-chart-line"></i>
+    <span id="tsRangeToggleLabel">Ver série completa</span>
+  </button>
+
+  <script>
+    // Mostra a série a partir de 2021 no celular; completa no desktop.
+    // Não altera os dados — apenas a janela visível do eixo X (Plotly.relayout).
+    (function () {
+      const START_YEAR = 2021;
+      const MOBILE_MAX = 768; // px (breakpoint md do Bootstrap)
+      let compact = null;     // estado atual (true = desde 2021)
+      let userOverride = false;
+
+      const isMobile = () => window.innerWidth < MOBILE_MAX;
+      const graphs = () => Array.from(document.querySelectorAll('.js-plotly-plot'));
+
+      // Considera "ano" um eixo X numérico entre 2000 e 2035.
+      function isYearArray(x) {
+        return Array.isArray(x) && x.length > 0 &&
+          x.every(v => typeof v === 'number' && isFinite(v) && v >= 2000 && v <= 2035);
+      }
+
+      // Marca quais gráficos têm eixo X de anos e guarda o range original.
+      function indexGraphs() {
+        graphs().forEach(gd => {
+          if (gd._tsIndexed) return;
+          let maxYear = -Infinity, hasYear = false;
+          (gd.data || []).forEach(tr => {
+            if (isYearArray(tr.x)) {
+              hasYear = true;
+              maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
+            }
+          });
+          gd._tsYearAxis = hasYear;
+          if (hasYear) {
+            const r = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
+            gd._tsFullRange = r ? r.slice() : null; // range "cheio" original (ou null = autorange)
+            gd._tsMaxYear = maxYear;
+          }
+          gd._tsIndexed = true;
+        });
+      }
+
+      function apply(toCompact) {
+        compact = toCompact;
+        indexGraphs();
+        graphs().forEach(gd => {
+          if (!gd._tsYearAxis) return; // ignora radar, barras por categoria, etc.
+          const upd = toCompact
+            ? { 'xaxis.range': [START_YEAR - 0.5, gd._tsMaxYear + 0.5] }
+            : (gd._tsFullRange
+                ? { 'xaxis.range': gd._tsFullRange.slice() }
+                : { 'xaxis.autorange': true });
+          Plotly.relayout(gd, upd);
+        });
+        syncButton();
+      }
+
+      function syncButton() {
+        const btn = document.getElementById('tsRangeToggle');
+        const lbl = document.getElementById('tsRangeToggleLabel');
+        if (!btn || !lbl) return;
+        if (compact) {
+          lbl.textContent = 'Ver série completa';
+          btn.querySelector('i').className = 'fa-solid fa-chart-line';
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          lbl.textContent = 'Ver desde 2021';
+          btn.querySelector('i').className = 'fa-solid fa-compress';
+          btn.setAttribute('aria-pressed', 'true');
+        }
+      }
+
+      function setup() {
+        indexGraphs();
+        if (graphs().length === 0) { setTimeout(setup, 120); return; }
+        apply(isMobile()); // celular entra compacto; desktop, completo
+        const btn = document.getElementById('tsRangeToggle');
+        if (btn) btn.addEventListener('click', () => { userOverride = true; apply(!compact); });
+        window.addEventListener('resize', () => { if (!userOverride) apply(isMobile()); });
+      }
+
+      // Roda depois do initCharts() já existente no arquivo.
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(setup, 60));
+      } else {
+        setTimeout(setup, 60);
+      }
+    })();
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
