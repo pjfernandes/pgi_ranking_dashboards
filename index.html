@@ -410,6 +410,23 @@
       filter: brightness(1.08);
     }
 
+    /* Destaque temporário do botão-alvo ao chegar via card de síntese */
+    .acc-cta.cta-highlight {
+      animation: ctaPulse 1.6s ease;
+    }
+
+    @keyframes ctaPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      }
+      25% {
+        box-shadow: 0 0 0 4px var(--white), 0 0 0 8px var(--accent, var(--primary-blue));
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      }
+    }
+
     /* ===== FOOTER ===== */
     footer {
       background-color: var(--light-grey);
@@ -488,7 +505,7 @@
     <div class="synth-grid">
 
       <!-- 1. THE Impact -->
-      <div class="synth-card" style="--accent: var(--c-impact);" onclick="goToRanking('the')">
+      <div class="synth-card" style="--accent: var(--c-impact);" onclick="goToRanking('cta-the-impact')">
         <div class="synth-head">
           <span class="synth-icon">🌎</span>
           <div>
@@ -505,7 +522,7 @@
       </div>
 
       <!-- 2. RUR -->
-      <div class="synth-card" style="--accent: var(--c-rur);" onclick="goToRanking('rur')">
+      <div class="synth-card" style="--accent: var(--c-rur);" onclick="goToRanking('cta-rur')">
         <div class="synth-head">
           <span class="synth-icon">🔄</span>
           <div>
@@ -522,7 +539,7 @@
       </div>
 
       <!-- 3. RUF (Folha) -->
-      <div class="synth-card" style="--accent: var(--c-ruf);" onclick="goToRanking('ruf')">
+      <div class="synth-card" style="--accent: var(--c-ruf);" onclick="goToRanking('cta-ruf')">
         <div class="synth-head">
           <span class="synth-icon">🇧🇷</span>
           <div>
@@ -539,7 +556,7 @@
       </div>
 
       <!-- 4. THE World -->
-      <div class="synth-card" style="--accent: var(--c-the);" onclick="goToRanking('the')">
+      <div class="synth-card" style="--accent: var(--c-the);" onclick="goToRanking('cta-the')">
         <div class="synth-head">
           <span class="synth-icon">🏛️</span>
           <div>
@@ -556,7 +573,7 @@
       </div>
 
       <!-- 5. QS World -->
-      <div class="synth-card" style="--accent: var(--c-qs);" onclick="goToRanking('qs')">
+      <div class="synth-card" style="--accent: var(--c-qs);" onclick="goToRanking('cta-qs')">
         <div class="synth-head">
           <span class="synth-icon">🎓</span>
           <div>
@@ -573,7 +590,7 @@
       </div>
 
       <!-- 6. QS Latin America & The Caribbean -->
-      <div class="synth-card" style="--accent: var(--c-qs);" onclick="goToRanking('qs')">
+      <div class="synth-card" style="--accent: var(--c-qs);" onclick="goToRanking('cta-qs')">
         <div class="synth-head">
           <span class="synth-icon">🗺️</span>
           <div>
@@ -590,7 +607,7 @@
       </div>
 
       <!-- 7. QS Sustainability -->
-      <div class="synth-card" style="--accent: var(--c-qs);" onclick="goToRanking('qs')">
+      <div class="synth-card" style="--accent: var(--c-qs);" onclick="goToRanking('cta-qs')">
         <div class="synth-head">
           <span class="synth-icon">♻️</span>
           <div>
@@ -607,7 +624,7 @@
       </div>
 
       <!-- 8. UI GreenMetric -->
-      <div class="synth-card" style="--accent: var(--c-green);" onclick="goToRanking('green')">
+      <div class="synth-card" style="--accent: var(--c-green);" onclick="goToRanking('cta-green')">
         <div class="synth-head">
           <span class="synth-icon">🌱</span>
           <div>
@@ -624,7 +641,7 @@
       </div>
 
       <!-- 9. CWUR World -->
-      <div class="synth-card" style="--accent: var(--c-cwur);" onclick="goToRanking('cwur')">
+      <div class="synth-card" style="--accent: var(--c-cwur);" onclick="goToRanking('cta-cwur')">
         <div class="synth-head">
           <span class="synth-icon">🌍</span>
           <div>
@@ -641,7 +658,7 @@
       </div>
 
       <!-- 10. SCImago -->
-      <div class="synth-card" style="--accent: var(--c-scimago);" onclick="goToRanking('scimago')">
+      <div class="synth-card" style="--accent: var(--c-scimago);" onclick="goToRanking('cta-scimago')">
         <div class="synth-head">
           <span class="synth-icon">📈</span>
           <div>
@@ -658,7 +675,7 @@
       </div>
 
       <!-- 11. Webometrics -->
-      <div class="synth-card" style="--accent: var(--c-web);" onclick="goToRanking('web')">
+      <div class="synth-card" style="--accent: var(--c-web);" onclick="goToRanking('cta-web')">
         <div class="synth-head">
           <span class="synth-icon">🌐</span>
           <div>
@@ -675,7 +692,7 @@
       </div>
 
       <!-- 12. CWTS Leiden -->
-      <div class="synth-card" style="--accent: var(--c-cwts);" onclick="goToRanking('cwts')">
+      <div class="synth-card" style="--accent: var(--c-cwts);" onclick="goToRanking('cta-cwts')">
         <div class="synth-head">
           <span class="synth-icon">📊</span>
           <div>
@@ -722,7 +739,7 @@
               <p>Em 2026, a UFF foi classificada no top 4,8% mundial de mais de 21 mil universidades participantes neste ranking, segundo o CWUR. No Brasil, ela se manteve no 18º lugar, enquanto na América Latina está em 31º. Destaca-se ainda o 8º lugar nacional alcançado nos últimos rankings de empregabilidade (Employability rank), posição mantida desde 2022.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/cwur.html" target="_blank">
+              <a class="acc-cta" id="cta-cwur" href="https://pgi-plan.github.io/rankings/cwur.html" target="_blank">
                 Acessar Dashboard CWUR →</a>
               <a class="acc-site" href="https://cwur.org" target="_blank" rel="noopener">Site oficial do CWUR ↗</a>
             </div>
@@ -786,9 +803,9 @@
                 nacional na maioria dos ODS.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/the.html" target="_blank">
+              <a class="acc-cta" id="cta-the" href="https://pgi-plan.github.io/rankings/the.html" target="_blank">
                 Acessar Dashboard THE →</a>
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/the_impact_rankings.html" target="_blank">
+              <a class="acc-cta" id="cta-the-impact" href="https://pgi-plan.github.io/rankings/the_impact_rankings.html" target="_blank">
                 Acessar Dashboard THE Impact →</a>
               <a class="acc-site" href="https://www.timeshighereducation.com/world-university-rankings" target="_blank"
                 rel="noopener">Site oficial do THE ↗</a>
@@ -834,7 +851,7 @@
       
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/qs.html" target="_blank">
+              <a class="acc-cta" id="cta-qs" href="https://pgi-plan.github.io/rankings/qs.html" target="_blank">
                 Acessar Dashboard QS →</a>
               <a class="acc-site" href="https://www.topuniversities.com/world-university-rankings" target="_blank"
                 rel="noopener">Site oficial do QS World ↗</a>
@@ -874,7 +891,7 @@
                 apresenta um crescimento contínuo em suas publicações desde 2016.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/cwts.html" target="_blank">
+              <a class="acc-cta" id="cta-cwts" href="https://pgi-plan.github.io/rankings/cwts.html" target="_blank">
                 Acessar Dashboard CWTS Leiden →</a>
               <a class="acc-site" href="https://www.leidenranking.com" target="_blank" rel="noopener">Site oficial do
                 CWTS Leiden ↗</a>
@@ -908,7 +925,7 @@
                 anos. No indicador Ensino, a UFF destacou-se entre as 12 melhores universidades nacionais.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/folha.html" target="_blank">
+              <a class="acc-cta" id="cta-ruf" href="https://pgi-plan.github.io/rankings/folha.html" target="_blank">
                 Acessar Dashboard RUF →</a>
               <a class="acc-site" href="https://ruf.folha.uol.com.br" target="_blank" rel="noopener">Site oficial do RUF
                 ↗</a>
@@ -941,7 +958,7 @@
               <p>Uma vez que a classificação é influenciada pelo aumento contínuo de universidades participantes, é importante observar outro indicador: a pontuação da universidade. É possível perceber que a UFF vem melhorando progressivamente na maior parte das categorias do ranking: sua pontuação geral passou de 4100 (ou 41%), para 7533 (ou 75.33%) nos últimos sete anos, ao passo que, nas categorias de Educação e Pesquisa (ED), Energia e Mudança Climática (EC) e Transporte (TR), a universidade mais do que dobrou sua pontuação de 2018 a 2025.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/greenmetric.html" target="_blank">
+              <a class="acc-cta" id="cta-green" href="https://pgi-plan.github.io/rankings/greenmetric.html" target="_blank">
                 Acessar Dashboard GreenMetric →</a>
               <a class="acc-site" href="https://uigreenmetric.com/" target="_blank" rel="noopener">Site oficial do UI
                 GreenMetric ↗</a>
@@ -972,7 +989,7 @@
               <p>Em 2026, a UFF obteve destaque com a 3ª posição nacional no ranking de Diversidade Internacional do Round University Ranking. Entre as universidades federais brasileiras, ocupou a 6ª colocação no ranking mundial. Além disso, ficou classificada em 8º lugar no Brasil no ranking de Pesquisa e entre as 410 melhores do mundo no ranking de Ensino.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/rur.html" target="_blank">
+              <a class="acc-cta" id="cta-rur" href="https://pgi-plan.github.io/rankings/rur.html" target="_blank">
                 Acessar Dashboard RUR →</a>
               <a class="acc-site" href="https://roundranking.com" target="_blank" rel="noopener">Site oficial do RUR
                 ↗</a>
@@ -1006,7 +1023,7 @@
                 melhores federais do Brasil.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/webometrics.html" target="_blank">
+              <a class="acc-cta" id="cta-web" href="https://pgi-plan.github.io/rankings/webometrics.html" target="_blank">
                 Acessar Dashboard Webometrics →</a>
               <a class="acc-site" href="https://www.webometrics.org/" target="_blank" rel="noopener">Site oficial do
                 Webometrics ↗</a>
@@ -1041,7 +1058,7 @@
               <p>Na classificação geral, a UFF ficou em 10º lugar entre as federais brasileiras e em 29º na América Latina, com 171 e 454 universidades ranqueadas, respectivamente.</p>
             </div>
             <div class="acc-links">
-              <a class="acc-cta" href="https://pgi-plan.github.io/rankings/scimago.html" target="_blank">
+              <a class="acc-cta" id="cta-scimago" href="https://pgi-plan.github.io/rankings/scimago.html" target="_blank">
                 Acessar Dashboard SCImago →</a>
               <a class="acc-site" href="https://www.scimagoir.com" target="_blank" rel="noopener">Site oficial do
                 SCImago
@@ -1084,12 +1101,49 @@
       }
     }
 
-    // Clique num card de síntese: abre o item do acordeão e rola até ele
-    function goToRanking(key) {
-      const item = document.getElementById('r-' + key);
+    // Clique num card de síntese: abre o item do acordeão e rola até o
+    // botão "Acessar Dashboard" daquele ranking (e não só até o item).
+    function goToRanking(ctaId) {
+      const btn = document.getElementById(ctaId);
+      if (!btn) return;
+      const item = btn.closest('.acc-item');
       if (!item) return;
+
+      const alreadyOpen = item.classList.contains('open');
       openItem(item);
-      item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      function scrollToBtn() {
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // destaque rápido para o usuário localizar o botão
+        btn.classList.remove('cta-highlight');
+        void btn.offsetWidth; // reinicia a animação se já estava aplicada
+        btn.classList.add('cta-highlight');
+        setTimeout(function () { btn.classList.remove('cta-highlight'); }, 1600);
+      }
+
+      if (alreadyOpen) {
+        // item já estava aberto: posição já é final, rola imediatamente
+        scrollToBtn();
+        return;
+      }
+
+      // espera a expansão (transição de max-height) terminar antes de rolar,
+      // senão o scroll mira numa posição que ainda está mudando
+      const body = item.querySelector('.acc-body');
+      let done = false;
+      function onEnd(e) {
+        if (e.propertyName !== 'max-height') return;
+        done = true;
+        body.removeEventListener('transitionend', onEnd);
+        scrollToBtn();
+      }
+      body.addEventListener('transitionend', onEnd);
+      // fallback caso o transitionend não dispare
+      setTimeout(function () {
+        if (done) return;
+        body.removeEventListener('transitionend', onEnd);
+        scrollToBtn();
+      }, 650);
     }
   </script>
 

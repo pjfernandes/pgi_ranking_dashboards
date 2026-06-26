@@ -1141,7 +1141,7 @@
       const worldWorldMid = data.worldWorldHigh.map((h, i) => (h + data.worldWorldLow[i]) / 2);
       const worldWorldTrace = {
         type: 'scatter',
-        mode: 'lines+markers+text',
+        mode: 'lines+markers',
         x: data.worldWorldYears,
         y: worldWorldMid,
         name: 'Posição no mundo',
@@ -1155,25 +1155,36 @@
           size: 10,
           line: { color: 'white', width: 2 }
         },
-        text: data.worldWorldLabel,
-        textposition: 'top center',
-        textfont: {
-          size: 9,
-          color: colors.black,
-          family: 'Inter, sans-serif'
-        },
         customdata: data.worldWorldLabel,
         hovertemplate: '<b>Ano:</b> %{x}<br><b>Faixa no mundo:</b> %{customdata}<extra></extra>'
       };
+
+      // Rótulos das faixas como annotations verticais (scatter não suporta
+      // textangle; annotations sim). Uma annotation por ponto, acima do marcador.
+      const worldWorldAnnotations = data.worldWorldYears.map((year, i) => ({
+        x: year,
+        y: worldWorldMid[i],
+        text: data.worldWorldLabel[i],
+        textangle: -90, // vertical (lê-se de baixo para cima); use 90 p/ inverter
+        showarrow: false,
+        yanchor: 'bottom',
+        yshift: 10, // afasta do marcador (pixels, sempre p/ cima na tela)
+        font: {
+          size: 9,
+          color: colors.black,
+          family: 'Inter, sans-serif'
+        }
+      }));
 
       const worldWorldLayout = {
         ...positionLayout,
         title: '',
         showlegend: false,
+        annotations: worldWorldAnnotations,
         yaxis: {
           ...positionLayout.yaxis,
           autorange: false,
-          range: [1480, 600], // invertido: menor (melhor) no topo
+          range: [1480, 540], // invertido: menor (melhor) no topo (respiro p/ rótulo vertical)
           title: 'Posição no mundo (menor = melhor)',
           tickmode: 'array',
           tickvals: [650, 700, 800, 1000, 1200, 1400],
