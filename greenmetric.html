@@ -1263,6 +1263,154 @@
     });
   </script>
 
+  <!-- ===== Séries temporais responsivas: botão por gráfico (celular: desde 2021) ===== -->
+  <style>
+    .ts-toggle-wrap {
+      display: none; /* aparece apenas no celular (ver media query) */
+      text-align: center;
+      margin-top: 8px;
+    }
+    .ts-chart-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 50px;
+      background: #fff;
+      color: #374151;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 600;
+      line-height: 1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10);
+      cursor: pointer;
+    }
+    .ts-chart-toggle:active { transform: scale(0.96); }
+    @media (max-width: 767.98px) {
+      .ts-toggle-wrap { display: block; }
+    }
+  </style>
+
+  <script>
+    // No celular cada gráfico de série temporal abre a partir de 2021;
+    // um botão no próprio card alterna aquele gráfico para a série completa.
+    // No desktop os gráficos ficam completos e o botão fica oculto.
+    // Não altera os dados — apenas a janela visível do eixo X (Plotly.relayout).
+    (function () {
+      const START_YEAR = 2021;
+      const MOBILE_MAX = 768; // px (breakpoint md do Bootstrap)
+
+      const isMobile = () => window.innerWidth < MOBILE_MAX;
+      const graphs = () => Array.from(document.querySelectorAll('.js-plotly-plot'));
+
+      // Considera "ano" um eixo X numérico entre 2000 e 2035.
+      function isYearArray(x) {
+        return Array.isArray(x) && x.length > 0 &&
+          x.every(v => typeof v === 'number' && isFinite(v) && v >= 2000 && v <= 2035);
+      }
+
+      // Aplica a janela do eixo X de um gráfico e atualiza o rótulo do botão.
+      function render(gd, compact) {
+        const upd = compact
+          ? { 'xaxis.range': [START_YEAR - 0.5, gd._tsMaxYear + 0.5] }
+          : (gd._tsFullRange
+              ? { 'xaxis.range': gd._tsFullRange.slice() }
+              : { 'xaxis.autorange': true });
+        Plotly.relayout(gd, upd);
+        const btn = gd._tsBtn;
+        if (btn) {
+          btn.querySelector('span').textContent = compact ? 'Completo' : 'Desde 2021';
+          btn.querySelector('i').className = compact
+            ? 'fa-solid fa-expand'
+            : 'fa-solid fa-compress';
+          btn.setAttribute('aria-pressed', compact ? 'false' : 'true');
+        }
+      }
+
+      // Lê o range "cheio" original do gráfico (por gráfico, não compartilhado).
+      function originalRange(gd) {
+        const fl = gd._fullLayout && gd._fullLayout.xaxis && gd._fullLayout.xaxis.range;
+        if (fl && fl.length === 2) return fl.slice();
+        const ul = gd.layout && gd.layout.xaxis && gd.layout.xaxis.range;
+        if (ul && ul.length === 2) return ul.slice();
+        return null; // sem range conhecido -> autorange
+      }
+
+      function buildButton(gd) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ts-chart-toggle';
+        btn.innerHTML = '<i class="fa-solid fa-expand"></i><span>Completo</span>';
+        btn.addEventListener('click', () => {
+          gd._tsManual = true;
+          gd._tsCompact = !gd._tsCompact;
+          render(gd, gd._tsCompact);
+        });
+        const wrap = document.createElement('div');
+        wrap.className = 'ts-toggle-wrap';
+        wrap.appendChild(btn);
+        gd.parentNode.insertBefore(wrap, gd.nextSibling);
+        gd._tsBtn = btn;
+      }
+
+      function setup() {
+        const gs = graphs();
+        if (gs.length === 0) { setTimeout(setup, 120); return; }
+
+        // PASSADA 1 — detecta eixo de anos e captura o range original de TODOS
+        // os gráficos antes de mexer em qualquer um (evita ler um range já
+        // compactado quando os layouts compartilham o mesmo objeto xaxis).
+        gs.forEach(gd => {
+          if (gd._tsIndexed) return;
+          gd._tsIndexed = true;
+          let minYear = Infinity, maxYear = -Infinity, hasYear = false;
+          (gd.data || []).forEach(tr => {
+            if (isYearArray(tr.x)) {
+              hasYear = true;
+              minYear = Math.min(minYear, Math.min.apply(null, tr.x));
+              maxYear = Math.max(maxYear, Math.max.apply(null, tr.x));
+            }
+          });
+          // Só faz sentido compactar se a série tem dados ANTES de 2021.
+          // Gráficos que já começam em 2021+ ficam como estão (sem botão).
+          if (!hasYear || minYear >= START_YEAR) return;
+          gd._tsYear = true;
+          gd._tsMaxYear = maxYear;
+          gd._tsFullRange = originalRange(gd);
+        });
+
+        // PASSADA 2 — cria o botão e aplica o estado inicial.
+        gs.forEach(gd => {
+          if (!gd._tsYear || gd._tsBtn) return;
+          gd._tsManual = false;
+          gd._tsCompact = isMobile();
+          buildButton(gd);
+          render(gd, gd._tsCompact);
+        });
+
+        window.addEventListener('resize', () => {
+          graphs().forEach(gd => {
+            if (!gd._tsBtn) return; // só os de série temporal
+            if (!isMobile()) {
+              render(gd, false); // desktop sempre completo
+            } else {
+              if (!gd._tsManual) gd._tsCompact = true;
+              render(gd, gd._tsCompact);
+            }
+          });
+        });
+      }
+
+      // Roda depois do initCharts() já existente no arquivo.
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(setup, 60));
+      } else {
+        setTimeout(setup, 60);
+      }
+    })();
+  </script>
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
