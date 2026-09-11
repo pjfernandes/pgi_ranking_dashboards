@@ -586,7 +586,7 @@
       <div class="col-12 mb-3">
         <div class="section-header latam-section">
           <h2 class="section-title">
-            <i class="fas fa-flag section-icon latam-icon"></i>QS Latin America & The Caribbean
+            <i class="fas fa-flag section-icon latam-icon"></i>QS Latin America &amp; The Caribbean
           </h2>
         </div>
       </div>
@@ -790,7 +790,8 @@
         <div class="chart-container">
           <h4 class="chart-title">Indicadores QS Sustainability</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn sustainability-tab active" onclick="changeSustIndicatorsTab('principais')">Principais</button>
+            <button class="tab-btn sustainability-tab active"
+              onclick="changeSustIndicatorsTab('principais')">Principais</button>
             <button class="tab-btn sustainability-tab" onclick="changeSustIndicatorsTab('ambiental')">Ambiental</button>
             <button class="tab-btn sustainability-tab" onclick="changeSustIndicatorsTab('social')">Social</button>
           </div>
@@ -803,7 +804,8 @@
     <div class="footer-note">
       <p class="mb-2">
         <i class="fas fa-database me-1"></i>
-        Dados extraídos dos rankings QS World University (2013-2027), QS Latin America (2013-2026) e QS Sustainability (2024-2026)
+        Dados extraídos dos rankings QS World University (2013-2027), QS Latin America (2013-2026) e QS Sustainability
+        (2024-2026)
       </p>
       <p class="mb-0">
         <i class="fa-solid fa-arrow-trend-up me-1"></i>
@@ -844,22 +846,22 @@
 
       // QS World - Posição da UFF no mundo (faixas/bandas) 2013-2027
       worldWorldYears: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
-      worldWorldLow:   [651, 701, 701, 701, 801, 801, 801, 1001, 1001, 1201, 1201, 1001, 1201, 1201],
-      worldWorldHigh:  [700, 800, 800, 800, 1000, 1000, 1000, 1200, 1200, 1400, 1400, 1200, 1400, 1400],
+      worldWorldLow: [651, 701, 701, 701, 801, 801, 801, 1001, 1001, 1201, 1201, 1001, 1201, 1201],
+      worldWorldHigh: [700, 800, 800, 800, 1000, 1000, 1000, 1200, 1200, 1400, 1400, 1200, 1400, 1400],
       worldWorldLabel: ['651-700', '701+', '701+', '701+', '801-1000', '801-1000', '801-1000', '1001+', '1001-1200', '1201-1400', '1201-1400', '1001-1200', '1201-1400', '1201-1400'],
-      worldWorldOpen:  [false, true, true, true, false, false, false, true, false, false, false, false, false, false],
+      worldWorldOpen: [false, true, true, true, false, false, false, true, false, false, false, false, false, false],
 
       // QS World - Classificação da UFF no Brasil por indicador (posição, 2024-2027)
       worldBrIndYears: [2024, 2025, 2026, 2027],
-      brAcademicRep:        [15, 15, 17, 18],
-      brEmployerRep:        [25, 23, 21, 26],
-      brFacultyStudentRatio:[20, 19, 18, 11],
-      brCitationsPerFaculty:[21, 21, 19, 21],
-      brIntFacultyRatio:    [9, 7, 7, 6],
-      brIntStudentsRatio:   [29, 25, 23, 22],
+      brAcademicRep: [15, 15, 17, 18],
+      brEmployerRep: [25, 23, 21, 26],
+      brFacultyStudentRatio: [20, 19, 18, 11],
+      brCitationsPerFaculty: [21, 21, 19, 21],
+      brIntFacultyRatio: [9, 7, 7, 6],
+      brIntStudentsRatio: [29, 25, 23, 22],
       brEmploymentOutcomes: [15, 13, 14, 14],
-      brResearchNetwork:    [9, 12, 10, 8],
-      brSustainability:     [16, 9, 9, 8],
+      brResearchNetwork: [9, 12, 10, 8],
+      brSustainability: [16, 9, 9, 8],
 
       // QS Latin America - DADOS CORRIGIDOS
       latamPosition: [47, 49, 50, 47, 53, 50, 54, 60, 61, 61, 55, 54, 64], // Item d
@@ -1030,6 +1032,25 @@
       }
     };
 
+    // Layout dedicado para os gráficos de indicadores.
+    // Importante: o spread (...) é raso, então commonLayout.xaxis/yaxis seriam
+    // o MESMO objeto em todos os gráficos - e o Plotly grava o range calculado
+    // de volta nele. Isso fazia os indicadores herdarem a janela de anos de
+    // outro gráfico (ex.: 2015+). Aqui cada gráfico recebe eixos próprios e
+    // range explícito.
+    function indicatorLayout(firstYear, lastYear) {
+      return {
+        ...lineLayout,
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          autorange: false,
+          range: [firstYear - 0.5, lastYear + 0.5]
+        },
+        yaxis: { ...lineLayout.yaxis }
+      };
+    }
+
     // Inicializar gráficos
     function initCharts() {
       // 1. Gráfico QS World - Posição no Brasil
@@ -1064,7 +1085,9 @@
 
       Plotly.newPlot('world-brazil-chart', [worldBrazilTrace], {
         ...positionLayout,
-        title: ''
+        title: '',
+        xaxis: { ...commonLayout.xaxis },
+        yaxis: { ...positionLayout.yaxis }
       }, chartConfig);
 
       // 2. Gráfico QS World - Posição entre as Federais
@@ -1099,7 +1122,9 @@
 
       Plotly.newPlot('world-federais-chart', [federaisTrace], {
         ...positionLayout,
-        title: ''
+        title: '',
+        xaxis: { ...commonLayout.xaxis },
+        yaxis: { ...positionLayout.yaxis }
       }, chartConfig);
 
       // 3. Gráfico QS World - Posição na América Latina
@@ -1134,7 +1159,9 @@
 
       Plotly.newPlot('world-latam-chart', [worldLatamTrace], {
         ...positionLayout,
-        title: ''
+        title: '',
+        xaxis: { ...commonLayout.xaxis },
+        yaxis: { ...positionLayout.yaxis }
       }, chartConfig);
 
       // 3b. Gráfico QS World - Posição da UFF no Mundo (linha na média da faixa, rótulo = faixa)
@@ -1236,7 +1263,7 @@
         y: data.totalParticipants,
         text: data.totalParticipants.map(v => v.toString()),
         textposition: 'outside',
-          textfont: {
+        textfont: {
           size: 10,
           color: colors.blue,
           family: 'Inter, sans-serif'
@@ -1399,7 +1426,7 @@
           ...commonLayout.legend,
           y: -0.3 // Ajusta para dar espaço ao eixo secundário
         },
-          margin: {
+        margin: {
           ...commonLayout.margin,
           r: 80  // Aumenta a margem direita para dar mais espaço
         }
@@ -1444,7 +1471,13 @@
 
       Plotly.newPlot('sust-brazil-chart', [sustBrazilTrace], {
         ...positionLayout,
-        title: ''
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          autorange: false,
+          range: [2023.5, 2026.5]
+        },
+        yaxis: { ...positionLayout.yaxis }
       }, chartConfig);
 
       const sustWorldTrace = {
@@ -1478,7 +1511,13 @@
 
       Plotly.newPlot('sust-world-chart', [sustWorldTrace], {
         ...positionLayout,
-        title: ''
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          autorange: false,
+          range: [2023.5, 2026.5]
+        },
+        yaxis: { ...positionLayout.yaxis }
       }, chartConfig);
 
       createSustRadarChart();
@@ -1580,10 +1619,7 @@
         ];
       }
 
-      Plotly.newPlot('sust-indicators-chart', traces, {
-        ...lineLayout,
-        title: ''
-      }, chartConfig);
+      Plotly.newPlot('sust-indicators-chart', traces, indicatorLayout(2024, 2026), chartConfig);
     }
 
     function changeSustIndicatorsTab(tab) {
@@ -1622,10 +1658,7 @@
         ];
       }
 
-      Plotly.newPlot('world-indicators-chart', traces, {
-        ...lineLayout,
-        title: ''
-      }, chartConfig);
+      Plotly.newPlot('world-indicators-chart', traces, indicatorLayout(2021, 2027), chartConfig);
     }
 
     // Classificação da UFF no Brasil por indicador (posição, eixo invertido)
@@ -1664,6 +1697,11 @@
       Plotly.newPlot('world-br-indicators-chart', traces, {
         ...positionLayout,
         title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          autorange: false,
+          range: [2023.5, 2027.5]
+        },
         yaxis: {
           ...positionLayout.yaxis,
           title: 'Posição no Brasil (menor = melhor)',
@@ -1710,10 +1748,7 @@
         ];
       }
 
-      Plotly.newPlot('latam-indicators-chart', traces, {
-        ...lineLayout,
-        title: ''
-      }, chartConfig);
+      Plotly.newPlot('latam-indicators-chart', traces, indicatorLayout(2021, 2026), chartConfig);
     }
 
     // Função auxiliar para criar traços com cores vivas
@@ -1781,10 +1816,12 @@
   <!-- ===== Séries temporais responsivas: botão por gráfico (celular: desde 2021) ===== -->
   <style>
     .ts-toggle-wrap {
-      display: none; /* aparece apenas no celular (ver media query) */
+      display: none;
+      /* aparece apenas no celular (ver media query) */
       text-align: center;
       margin-top: 8px;
     }
+
     .ts-chart-toggle {
       display: inline-flex;
       align-items: center;
@@ -1801,9 +1838,15 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10);
       cursor: pointer;
     }
-    .ts-chart-toggle:active { transform: scale(0.96); }
+
+    .ts-chart-toggle:active {
+      transform: scale(0.96);
+    }
+
     @media (max-width: 767.98px) {
-      .ts-toggle-wrap { display: block; }
+      .ts-toggle-wrap {
+        display: block;
+      }
     }
   </style>
 
@@ -1830,8 +1873,8 @@
         const upd = compact
           ? { 'xaxis.range': [START_YEAR - 0.5, gd._tsMaxYear + 0.5] }
           : (gd._tsFullRange
-              ? { 'xaxis.range': gd._tsFullRange.slice() }
-              : { 'xaxis.autorange': true });
+            ? { 'xaxis.range': gd._tsFullRange.slice() }
+            : { 'xaxis.autorange': true });
         Plotly.relayout(gd, upd);
         const btn = gd._tsBtn;
         if (btn) {
