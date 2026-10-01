@@ -675,7 +675,7 @@
       </div>
 
       <!-- Indicadores QS Latin America -->
-      <div class="col-12 pt-3 mb-3">
+      <div class="col-lg-6 mb-3">
         <div class="chart-container">
           <h4 class="chart-title">Indicadores QS Latin America</h4>
           <div class="chart-tabs mb-3">
@@ -688,6 +688,23 @@
             <i class="fas fa-info-circle me-1"></i>
             Principais indicadores do QS Latin America Ranking
           </div> -->
+        </div>
+      </div>
+
+      <!-- Classificação na América Latina por indicador (QS Latin America) -->
+      <div class="col-lg-6 mb-3">
+        <div class="chart-container">
+          <h4 class="chart-title">Classificação da UFF na América Latina por Indicador</h4>
+          <div class="chart-tabs mb-3">
+            <button type="button" class="tab-btn latam-tab active" data-tab="main" onclick="changeLatamPosIndTab('main')">Principais</button>
+            <button type="button" class="tab-btn latam-tab" data-tab="academic" onclick="changeLatamPosIndTab('academic')">Acadêmicos</button>
+            <button type="button" class="tab-btn latam-tab" data-tab="research" onclick="changeLatamPosIndTab('research')">Pesquisa</button>
+          </div>
+          <div id="latam-pos-indicators-chart"></div>
+          <div class="chart-notes">
+            <i class="fas fa-info-circle me-1"></i>
+            Faixas abertas (151+, 201+) são plotadas no limite inferior, com marcador vazado.
+          </div>
         </div>
       </div>
     </div>
@@ -881,10 +898,19 @@
       latamResearchNetwork: [97, 97.1, 96.4, 95.7, 94.7, 97.4, 97.9],
       latamWebImpact: [94.1, 92.2, 89.5, 86.1, 93.5, 95.1, 94.5],
 
+      latamAcademicRepPosition: [null, null, 89, 83, 86, 91, 98],
+      latamEmployerRepPosition: [null, null, "151+", "151+", "151+", "151+", "151+"],
+      latamFacultyStudentRatioPosition: [null, null, "201+", 200, 184, 200, 159],
+      latamPapersPerFacultyPosition: [null, null, 59, 58, 57, 68, 64],
+      latamCitationsPerPaperPosition: [null, null, 95, 91, 90, 134, 145],
+      latamFacultyWithPhDPosition: [null, null, 20, 20, 13, 17, 23],
+      latamResearchNetworkPosition: [null, null, 18, 17, 23, 19, 15],
+      latamWebImpactPosition: [null, null, 14, 17, 19, 16, 19],
+
       // Dados de participantes do QS Latin America
       participantsYears: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
-      totalParticipants: [385, 391, 400, 411, 418, 428, 430, 437, 492, null], // 2027 ainda não calculado
-      brazilParticipants: [83, 90, 94, 94, 95, 98, 97, 96, 130, null], // 2027 ainda não calculado
+      totalParticipants: [385, 391, 400, 411, 418, 428, 430, 437, 492, 517],
+      brazilParticipants: [83, 90, 94, 94, 95, 98, 97, 96, 130, 137],
 
       // QS Sustainability Rankings (2024-2026)
       yearsSustainability: [2024, 2025, 2026],
@@ -915,6 +941,12 @@
     data.brOverall = data.worldBrIndYears.map(y => {
       const i = data.yearsWorldBrazil.indexOf(y);
       return i >= 0 ? data.worldBrazilPosition[i] : null;
+    });
+
+    // Posição geral na América Latina nos anos dos indicadores (mesma fonte do gráfico de posição/card)
+    data.latamOverallPosition = data.latamIndicatorsYears.map(y => {
+      const i = data.yearsLatam.indexOf(y);
+      return i >= 0 ? data.latamPosition[i] : null;
     });
 
     // Cores vibrantes para gráficos
@@ -1447,6 +1479,7 @@
       createWorldIndicatorsChart('main');
       createWorldBrIndicatorsChart('main');
       createLatamIndicatorsChart('main');
+      createLatamPosIndicatorsChart('main');
 
       // 7. Gráficos QS Sustainability
       const sustBrazilTrace = {
@@ -1653,7 +1686,6 @@
       } else if (tab === 'academic') {
         // Indicadores acadêmicos
         traces = [
-          //createTrace(years, data.worldAcademicRep, 'Reputação Acadêmica', colors.blue, 3),
           createTrace(years, data.worldFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 3),
           createTrace(years, data.worldCitationsPerFaculty, 'Citações por Professor', colors.purple, 3),
           createTrace(years, data.worldEmploymentOutcomes, 'Resultados de Emprego', colors.red, 3)
@@ -1671,16 +1703,26 @@
       Plotly.newPlot('world-indicators-chart', traces, indicatorLayout(years[0], years[years.length - 1]), chartConfig);
     }
 
+    // Traço de posição (eixo invertido). Aceita número ou faixa aberta em texto ("151+"):
+    // a faixa é plotada no limite inferior com marcador vazado e rotulada como veio.
+    function createPositionTrace(years, values, name, color, width, scopeLabel) {
+      const isBand = v => typeof v === 'string';
+      const yNum = values.map(v => (v === null || v === undefined) ? null : (isBand(v) ? parseInt(v, 10) : v));
+      const labels = values.map(v => (v === null || v === undefined) ? '' : (isBand(v) ? v : v + 'º'));
+      const t = createTrace(years, yNum, name, color, width);
+      t.line.shape = 'spline';
+      t.text = labels;
+      t.customdata = labels;
+      t.marker.symbol = values.map(v => isBand(v) ? 'circle-open' : 'circle');
+      t.marker.line = { color: color, width: 2 };
+      t.hovertemplate = `<b>${name}:</b> %{customdata} ${scopeLabel}<br><b>Ano:</b> %{x}<extra></extra>`;
+      return t;
+    }
+
     // Classificação da UFF no Brasil por indicador (posição, eixo invertido)
     function createWorldBrIndicatorsChart(tab) {
       const years = data.worldBrIndYears;
-      const mk = (y, name, color, w) => {
-        const t = createTrace(years, y, name, color, w);
-        t.line.shape = 'spline'; // a pedido do usuário
-        t.text = y.map(v => (v === null || v === undefined) ? '' : v + 'º');
-        t.hovertemplate = `<b>${name}:</b> %{y}º no Brasil<br><b>Ano:</b> %{x}<extra></extra>`;
-        return t;
-      };
+      const mk = (y, name, color, w) => createPositionTrace(years, y, name, color, w, 'no Brasil');
 
       let traces = [];
       if (tab === 'main') {
@@ -1741,7 +1783,6 @@
       } else if (tab === 'academic') {
         // Indicadores acadêmicos
         traces = [
-          //createTrace(years, data.latamAcademicRep, 'Reputação Acadêmica', colors.blue, 3),
           createTrace(years, data.latamFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 3),
           createTrace(years, data.latamFacultyWithPhD, 'Professores com Doutorado', colors.purple, 3),
           createTrace(years, data.latamWebImpact, 'Impacto Web', colors.yellow, 3)
@@ -1757,6 +1798,53 @@
       }
 
       Plotly.newPlot('latam-indicators-chart', traces, indicatorLayout(years[0], years[years.length - 1]), chartConfig);
+    }
+
+    // Classificação da UFF na América Latina por indicador (posição, eixo invertido)
+    function createLatamPosIndicatorsChart(tab) {
+      const years = data.latamIndicatorsYears;
+      const mk = (y, name, color, w) => createPositionTrace(years, y, name, color, w, 'na América Latina');
+
+      let traces = [];
+      if (tab === 'main') {
+        traces = [
+          mk(data.latamOverallPosition, 'Geral', colors.purple, 4),
+          mk(data.latamAcademicRepPosition, 'Reputação Acadêmica', colors.blue, 4),
+          mk(data.latamEmployerRepPosition, 'Reputação Empregadores', colors.orange, 4)
+        ];
+      } else if (tab === 'academic') {
+        traces = [
+          mk(data.latamFacultyStudentRatioPosition, 'Razão Professor/Aluno', colors.green, 3),
+          mk(data.latamFacultyWithPhDPosition, 'Professores com Doutorado', colors.purple, 3),
+          mk(data.latamWebImpactPosition, 'Impacto Web', colors.yellow, 3)
+        ];
+      } else if (tab === 'research') {
+        traces = [
+          mk(data.latamPapersPerFacultyPosition, 'Artigos por Professor', colors.pink, 3),
+          mk(data.latamCitationsPerPaperPosition, 'Citações por Artigo', colors.red, 3),
+          mk(data.latamResearchNetworkPosition, 'Rede de Pesquisa', colors.indigo, 3)
+        ];
+      }
+
+      Plotly.newPlot('latam-pos-indicators-chart', traces, {
+        ...positionLayout,
+        title: '',
+        xaxis: {
+          ...commonLayout.xaxis,
+          autorange: false,
+          range: [years[0] - 0.5, years[years.length - 1] + 0.5] // mesma janela do gráfico ao lado
+        },
+        yaxis: {
+          ...positionLayout.yaxis,
+          title: 'Posição na América Latina (menor = melhor)',
+          nticks: 6
+        }
+      }, chartConfig);
+    }
+
+    function changeLatamPosIndTab(tab) {
+      updateTabButtons('latam-pos-indicators-chart', tab);
+      createLatamPosIndicatorsChart(tab);
     }
 
     // Função auxiliar para criar traços com cores vivas
