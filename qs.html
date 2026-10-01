@@ -84,7 +84,7 @@
       box-shadow: var(--card-shadow);
       transition: var(--transition);
       height: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 0;
       overflow: hidden;
       border-top: 4px solid;
     }
@@ -324,7 +324,7 @@
       border-radius: var(--border-radius);
       box-shadow: var(--card-shadow);
       padding: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 0;
       height: 100%;
     }
 
@@ -508,7 +508,7 @@
 
     <!-- Gráficos QS World -->
     <div class="row mb-5">
-      <div class="col-lg-6 p-3">
+      <div class="col-lg-6 mb-3">
         <div class="chart-container">
           <h4 class="chart-title">Posição da UFF no Brasil - QS World</h4>
           <div id="world-brazil-chart"></div>
@@ -519,7 +519,7 @@
         </div>
       </div>
 
-      <div class="col-lg-6 p-3 mb-3">
+      <div class="col-lg-6 mb-3">
         <div class="chart-container">
           <h4 class="chart-title">Posição entre as Federais - QS World</h4>
           <div id="world-federais-chart"></div>
@@ -547,9 +547,9 @@
         <div class="chart-container">
           <h4 class="chart-title">Indicadores QS World</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn active" onclick="changeWorldIndicatorsTab('main')">Principais</button>
-            <button class="tab-btn" onclick="changeWorldIndicatorsTab('academic')">Acadêmicos</button>
-            <button class="tab-btn" onclick="changeWorldIndicatorsTab('international')">Internacional</button>
+            <button type="button" class="tab-btn active" data-tab="main" onclick="changeWorldIndicatorsTab('main')">Principais</button>
+            <button type="button" class="tab-btn" data-tab="academic" onclick="changeWorldIndicatorsTab('academic')">Acadêmicos</button>
+            <button type="button" class="tab-btn" data-tab="international" onclick="changeWorldIndicatorsTab('international')">Internacional</button>
           </div>
           <div id="world-indicators-chart"></div>
           <!-- <div class="chart-notes">
@@ -560,20 +560,20 @@
       </div>
 
       <!-- Classificação no Brasil por indicador (QS World) -->
-      <div class="row p-3">
+      <div class="col-12 mb-3">
         <div class="chart-container">
           <h4 class="chart-title">Classificação da UFF no Brasil por Indicador - QS World</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn active" onclick="changeWorldBrIndTab('main', this)">Principais</button>
-            <button class="tab-btn" onclick="changeWorldBrIndTab('academic', this)">Acadêmicos</button>
-            <button class="tab-btn" onclick="changeWorldBrIndTab('international', this)">Internacional</button>
+            <button type="button" class="tab-btn active" data-tab="main" onclick="changeWorldBrIndTab('main', this)">Principais</button>
+            <button type="button" class="tab-btn" data-tab="academic" onclick="changeWorldBrIndTab('academic', this)">Acadêmicos</button>
+            <button type="button" class="tab-btn" data-tab="international" onclick="changeWorldBrIndTab('international', this)">Internacional</button>
           </div>
           <div id="world-br-indicators-chart"></div>
         </div>
       </div>
 
       <!-- Gráfico Posição no Mundo (faixas) -->
-      <div class="row p-3">
+      <div class="col-12 mb-3">
         <div class="chart-container">
           <h4 class="chart-title">Posição da UFF no Mundo - QS World</h4>
           <div id="world-world-chart"></div>
@@ -599,8 +599,8 @@
               <i class="fas fa-map-marked-alt"></i>
             </div>
             <h5 class="card-title">Posição América Latina</h5>
-            <div class="indicator-value">64º</div>
-            <p class="card-subtitle">2026 | QS Latin America</p>
+            <div class="indicator-value">70º</div>
+            <p class="card-subtitle">2027 | QS Latin America</p>
           </div>
         </div>
       </div>
@@ -613,8 +613,8 @@
               <i class="fas fa-landmark"></i>
             </div>
             <h5 class="card-title">Posição no Brasil</h5>
-            <div class="indicator-value">14º</div>
-            <p class="card-subtitle">2026 | QS Latin America</p>
+            <div class="indicator-value">16º</div>
+            <p class="card-subtitle">2027 | QS Latin America</p>
           </div>
         </div>
       </div>
@@ -627,8 +627,8 @@
               <i class="fas fa-globe-americas"></i>
             </div>
             <h5 class="card-title">Posição América do Sul</h5>
-            <div class="indicator-value">51º</div>
-            <p class="card-subtitle">2026 | QS Latin America</p>
+            <div class="indicator-value">50º</div>
+            <p class="card-subtitle">2027 | QS Latin America</p>
           </div>
         </div>
       </div>
@@ -640,9 +640,9 @@
             <div class="card-icon">
               <i class="fas fa-star"></i>
             </div>
-            <h5 class="card-title">Posição no Cone Sul</h5>
-            <div class="indicator-value">37º</div>
-            <p class="card-subtitle">2026 | QS Latin America</p>
+            <h5 class="card-title">Pontuação Geral</h5>
+            <div class="indicator-value">56.7</div>
+            <p class="card-subtitle">2027 | QS Latin America</p>
           </div>
         </div>
       </div>
@@ -679,9 +679,9 @@
         <div class="chart-container">
           <h4 class="chart-title">Indicadores QS Latin America</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn latam-tab active" onclick="changeLatamIndicatorsTab('main')">Principais</button>
-            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('academic')">Acadêmicos</button>
-            <button class="tab-btn latam-tab" onclick="changeLatamIndicatorsTab('research')">Pesquisa</button>
+            <button type="button" class="tab-btn latam-tab active" data-tab="main" onclick="changeLatamIndicatorsTab('main')">Principais</button>
+            <button type="button" class="tab-btn latam-tab" data-tab="academic" onclick="changeLatamIndicatorsTab('academic')">Acadêmicos</button>
+            <button type="button" class="tab-btn latam-tab" data-tab="research" onclick="changeLatamIndicatorsTab('research')">Pesquisa</button>
           </div>
           <div id="latam-indicators-chart"></div>
           <!-- <div class="chart-notes">
@@ -790,10 +790,10 @@
         <div class="chart-container">
           <h4 class="chart-title">Indicadores QS Sustainability</h4>
           <div class="chart-tabs mb-3">
-            <button class="tab-btn sustainability-tab active"
+            <button type="button" class="tab-btn sustainability-tab active" data-tab="principais"
               onclick="changeSustIndicatorsTab('principais')">Principais</button>
-            <button class="tab-btn sustainability-tab" onclick="changeSustIndicatorsTab('ambiental')">Ambiental</button>
-            <button class="tab-btn sustainability-tab" onclick="changeSustIndicatorsTab('social')">Social</button>
+            <button type="button" class="tab-btn sustainability-tab" data-tab="ambiental" onclick="changeSustIndicatorsTab('ambiental')">Ambiental</button>
+            <button type="button" class="tab-btn sustainability-tab" data-tab="social" onclick="changeSustIndicatorsTab('social')">Social</button>
           </div>
           <div id="sust-indicators-chart"></div>
         </div>
@@ -804,7 +804,7 @@
     <div class="footer-note">
       <p class="mb-2">
         <i class="fas fa-database me-1"></i>
-        Dados extraídos dos rankings QS World University (2013-2027), QS Latin America (2013-2026) e QS Sustainability
+        Dados extraídos dos rankings QS World University (2013-2027), QS Latin America (2013-2027) e QS Sustainability
         (2024-2026)
       </p>
       <p class="mb-0">
@@ -820,11 +820,11 @@
     // Dados completos e corrigidos
     const data = {
       // Anos
-      yearsWorld: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      yearsWorld: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
       yearsWorldBrazil: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
       yearsWorldShort: [2022, 2023, 2024, 2025, 2026, 2027],
-      yearsLatam: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
-      yearsLatamBrazil: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      yearsLatam: [2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
+      yearsLatamBrazil: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
 
       // QS World University Ranking - DADOS DO XLSX
       worldBrazilPosition: [16, 13, 12, 13, 13, 11, 15, 15, 18, 15, 11, 14, 14], // No Brasil (2015-2027)
@@ -833,6 +833,7 @@
 
       // QS World Indicators (2021-2027)
       worldIndicatorsYears: [2021, 2022, 2023, 2024, 2025, 2026, 2027],
+      worldOverall: [null, null, 7.2, 6.3, 8.0, 12.6, 12.7],
       worldAcademicRep: [8.4, 8.4, 8.9, 10.0, 9.6, 12.5, 11.8],
       worldEmployerRep: [3.4, 3.4, 3.2, 2.3, 2.5, 3.1, 2.7],
       worldFacultyStudentRatio: [14.3, 14.3, 10.9, 11.7, 12.8, 17.4, 19.1],
@@ -862,27 +863,28 @@
       brEmploymentOutcomes: [15, 13, 14, 14],
       brResearchNetwork: [9, 12, 10, 8],
       brSustainability: [16, 9, 9, 8],
+      brOverall: null, // preenchido abaixo a partir de worldBrazilPosition
 
       // QS Latin America - DADOS CORRIGIDOS
-      latamPosition: [47, 49, 50, 47, 53, 50, 54, 60, 61, 61, 55, 54, 64], // Item d
-      latamBrazilPosition: [17, 16, 16, 17, 16, 15, 14, 14, 14], // Item e
+      latamPosition: [47, 49, 50, 47, 53, 50, 54, 60, 61, 61, 55, 54, 64, 70], // Item d
+      latamBrazilPosition: [17, 16, 16, 17, 16, 15, 14, 14, 14, 16], // Item e
 
       // QS Latin America Indicators (2021-2026)
-      latamIndicatorsYears: [2021, 2022, 2023, 2024, 2025, 2026],
-      latamOverall: [50.6, 49.9, 50.4, 51.8, 58.6, 57.0],
-      latamAcademicRep: [35.3, 36.5, 38.4, 39.9, 49.5, 48.9],
-      latamEmployerRep: [11.8, 11.2, 12.1, 13.9, 18.5, 14.1],
-      latamFacultyStudentRatio: [36.5, 25.8, 19.3, 26.4, 32.3, 32.9],
-      latamPapersPerFaculty: [58.6, 54.9, 54.2, 57.9, 71.6, 71.6],
-      latamCitationsPerPaper: [30.3, 38.3, 43.4, 42.6, 59.8, 51.6],
-      latamFacultyWithPhD: [100, 100, 98.3, 98.4, 99.1, 98.3],
-      latamResearchNetwork: [97, 97.1, 96.4, 95.7, 94.7, 97.4],
-      latamWebImpact: [94.1, 92.2, 89.5, 86.1, 93.5, 95.1],
+      latamIndicatorsYears: [2021, 2022, 2023, 2024, 2025, 2026, 2027],
+      latamOverall: [50.6, 49.9, 50.4, 51.8, 58.6, 57.0, 56.7],
+      latamAcademicRep: [35.3, 36.5, 38.4, 39.9, 49.5, 48.9, 46.0],
+      latamEmployerRep: [11.8, 11.2, 12.1, 13.9, 18.5, 14.1, 13.0],
+      latamFacultyStudentRatio: [36.5, 25.8, 19.3, 26.4, 32.3, 32.9, 43.5],
+      latamPapersPerFaculty: [58.6, 54.9, 54.2, 57.9, 71.6, 71.6, 71.6],
+      latamCitationsPerPaper: [30.3, 38.3, 43.4, 42.6, 59.8, 51.6, 50.9],
+      latamFacultyWithPhD: [100, 100, 98.3, 98.4, 99.1, 98.3, 97.7],
+      latamResearchNetwork: [97, 97.1, 96.4, 95.7, 94.7, 97.4, 97.9],
+      latamWebImpact: [94.1, 92.2, 89.5, 86.1, 93.5, 95.1, 94.5],
 
       // Dados de participantes do QS Latin America
-      participantsYears: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
-      totalParticipants: [385, 391, 400, 411, 418, 428, 430, 437, 492],
-      brazilParticipants: [83, 90, 94, 94, 95, 98, 97, 96, 130],
+      participantsYears: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027],
+      totalParticipants: [385, 391, 400, 411, 418, 428, 430, 437, 492, null], // 2027 ainda não calculado
+      brazilParticipants: [83, 90, 94, 94, 95, 98, 97, 96, 130, null], // 2027 ainda não calculado
 
       // QS Sustainability Rankings (2024-2026)
       yearsSustainability: [2024, 2025, 2026],
@@ -909,6 +911,12 @@
       sust2026Profile: [66.9, 92.0, 57.4, 50.5, 75.6, 72.5, 85.1, 61.1, 45.2, 72.8]
     };
 
+    // Posição geral no Brasil nos anos do gráfico por indicador (mesma fonte do card/gráfico de posição)
+    data.brOverall = data.worldBrIndYears.map(y => {
+      const i = data.yearsWorldBrazil.indexOf(y);
+      return i >= 0 ? data.worldBrazilPosition[i] : null;
+    });
+
     // Cores vibrantes para gráficos
     const colors = {
       blue: '#3B82F6',
@@ -922,6 +930,7 @@
       indigo: '#6366F1',
       yellow: '#EAB308',
       gray: '#9CA3AF',
+      black: '#374151',
       lightBlue: '#93C5FD',
       lightGreen: '#86EFAC'
     };
@@ -1261,7 +1270,7 @@
       const totalParticipantsTrace = {
         x: data.participantsYears,
         y: data.totalParticipants,
-        text: data.totalParticipants.map(v => v.toString()),
+        text: data.totalParticipants.map(v => formatValue(v)),
         textposition: 'outside',
         textfont: {
           size: 10,
@@ -1314,7 +1323,7 @@
         },
         xaxis: {
           ...commonLayout.xaxis,
-          range: [2012.5, 2026.5] // Ajusta para mostrar todas as barras
+          range: [2012.5, 2027.5] // Ajusta para mostrar todas as barras
         },
         legend: {
           ...commonLayout.legend,
@@ -1364,7 +1373,7 @@
       const brazilParticipantsTrace = {
         x: data.participantsYears,
         y: data.brazilParticipants,
-        text: data.brazilParticipants.map(v => v.toString()),
+        text: data.brazilParticipants.map(v => formatValue(v)),
         textposition: 'outside',
         textfont: {
           size: 10,
@@ -1420,7 +1429,7 @@
         },
         xaxis: {
           ...commonLayout.xaxis,
-          range: [2017.5, 2026.5] // Ajusta para mostrar todas as barras
+          range: [2017.5, 2027.5] // Ajusta para mostrar todas as barras
         },
         legend: {
           ...commonLayout.legend,
@@ -1475,7 +1484,7 @@
         xaxis: {
           ...commonLayout.xaxis,
           autorange: false,
-          range: [2023.5, 2026.5]
+          range: [data.yearsSustainability[0] - 0.5, data.yearsSustainability[data.yearsSustainability.length - 1] + 0.5]
         },
         yaxis: { ...positionLayout.yaxis }
       }, chartConfig);
@@ -1515,7 +1524,7 @@
         xaxis: {
           ...commonLayout.xaxis,
           autorange: false,
-          range: [2023.5, 2026.5]
+          range: [data.yearsSustainability[0] - 0.5, data.yearsSustainability[data.yearsSustainability.length - 1] + 0.5]
         },
         yaxis: { ...positionLayout.yaxis }
       }, chartConfig);
@@ -1619,7 +1628,7 @@
         ];
       }
 
-      Plotly.newPlot('sust-indicators-chart', traces, indicatorLayout(2024, 2026), chartConfig);
+      Plotly.newPlot('sust-indicators-chart', traces, indicatorLayout(years[0], years[years.length - 1]), chartConfig);
     }
 
     function changeSustIndicatorsTab(tab) {
@@ -1635,6 +1644,7 @@
       if (tab === 'main') {
         // Principais indicadores - COM SUSTENTABILIDADE
         traces = [
+          createTrace(years, data.worldOverall, 'Pontuação Geral', colors.purple, 4),
           createTrace(years, data.worldAcademicRep, 'Reputação Acadêmica', colors.blue, 4),
           createTrace(years, data.worldEmployerRep, 'Reputação Empregadores', colors.orange, 4),
           //createTrace(years, data.worldFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 4),
@@ -1658,7 +1668,7 @@
         ];
       }
 
-      Plotly.newPlot('world-indicators-chart', traces, indicatorLayout(2021, 2027), chartConfig);
+      Plotly.newPlot('world-indicators-chart', traces, indicatorLayout(years[0], years[years.length - 1]), chartConfig);
     }
 
     // Classificação da UFF no Brasil por indicador (posição, eixo invertido)
@@ -1667,7 +1677,7 @@
       const mk = (y, name, color, w) => {
         const t = createTrace(years, y, name, color, w);
         t.line.shape = 'spline'; // a pedido do usuário
-        t.text = y.map(v => v + 'º');
+        t.text = y.map(v => (v === null || v === undefined) ? '' : v + 'º');
         t.hovertemplate = `<b>${name}:</b> %{y}º no Brasil<br><b>Ano:</b> %{x}<extra></extra>`;
         return t;
       };
@@ -1675,13 +1685,13 @@
       let traces = [];
       if (tab === 'main') {
         traces = [
+          mk(data.brOverall, 'Geral', colors.purple, 4),
           mk(data.brAcademicRep, 'Reputação Acadêmica', colors.blue, 4),
           mk(data.brEmployerRep, 'Reputação Empregadores', colors.orange, 4),
           mk(data.brSustainability, 'Sustentabilidade', colors.cyan, 4)
         ];
       } else if (tab === 'academic') {
         traces = [
-          mk(data.brAcademicRep, 'Reputação Acadêmica', colors.blue, 3),
           mk(data.brFacultyStudentRatio, 'Razão Professor/Aluno', colors.green, 3),
           mk(data.brCitationsPerFaculty, 'Citações por Professor', colors.purple, 3),
           mk(data.brEmploymentOutcomes, 'Resultados de Emprego', colors.red, 3)
@@ -1700,7 +1710,7 @@
         xaxis: {
           ...commonLayout.xaxis,
           autorange: false,
-          range: [2023.5, 2027.5]
+          range: [years[0] - 0.5, years[years.length - 1] + 0.5] // antes fixo em 2026.5: cortava 2027
         },
         yaxis: {
           ...positionLayout.yaxis,
@@ -1710,10 +1720,8 @@
       }, chartConfig);
     }
 
-    function changeWorldBrIndTab(tab, btn) {
-      const container = btn.closest('.chart-container');
-      container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+    function changeWorldBrIndTab(tab) {
+      updateTabButtons('world-br-indicators-chart', tab);
       createWorldBrIndicatorsChart(tab);
     }
 
@@ -1748,7 +1756,7 @@
         ];
       }
 
-      Plotly.newPlot('latam-indicators-chart', traces, indicatorLayout(2021, 2026), chartConfig);
+      Plotly.newPlot('latam-indicators-chart', traces, indicatorLayout(years[0], years[years.length - 1]), chartConfig);
     }
 
     // Função auxiliar para criar traços com cores vivas
@@ -1796,14 +1804,9 @@
 
     function updateTabButtons(chartId, activeTab) {
       const chartContainer = document.getElementById(chartId).closest('.chart-container');
-      const tabBtns = chartContainer.querySelectorAll('.tab-btn');
-      tabBtns.forEach(btn => btn.classList.remove('active'));
-
-      // Encontrar o botão correspondente à aba ativa
-      tabBtns.forEach(btn => {
-        if (btn.textContent.toLowerCase().includes(activeTab)) {
-          btn.classList.add('active');
-        }
+      // Casa pelo data-tab (o match pelo texto do botão falhava: 'main' x 'Principais' etc.)
+      chartContainer.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === activeTab);
       });
     }
 
